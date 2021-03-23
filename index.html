@@ -207,7 +207,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/03/23/glibc-ptmalloc1/" class="post-title-link" itemprop="url">glibc ptmalloc1</a>
+          <a href="/2021/03/23/glibc-ptmalloc1/" class="post-title-link" itemprop="url">Untitled</a>
         </h2>
 
         <div class="post-meta-container">
@@ -217,8 +217,9 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
+      
 
-      <time title="Created: 2021-03-23 13:41:19" itemprop="dateCreated datePublished" datetime="2021-03-23T13:41:19+08:00">2021-03-23</time>
+      <time title="Created: 2021-03-23 13:41:19 / Modified: 18:19:55" itemprop="dateCreated datePublished" datetime="2021-03-23T13:41:19+08:00">2021-03-23</time>
     </span>
 
   
@@ -231,7 +232,43 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          
+          <p>title: glibc ptmalloc1<br>date: 2021-03-23 13:41:19<br>tags:</p>
+<h2 id="x86平台linux进程内存布局"><a href="#x86平台linux进程内存布局" class="headerlink" title="x86平台linux进程内存布局"></a>x86平台linux进程内存布局</h2><blockquote>
+<p>Linux 系统在装载 elf 格式的程序文件时，会调用 loader 把可执行文件中的各个段依次 载入到从某一地址开始的空间中（载入地址取决 link editor(ld)和机器地址位数，在 32 位机 器上是 0x8048000，即 128M 处）。</p>
+</blockquote>
+<h3 id="32位"><a href="#32位" class="headerlink" title="32位"></a>32位</h3><p><img src="https://i.imgur.com/2bvQPBh.png"></p>
+<p>mmap映射区域一般从TASK_SIZE/3开始.栈是有界的</p>
+<h3 id="64位"><a href="#64位" class="headerlink" title="64位"></a>64位</h3><p><img src="https://i.imgur.com/YeVDhxg.png"></p>
+<blockquote>
+<p>上图是 X86_64 下 Linux 进程的默认内存布局形式，这只是一个示意图.</p>
+<p>当前内核默认 配置下，进程的栈和 mmap 映射区域<strong>并不是从一个固定地址开始</strong>，并且每次启动时的值都 不一样，这是程序在启动时随机改变这些值的设置，使得使用缓冲区溢出进行攻击更加困难。 </p>
+<p>当然也可以让进程的栈和 mmap 映射区域从一个固定位置开始，只需要设置全局变量 randomize_va_space 值 为 0 ， 这 个 变 量 默 认 值 为 1 。 用 户 可 以 通 过 设 置 /proc/sys/kernel/randomize_va_space 来停用该特性，也可以用如下命令： sudo sysctl -w kernel.randomize_va_space=0</p>
+</blockquote>
+<p>heap 和 mmap 映射区域是可以提供给用户程序使用的虚拟内存空间。</p>
+<blockquote>
+<p>堆至底向上扩展，mmap 映射区 域至顶向下扩展，mmap 映射区域和堆相对扩展，直至耗尽虚拟地址空间中的剩余区域，这 种结构便于 C 运行时库使用 mmap 映射区域和堆进行内存分配。</p>
+</blockquote>
+<h3 id="操作系统内存分配的相关函数"><a href="#操作系统内存分配的相关函数" class="headerlink" title="操作系统内存分配的相关函数"></a>操作系统内存分配的相关函数</h3><p>head—-brk()[系统调用]/sbrk()[c库函数]</p>
+<p>mmap—-mmap()\munmap()</p>
+<p>这些函数都可以用来向我们的进程添加额外的虚拟内存。</p>
+<h4 id="内存的延迟分配"><a href="#内存的延迟分配" class="headerlink" title="内存的延迟分配"></a>内存的延迟分配</h4><p>只有在真正访问一个地址的时候才建立这个地址的物理映射，之前只是线性区（虚拟内存）</p>
+<blockquote>
+<p>内核释放物理页面是通过释放线性区，找到其所对应的物理页面，将其全部释放的过 程。</p>
+</blockquote>
+<h4 id="进程描述符task-struct"><a href="#进程描述符task-struct" class="headerlink" title="进程描述符task_struct"></a>进程描述符task_struct</h4><h4 id="内存描述符mm-struct"><a href="#内存描述符mm-struct" class="headerlink" title="内存描述符mm_struct"></a>内存描述符mm_struct</h4><p>mm_struct是内核数据结构。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/xiaosolll/eetan/blob/main/mm_struct%E6%B3%A8%E9%87%8A%E6%BA%90%E7%A0%81%E8%AE%B0%E5%BD%95">https://github.com/xiaosolll/eetan/blob/main/mm_struct%E6%B3%A8%E9%87%8A%E6%BA%90%E7%A0%81%E8%AE%B0%E5%BD%95</a>    —–【mm_struct的源码注释】</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unsigned long start_code, end_code, start_data, end_data;</span><br></pre></td></tr></table></figure>
+<p>start_code和end_code是进程代码段的起始和终止地址,start_data和end_data是进程数据段的起始和终止地址。</p>
+<p>来自：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_26768741/article/details/54375524">https://blog.csdn.net/qq_26768741/article/details/54375524</a></p>
+<h4 id="heap操作相关函数"><a href="#heap操作相关函数" class="headerlink" title="heap操作相关函数"></a>heap操作相关函数</h4><blockquote>
+<p>start_stack 是进程堆栈 段起始地址，start_brk 是进程动态内存分配起始地址（堆的起始地址），还有一个 brk（堆 的当前最后地址），就是动态内存分配当前的终止地址。</p>
+<p>C 语言的动态内存分配基本函数是 malloc()，在 Linux 上的实现是通过内核的 brk 系统调用。brk()是一个非常简单的系统调用， 只是简单地<strong>改变 mm_struct 结构的成员变量 brk</strong> 的值。</p>
+</blockquote>
+<h4 id="Mmap映射区域操作相关函数"><a href="#Mmap映射区域操作相关函数" class="headerlink" title="Mmap映射区域操作相关函数"></a>Mmap映射区域操作相关函数</h4><p>mmap()函数将一个文件或者其它对象映射进内存。</p>
+<blockquote>
+<p>操作系统以**<em>内存页**</em>为<em>单位</em>管理内存</p>
+</blockquote>
+
       
     </div>
 
@@ -288,7 +325,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-03-18 15:30:23" itemprop="dateModified" datetime="2021-03-18T15:30:23+08:00">2021-03-18</time>
+        <time title="Modified: 2021-03-23 17:08:29" itemprop="dateModified" datetime="2021-03-23T17:08:29+08:00">2021-03-23</time>
       </span>
 
   
@@ -310,6 +347,16 @@
 <p>   然而，在实际中，<strong>存储变量时地址要求对齐</strong>，编译器在编译程序时会遵循两条<strong>原则</strong>：</p>
 <p>   <strong>（1）结构体变量中成员的偏移量必须是成员大小的整数倍（0被认为是任何数的整数倍）</strong> </p>
 <p>   <strong>（2）结构体大小必须是所有成员大小的整数倍，也即所有成员大小的公倍数。</strong></p>
+<h2 id="期刊"><a href="#期刊" class="headerlink" title="期刊"></a>期刊</h2><blockquote>
+<p>序号 期刊名称 主办单位 网址 </p>
+<p>1 软件学报 中国科学院软件研究所 中国计算机学会 <a target="_blank" rel="noopener" href="http://www.jos.org.cn/">http://www.jos.org.cn</a> </p>
+<p>2 计算机学报 中国计算机学会 中国科学院计算技术研究所 <a target="_blank" rel="noopener" href="http://cjc.ict.ac.cn/">http://cjc.ict.ac.cn</a></p>
+<p>3 中国科学：信息科学 中国科学院 国家自然科学基金委员会 <a target="_blank" rel="noopener" href="http://infocn.scichina.com/">http://infocn.scichina.com</a></p>
+<p> 4 计算机研究与发展 中国科学院计算技术研究所 中国计算机学会 <a target="_blank" rel="noopener" href="http://crad.ict.ac.cn/">http://crad.ict.ac.cn</a> </p>
+<p>5 计算机辅助设计与图形学学报 中国计算机学会 中国科学院计算技术研究所 <a target="_blank" rel="noopener" href="http://www.jcad.cn/">http://www.jcad.cn</a> </p>
+<p>6 电子学报 中国电子学会 <a target="_blank" rel="noopener" href="http://www.ejournal.org.cn/">http://www.ejournal.org.cn</a> </p>
+<p>7 自动化学报 中国自动化学会 中国科学院自动化研究所 <a target="_blank" rel="noopener" href="http://www.aas.net.cn/">http://www.aas.net.cn</a></p>
+</blockquote>
 
       
     </div>
