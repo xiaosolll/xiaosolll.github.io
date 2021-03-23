@@ -23,20 +23,23 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"xiaosolll.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.2.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
   </script>
-<meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="description" content="C&#x2F;C++ sizeof函数解析——解决sizeof求结构体大小的问题C&#x2F;C++ sizeof函数解析——解决sizeof求结构体大小的问题 - WhyWin - 博客园 (cnblogs.com)  123456struct stu1  &amp;#123;       int i;       char c;       int j;  &amp;#125;；       用sizeof求该结构体的大小，发现">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="https://xiaosolll.github.io/2021/02/14/hello-world/index.html">
+<meta property="og:title" content="Daily learning and document collection">
+<meta property="og:url" content="https://xiaosolll.github.io/2021/03/17/Daily-learning-and-document-collection/index.html">
 <meta property="og:site_name" content="Antinomy">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="C&#x2F;C++ sizeof函数解析——解决sizeof求结构体大小的问题C&#x2F;C++ sizeof函数解析——解决sizeof求结构体大小的问题 - WhyWin - 博客园 (cnblogs.com)  123456struct stu1  &amp;#123;       int i;       char c;       int j;  &amp;#125;；       用sizeof求该结构体的大小，发现">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-02-14T07:45:55.735Z">
-<meta property="article:modified_time" content="2021-02-14T07:45:55.736Z">
+<meta property="og:image" content="https://common.cnblogs.com/images/copycode.gif">
+<meta property="og:image" content="https://common.cnblogs.com/images/copycode.gif">
+<meta property="article:published_time" content="2021-03-17T00:49:46.000Z">
+<meta property="article:modified_time" content="2021-03-18T07:30:23.769Z">
 <meta property="article:author" content="eetan">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://common.cnblogs.com/images/copycode.gif">
 
 
-<link rel="canonical" href="https://xiaosolll.github.io/2021/02/14/hello-world/">
+<link rel="canonical" href="https://xiaosolll.github.io/2021/03/17/Daily-learning-and-document-collection/">
 
 
 <script class="page-configurations">
@@ -48,7 +51,7 @@
     lang   : 'en'
   };
 </script>
-<title>Hello World | Antinomy</title>
+<title>Daily learning and document collection | Antinomy</title>
   
 
 
@@ -147,7 +150,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#C-C-sizeof%E5%87%BD%E6%95%B0%E8%A7%A3%E6%9E%90%E2%80%94%E2%80%94%E8%A7%A3%E5%86%B3sizeof%E6%B1%82%E7%BB%93%E6%9E%84%E4%BD%93%E5%A4%A7%E5%B0%8F%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">C&#x2F;C++ sizeof函数解析——解决sizeof求结构体大小的问题</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -200,7 +203,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://xiaosolll.github.io/2021/02/14/hello-world/">
+    <link itemprop="mainEntityOfPage" href="https://xiaosolll.github.io/2021/03/17/Daily-learning-and-document-collection/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -213,7 +216,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Hello World
+          Daily learning and document collection
         </h1>
 
         <div class="post-meta-container">
@@ -224,8 +227,15 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2021-02-14 15:45:55" itemprop="dateCreated datePublished" datetime="2021-02-14T15:45:55+08:00">2021-02-14</time>
+      <time title="Created: 2021-03-17 08:49:46" itemprop="dateCreated datePublished" datetime="2021-03-17T08:49:46+08:00">2021-03-17</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-03-18 15:30:23" itemprop="dateModified" datetime="2021-03-18T15:30:23+08:00">2021-03-18</time>
+      </span>
 
   
 </div>
@@ -237,15 +247,15 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+        <h4 id="C-C-sizeof函数解析——解决sizeof求结构体大小的问题"><a href="#C-C-sizeof函数解析——解决sizeof求结构体大小的问题" class="headerlink" title="C/C++ sizeof函数解析——解决sizeof求结构体大小的问题"></a><a target="_blank" rel="noopener" href="https://www.cnblogs.com/0201zcr/p/4789332.html">C/C++ sizeof函数解析——解决sizeof求结构体大小的问题</a></h4><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/0201zcr/p/4789332.html">C/C++ sizeof函数解析——解决sizeof求结构体大小的问题 - WhyWin - 博客园 (cnblogs.com)</a></p>
+<p><a href="javascript:void(0);"><img src="https://common.cnblogs.com/images/copycode.gif" alt="复制代码"></a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">struct stu1  </span><br><span class="line">&#123;  </span><br><span class="line">     int i;  </span><br><span class="line">     char c;  </span><br><span class="line">     int j;  </span><br><span class="line">&#125;；  </span><br></pre></td></tr></table></figure>
+<p><a href="javascript:void(0);"><img src="https://common.cnblogs.com/images/copycode.gif" alt="复制代码"></a></p>
+<p>   用sizeof求该结构体的大小，发现值为12。int占4个字节，char占1个字节，结果应该是9个字节才对啊，为什么呢？</p>
+<p>   先介绍一个相关的概念——偏移量。偏移量<strong>指的是结构体变量中成员的地址和结构体变量地址的差</strong>。结构体大小<strong>等于最后一个成员的偏移量加上最后一个成员的大小</strong>。显然，结构体变量中第一个成员的地址就是结构体变量的首地址。因此，第一个成员i的偏移量为0。第二个成员c的偏移量是第一个成员的偏移量加上第一个成员的大小（0+4）,其值为4；第三个成员j的偏移量是第二个成员的偏移量加上第二个成员的大小（4+1）,其值为5。</p>
+<p>   然而，在实际中，<strong>存储变量时地址要求对齐</strong>，编译器在编译程序时会遵循两条<strong>原则</strong>：</p>
+<p>   <strong>（1）结构体变量中成员的偏移量必须是成员大小的整数倍（0被认为是任何数的整数倍）</strong> </p>
+<p>   <strong>（2）结构体大小必须是所有成员大小的整数倍，也即所有成员大小的公倍数。</strong></p>
 
     </div>
 
@@ -259,11 +269,11 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
+                <a href="/2021/02/28/malloclab2/" rel="prev" title="malloclab2">
+                  <i class="fa fa-chevron-left"></i> malloclab2
+                </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2021/02/14/attacklab/" rel="next" title="">
-                   <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
