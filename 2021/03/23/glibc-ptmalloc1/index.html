@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://i.imgur.com/2bvQPBh.png">
 <meta property="og:image" content="https://i.imgur.com/YeVDhxg.png">
 <meta property="article:published_time" content="2021-03-23T05:41:19.244Z">
-<meta property="article:modified_time" content="2021-03-23T10:19:55.323Z">
+<meta property="article:modified_time" content="2021-03-26T02:29:43.247Z">
 <meta property="article:author" content="eetan">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://i.imgur.com/2bvQPBh.png">
@@ -150,7 +150,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#x86%E5%B9%B3%E5%8F%B0linux%E8%BF%9B%E7%A8%8B%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80"><span class="nav-number">1.</span> <span class="nav-text">x86平台linux进程内存布局</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#32%E4%BD%8D"><span class="nav-number">1.1.</span> <span class="nav-text">32位</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#64%E4%BD%8D"><span class="nav-number">1.2.</span> <span class="nav-text">64位</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%9A%84%E7%9B%B8%E5%85%B3%E5%87%BD%E6%95%B0"><span class="nav-number">1.3.</span> <span class="nav-text">操作系统内存分配的相关函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E7%9A%84%E5%BB%B6%E8%BF%9F%E5%88%86%E9%85%8D"><span class="nav-number">1.3.1.</span> <span class="nav-text">内存的延迟分配</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E6%8F%8F%E8%BF%B0%E7%AC%A6task-struct"><span class="nav-number">1.3.2.</span> <span class="nav-text">进程描述符task_struct</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%8F%8F%E8%BF%B0%E7%AC%A6mm-struct"><span class="nav-number">1.3.3.</span> <span class="nav-text">内存描述符mm_struct</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#heap%E6%93%8D%E4%BD%9C%E7%9B%B8%E5%85%B3%E5%87%BD%E6%95%B0"><span class="nav-number">1.3.4.</span> <span class="nav-text">heap操作相关函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Mmap%E6%98%A0%E5%B0%84%E5%8C%BA%E5%9F%9F%E6%93%8D%E4%BD%9C%E7%9B%B8%E5%85%B3%E5%87%BD%E6%95%B0"><span class="nav-number">1.3.5.</span> <span class="nav-text">Mmap映射区域操作相关函数</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#x86%E5%B9%B3%E5%8F%B0linux%E8%BF%9B%E7%A8%8B%E5%86%85%E5%AD%98%E5%B8%83%E5%B1%80"><span class="nav-number">1.</span> <span class="nav-text">x86平台linux进程内存布局</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#32%E4%BD%8D"><span class="nav-number">1.1.</span> <span class="nav-text">32位</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#64%E4%BD%8D"><span class="nav-number">1.2.</span> <span class="nav-text">64位</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%9A%84%E7%9B%B8%E5%85%B3%E5%87%BD%E6%95%B0"><span class="nav-number">1.3.</span> <span class="nav-text">操作系统内存分配的相关函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E7%9A%84%E5%BB%B6%E8%BF%9F%E5%88%86%E9%85%8D"><span class="nav-number">1.3.1.</span> <span class="nav-text">内存的延迟分配</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E6%8F%8F%E8%BF%B0%E7%AC%A6task-struct"><span class="nav-number">1.3.2.</span> <span class="nav-text">进程描述符task_struct</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E6%8F%8F%E8%BF%B0%E7%AC%A6mm-struct"><span class="nav-number">1.3.3.</span> <span class="nav-text">内存描述符mm_struct</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#heap%E6%93%8D%E4%BD%9C%E7%9B%B8%E5%85%B3%E5%87%BD%E6%95%B0"><span class="nav-number">1.3.4.</span> <span class="nav-text">heap操作相关函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Mmap%E6%98%A0%E5%B0%84%E5%8C%BA%E5%9F%9F%E6%93%8D%E4%BD%9C%E7%9B%B8%E5%85%B3%E5%87%BD%E6%95%B0"><span class="nav-number">1.3.5.</span> <span class="nav-text">Mmap映射区域操作相关函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">1.3.6.</span> <span class="nav-text">内存管理的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#c%E9%A3%8E%E6%A0%BC%E2%80%93malloc%E3%80%81free"><span class="nav-number">1.3.6.1.</span> <span class="nav-text">c风格–malloc、free</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B1%A0%E5%BC%8F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="nav-number">1.3.6.2.</span> <span class="nav-text">池式内存管理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0"><span class="nav-number">1.3.6.3.</span> <span class="nav-text">引用计数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86"><span class="nav-number">1.3.6.4.</span> <span class="nav-text">垃圾收集</span></a></li></ol></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -163,7 +163,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-count">9</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -226,10 +226,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2021-03-23 13:41:19 / Modified: 18:19:55" itemprop="dateCreated datePublished" datetime="2021-03-23T13:41:19+08:00">2021-03-23</time>
+      <time title="Created: 2021-03-23 13:41:19" itemprop="dateCreated datePublished" datetime="2021-03-23T13:41:19+08:00">2021-03-23</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-03-26 10:29:43" itemprop="dateModified" datetime="2021-03-26T10:29:43+08:00">2021-03-26</time>
+      </span>
 
   
 </div>
@@ -277,6 +283,15 @@
 <blockquote>
 <p>操作系统以**<em>内存页**</em>为<em>单位</em>管理内存</p>
 </blockquote>
+<p>munmap 执行相反的操作，删除特定地址区域的对象映射。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;sys&#x2F;mman.h&gt;</span><br><span class="line"></span><br><span class="line">void *mmap(void *addr, size_t length, int prot(期望的内存保护标志), int flags（指定映射对象类型，映射选项和映射页是否可以共享）, int fd, off_t offset);</span><br><span class="line"></span><br><span class="line">int munmap(void *addr, size_t length);</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="内存管理的方法"><a href="#内存管理的方法" class="headerlink" title="内存管理的方法"></a>内存管理的方法</h4><h5 id="c风格–malloc、free"><a href="#c风格–malloc、free" class="headerlink" title="c风格–malloc、free"></a>c风格–malloc、free</h5><p>程序主要通过调用brk（）或者mmap（）进程添加额外的虚拟内存。</p>
+<h5 id="池式内存管理"><a href="#池式内存管理" class="headerlink" title="池式内存管理"></a>池式内存管理</h5><p>内存池–自动内存管理</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/bangerlee/archive/2011/09/01/2161437.html">内存池的实现(二) - bangerlee - 博客园 (cnblogs.com)</a></p>
+<h5 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h5><p>当传递一个指向某个数据结构指针，引用计数+1</p>
+<p>当程序完成对这个数据结构的使用的时候，计数-1，结束动作，检查计数器是否为0，为0释放内存。</p>
+<h5 id="垃圾收集"><a href="#垃圾收集" class="headerlink" title="垃圾收集"></a>垃圾收集</h5><p>全自动检测并移除不再使用的数据对象</p>
+<p>运行：当可用内存减少到一个具体阈值。</p>
 
     </div>
 
@@ -295,6 +310,9 @@
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/2021/03/24/cve-2010-2883/" rel="next" title="cve-2010-2883">
+                  cve-2010-2883 <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
     </footer>

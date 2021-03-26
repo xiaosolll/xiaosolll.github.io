@@ -23,20 +23,23 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"xiaosolll.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.2.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
   </script>
-<meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="description" content="Windows内存保护机制 GS编译 SafeSEH机制 SEH覆盖保护 数据执行保护（DEP） 地址随机化（ASLR）  GS编译​             —linux【canary】 ​    GS编译保护技术是通过编译时添加相关代码而实现的，开启GS 编译选项后会在函数的开头和结尾添加代码来阻止栈溢出漏洞的利用。当应用程序启动时，程序的cookie被计算出来（伪随机数）并保存在.data">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="https://xiaosolll.github.io/2021/02/14/hello-world/index.html">
+<meta property="og:title" content="Heap Spray">
+<meta property="og:url" content="https://xiaosolll.github.io/2021/03/25/Heap-Spray/index.html">
 <meta property="og:site_name" content="Antinomy">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="Windows内存保护机制 GS编译 SafeSEH机制 SEH覆盖保护 数据执行保护（DEP） 地址随机化（ASLR）  GS编译​             —linux【canary】 ​    GS编译保护技术是通过编译时添加相关代码而实现的，开启GS 编译选项后会在函数的开头和结尾添加代码来阻止栈溢出漏洞的利用。当应用程序启动时，程序的cookie被计算出来（伪随机数）并保存在.data">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2021-02-14T07:45:55.735Z">
-<meta property="article:modified_time" content="2021-02-14T07:45:55.736Z">
+<meta property="og:image" content="https://i.imgur.com/b6xEJAG.png">
+<meta property="og:image" content="https://i.imgur.com/SsoJBNy.png">
+<meta property="article:published_time" content="2021-03-25T11:12:23.000Z">
+<meta property="article:modified_time" content="2021-03-25T12:13:43.002Z">
 <meta property="article:author" content="eetan">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/b6xEJAG.png">
 
 
-<link rel="canonical" href="https://xiaosolll.github.io/2021/02/14/hello-world/">
+<link rel="canonical" href="https://xiaosolll.github.io/2021/03/25/Heap-Spray/">
 
 
 <script class="page-configurations">
@@ -48,7 +51,7 @@
     lang   : 'en'
   };
 </script>
-<title>Hello World | Antinomy</title>
+<title>Heap Spray | Antinomy</title>
   
 
 
@@ -147,7 +150,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Windows%E5%86%85%E5%AD%98%E4%BF%9D%E6%8A%A4%E6%9C%BA%E5%88%B6"><span class="nav-number">1.</span> <span class="nav-text">Windows内存保护机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GS%E7%BC%96%E8%AF%91"><span class="nav-number">1.1.</span> <span class="nav-text">GS编译</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -200,7 +203,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://xiaosolll.github.io/2021/02/14/hello-world/">
+    <link itemprop="mainEntityOfPage" href="https://xiaosolll.github.io/2021/03/25/Heap-Spray/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -213,7 +216,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Hello World
+          Heap Spray
         </h1>
 
         <div class="post-meta-container">
@@ -223,8 +226,9 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
+      
 
-      <time title="Created: 2021-02-14 15:45:55" itemprop="dateCreated datePublished" datetime="2021-02-14T15:45:55+08:00">2021-02-14</time>
+      <time title="Created: 2021-03-25 19:12:23 / Modified: 20:13:43" itemprop="dateCreated datePublished" datetime="2021-03-25T19:12:23+08:00">2021-03-25</time>
     </span>
 
   
@@ -237,15 +241,21 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+        <h2 id="Windows内存保护机制"><a href="#Windows内存保护机制" class="headerlink" title="Windows内存保护机制"></a>Windows内存保护机制</h2><ul>
+<li>GS编译</li>
+<li>SafeSEH机制</li>
+<li>SEH覆盖保护</li>
+<li>数据执行保护（DEP）</li>
+<li>地址随机化（ASLR）</li>
+</ul>
+<h3 id="GS编译"><a href="#GS编译" class="headerlink" title="GS编译"></a>GS编译</h3><p>​             —linux【canary】</p>
+<p>​    GS编译保护技术是通过编译时添加相关代码而实现的，开启GS 编译选项后会在函数的开头和结尾添加代码来阻止栈溢出漏洞的利用。当应用程序启动时，程序的cookie被计算出来（伪随机数）并保存在.data 节段中，在函数的开头这个 cookie 被拷贝到栈中，位于返回地址和局部变量的中间。函数调用完后系统检测cookie值是否被修改。</p>
+<blockquote>
+<p>使用IDA反汇编会看到这个随机数被标记为：Security Cookie</p>
+</blockquote>
+<p>系统还将在.data的内存区域存放一个Security Cookie的副本</p>
+<p><img src="https://i.imgur.com/b6xEJAG.png"></p>
+<p><img src="https://i.imgur.com/SsoJBNy.png"></p>
 
     </div>
 
@@ -259,11 +269,11 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
+                <a href="/2021/03/24/cve-2010-2883/" rel="prev" title="cve-2010-2883">
+                  <i class="fa fa-chevron-left"></i> cve-2010-2883
+                </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2021/02/14/attacklab/" rel="next" title="">
-                   <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>

@@ -155,7 +155,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-count">9</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -194,6 +194,167 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://xiaosolll.github.io/2021/03/25/Heap-Spray/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="eetan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Antinomy">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/03/25/Heap-Spray/" class="post-title-link" itemprop="url">Heap Spray</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-03-25 19:12:23 / Modified: 20:13:43" itemprop="dateCreated datePublished" datetime="2021-03-25T19:12:23+08:00">2021-03-25</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="Windows内存保护机制"><a href="#Windows内存保护机制" class="headerlink" title="Windows内存保护机制"></a>Windows内存保护机制</h2><ul>
+<li>GS编译</li>
+<li>SafeSEH机制</li>
+<li>SEH覆盖保护</li>
+<li>数据执行保护（DEP）</li>
+<li>地址随机化（ASLR）</li>
+</ul>
+<h3 id="GS编译"><a href="#GS编译" class="headerlink" title="GS编译"></a>GS编译</h3><p>​             —linux【canary】</p>
+<p>​    GS编译保护技术是通过编译时添加相关代码而实现的，开启GS 编译选项后会在函数的开头和结尾添加代码来阻止栈溢出漏洞的利用。当应用程序启动时，程序的cookie被计算出来（伪随机数）并保存在.data 节段中，在函数的开头这个 cookie 被拷贝到栈中，位于返回地址和局部变量的中间。函数调用完后系统检测cookie值是否被修改。</p>
+<blockquote>
+<p>使用IDA反汇编会看到这个随机数被标记为：Security Cookie</p>
+</blockquote>
+<p>系统还将在.data的内存区域存放一个Security Cookie的副本</p>
+<p><img src="https://i.imgur.com/b6xEJAG.png"></p>
+<p><img src="https://i.imgur.com/SsoJBNy.png"></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://xiaosolll.github.io/2021/03/24/cve-2010-2883/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="eetan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Antinomy">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/03/24/cve-2010-2883/" class="post-title-link" itemprop="url">cve-2010-2883</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-03-24 20:31:30" itemprop="dateCreated datePublished" datetime="2021-03-24T20:31:30+08:00">2021-03-24</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-03-25 20:13:48" itemprop="dateModified" datetime="2021-03-25T20:13:48+08:00">2021-03-25</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>[<a target="_blank" rel="noopener" href="https://blog.51cto.com/chenxinjie/2094140">漏洞复现] CVE-2010-2883 Adobe Reader 打开pdf即刻中招-拼客学院陈鑫杰-51CTO博客</a></p>
+<p>Windows XP Professional with Service Pack 3 (x86) - CD (Chinese-Simplified)<br>文件名<br>zh-hans_windows_xp_professional_with_service_pack_3_x86_cd_x14-80404.iso<br>SHA1<br>69DBF131116760932DCF132ADE111D6B45778098<br>文件大小<br>601.04MB<br>发布时间<br>2008-05-01</p>
+<p>ed2k://|file|zh-hans_windows_xp_professional_with_service_pack_3_x86_cd_x14-80404.iso|630239232|CD0900AFA058ACB6345761969CBCBFF4|/</p>
+<p>出现百度打得开其他adode这种网页和网易云网页打不开下载一个火狐，ie版本可能跟不上了。<br>下载9.3.4版本的acrobat adobe<br><a target="_blank" rel="noopener" href="http://www.oldversion.cn/windows/download/acrobat-reader-9-3-4">http://www.oldversion.cn/windows/download/acrobat-reader-9-3-4</a></p>
+<p>IDA分析（CoolType.dll文件）定位漏洞所在位置，</p>
+<p>text:0803DD74 SING<br>0803DDAB strcat</p>
+<p>PdfStreamDumper pdf恶意代码文档分析工具</p>
+<p>下载链接：<a target="_blank" rel="noopener" href="http://sandsprite.com/CodeStuff/PDFStreamDumper_Setup.exe">http://sandsprite.com/CodeStuff/PDFStreamDumper_Setup.exe</a></p>
+<p>CVE-2010-2883漏洞原理：“Adobe Reader在处理CoolType字体文件的sing表时，存在栈溢出漏洞，当打开特制的恶意PDF文件时，可允许任意代码远程执行。”</p>
+<p>堆喷射：</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/magictong/article/details/7391397">Heap Spray原理浅析_magictong的专栏-CSDN博客</a></p>
+<p>0803DD74    68 4CDB1908     push CoolType.0819DB4C   ; ASCII53,”ING”参数入栈<br>0803DD79    57                         push edi                                           ;参数入栈<br>0803DD7A    8D4D DC             lea ecx,dword ptr ss:[ebp-0x24]；ecx是个指针变量存了ebp-0x24的地址<br>0803DD7D    E8 843DFEFF     call CoolType.08021B06              ；返回sing表入口<br>0803DD82    8B45 DC         mov eax,dword ptr ss:[ebp-0x24]    ；通过eax返回<br>0803DD85    3BC6            cmp eax,esi                                        ；对比，看看返回的地址是否有效。<br>0803DD87    C645 FC 02      mov byte ptr ss:[ebp-0x4],0x2<br>0803DD8B    74 37           je short CoolType.0803DDC4      ；不执行<br>0803DD8D    8B08            mov ecx,dword ptr ds:[eax]      ；ecx保存的是ttf的版本号<br>0803DD8F    81E1 FFFF0000   and ecx,0xFFFF       ；然后清掉低4位，结果为零，je跳转，继续往下<br>0803DD95    74 08           je short CoolType.0803DD9F<br>0803DD97    81F9 00010000   cmp ecx,0x100<br>0803DD9D    75 21           jnz short CoolType.0803DDC0<br>0803DD9F    83C0 10         add eax,0x10<br>0803DDA2    50              push eax<br>0803DDA3    8D45 00         lea eax,dword ptr ss:[ebp]<br>0803DDA6    50              push eax<br>0803DDA7    C645 00 00      mov byte ptr ss:[ebp],0x0<br>0803DDAB    E8 483D1300     call &lt;jmp.&amp;MSVCR80.strcat&gt;</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://xiaosolll.github.io/2021/03/23/glibc-ptmalloc1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -217,10 +378,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2021-03-23 13:41:19 / Modified: 18:19:55" itemprop="dateCreated datePublished" datetime="2021-03-23T13:41:19+08:00">2021-03-23</time>
+      <time title="Created: 2021-03-23 13:41:19" itemprop="dateCreated datePublished" datetime="2021-03-23T13:41:19+08:00">2021-03-23</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-03-26 10:29:43" itemprop="dateModified" datetime="2021-03-26T10:29:43+08:00">2021-03-26</time>
+      </span>
 
   
 </div>
@@ -268,6 +435,15 @@
 <blockquote>
 <p>操作系统以**<em>内存页**</em>为<em>单位</em>管理内存</p>
 </blockquote>
+<p>munmap 执行相反的操作，删除特定地址区域的对象映射。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;sys&#x2F;mman.h&gt;</span><br><span class="line"></span><br><span class="line">void *mmap(void *addr, size_t length, int prot(期望的内存保护标志), int flags（指定映射对象类型，映射选项和映射页是否可以共享）, int fd, off_t offset);</span><br><span class="line"></span><br><span class="line">int munmap(void *addr, size_t length);</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="内存管理的方法"><a href="#内存管理的方法" class="headerlink" title="内存管理的方法"></a>内存管理的方法</h4><h5 id="c风格–malloc、free"><a href="#c风格–malloc、free" class="headerlink" title="c风格–malloc、free"></a>c风格–malloc、free</h5><p>程序主要通过调用brk（）或者mmap（）进程添加额外的虚拟内存。</p>
+<h5 id="池式内存管理"><a href="#池式内存管理" class="headerlink" title="池式内存管理"></a>池式内存管理</h5><p>内存池–自动内存管理</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/bangerlee/archive/2011/09/01/2161437.html">内存池的实现(二) - bangerlee - 博客园 (cnblogs.com)</a></p>
+<h5 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h5><p>当传递一个指向某个数据结构指针，引用计数+1</p>
+<p>当程序完成对这个数据结构的使用的时候，计数-1，结束动作，检查计数器是否为0，为0释放内存。</p>
+<h5 id="垃圾收集"><a href="#垃圾收集" class="headerlink" title="垃圾收集"></a>垃圾收集</h5><p>全自动检测并移除不再使用的数据对象</p>
+<p>运行：当可用内存减少到一个具体阈值。</p>
 
       
     </div>
@@ -325,7 +501,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-03-23 17:08:29" itemprop="dateModified" datetime="2021-03-23T17:08:29+08:00">2021-03-23</time>
+        <time title="Modified: 2021-03-25 20:13:56" itemprop="dateModified" datetime="2021-03-25T20:13:56+08:00">2021-03-25</time>
       </span>
 
   
@@ -357,6 +533,8 @@
 <p>6 电子学报 中国电子学会 <a target="_blank" rel="noopener" href="http://www.ejournal.org.cn/">http://www.ejournal.org.cn</a> </p>
 <p>7 自动化学报 中国自动化学会 中国科学院自动化研究所 <a target="_blank" rel="noopener" href="http://www.aas.net.cn/">http://www.aas.net.cn</a></p>
 </blockquote>
+<h2 id="网址-搜索引擎"><a href="#网址-搜索引擎" class="headerlink" title="网址/搜索引擎"></a>网址/搜索引擎</h2><p><a target="_blank" rel="noopener" href="https://admin-root.blog.csdn.net/article/details/109069749">https://admin-root.blog.csdn.net/article/details/109069749</a></p>
+<h2 id="用vmware安装window-xp系统"><a href="#用vmware安装window-xp系统" class="headerlink" title="用vmware安装window xp系统"></a>用vmware安装window xp系统</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/linxinfa/article/details/112768896">https://blog.csdn.net/linxinfa/article/details/112768896</a></p>
 
       
     </div>
