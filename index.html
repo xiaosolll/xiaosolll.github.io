@@ -386,7 +386,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-03-26 12:59:16" itemprop="dateModified" datetime="2021-03-26T12:59:16+08:00">2021-03-26</time>
+        <time title="Modified: 2021-03-27 15:32:50" itemprop="dateModified" datetime="2021-03-27T15:32:50+08:00">2021-03-27</time>
       </span>
 
   
@@ -400,12 +400,12 @@
     
     <div class="post-body" itemprop="articleBody">
           <p>title: glibc ptmalloc1<br>date: 2021-03-23 13:41:19<br>tags:</p>
-<h2 id="x86平台linux进程内存布局"><a href="#x86平台linux进程内存布局" class="headerlink" title="x86平台linux进程内存布局"></a>x86平台linux进程内存布局</h2><blockquote>
+<h3 id="x86平台linux进程内存布局"><a href="#x86平台linux进程内存布局" class="headerlink" title="x86平台linux进程内存布局"></a>x86平台linux进程内存布局</h3><blockquote>
 <p>Linux 系统在装载 elf 格式的程序文件时，会调用 loader 把可执行文件中的各个段依次 载入到从某一地址开始的空间中（载入地址取决 link editor(ld)和机器地址位数，在 32 位机 器上是 0x8048000，即 128M 处）。</p>
 </blockquote>
-<h3 id="32位"><a href="#32位" class="headerlink" title="32位"></a>32位</h3><p><img src="https://i.imgur.com/2bvQPBh.png"></p>
+<h4 id="32位"><a href="#32位" class="headerlink" title="32位"></a>32位</h4><p><img src="https://i.imgur.com/2bvQPBh.png"></p>
 <p>mmap映射区域一般从TASK_SIZE/3开始.栈是有界的</p>
-<h3 id="64位"><a href="#64位" class="headerlink" title="64位"></a>64位</h3><p><img src="https://i.imgur.com/YeVDhxg.png"></p>
+<h4 id="64位"><a href="#64位" class="headerlink" title="64位"></a>64位</h4><p><img src="https://i.imgur.com/YeVDhxg.png"></p>
 <blockquote>
 <p>上图是 X86_64 下 Linux 进程的默认内存布局形式，这只是一个示意图.</p>
 <p>当前内核默认 配置下，进程的栈和 mmap 映射区域<strong>并不是从一个固定地址开始</strong>，并且每次启动时的值都 不一样，这是程序在启动时随机改变这些值的设置，使得使用缓冲区溢出进行攻击更加困难。 </p>
@@ -479,7 +479,7 @@
 <p>AMP：</p>
 <p>A:表示当前chunk属于主分配区还是非主分配区。1：主分配区，否则置零。</p>
 <p>M:当前chunk从哪个内存区域获得的虚拟内存。1：从mmap映射区域分配的，否则从heap区分配。</p>
-<p>P：前一个chunk的使用情况，1表示正在使用，不能对前一个chunk进行任何操作，不可以得到前一个chunk的大小。</p>
+<p>P：<strong>前一个chunk</strong>的使用情况，1表示正在使用，不能对前一个chunk进行任何操作，不可以得到前一个chunk的大小。</p>
 <blockquote>
 <p>P 为 0 则表示前一个 chunk 为空闲，这时<br>chunk 的第一个域 prev_size 才有效，prev_size 表示前一个 chunk 的 size，程序可以使用这个<br>值来找到前一个 chunk 的开始地址。</p>
 </blockquote>
@@ -496,7 +496,50 @@
 <p>但又因为向下一个 chunk“借”了 4B，所以要减去 4。最后，因为空闲的 chunk 和使用中的</p>
 <p>chunk 使用的是同一块空间。所以肯定要取其中最大者作为实际的分配空间。即最终的分配空间 chunk_size = max(in_use_size, 16)。这就是当用户请求内存分配时，ptmalloc 实际需要分配的内存大小</p>
 </blockquote>
-<h4 id="空闲的chunk容器"><a href="#空闲的chunk容器" class="headerlink" title="空闲的chunk容器"></a>空闲的chunk容器</h4>
+<h4 id="空闲的chunk容器"><a href="#空闲的chunk容器" class="headerlink" title="空闲的chunk容器"></a>空闲的chunk容器</h4><h5 id="bins"><a href="#bins" class="headerlink" title="bins"></a>bins</h5><p>用户free掉的内存不会马上归还给系统，。ptmalloc将相似大小的 chunk 用双向链表链接起来，这样的一个链表被称为一个 bin(unsorted bin   small bins large bins)。ptmalloc一共维护了128个bin。</p>
+<p><img src="https://i.imgur.com/v5nDgRk.png"></p>
+<blockquote>
+<p>下次分配请求时，ptmalloc首先从空闲的chunk中挑选一块给用户。</p>
+<p>最后释放的 chunk 被链接到链表的头部，而申请 chunk 是从链表尾部开始</p>
+</blockquote>
+<blockquote>
+<p>当空闲的 chunk 被链接到 bin 中的时候，ptmalloc 会把表示该 chunk 是否处于使用中的标志 P 设为 0（注意，<strong>这个标志实际上处在下一个 chunk 中</strong>），同时 ptmalloc 还会检查它<strong>前后的 chunk</strong> 是否也是空闲的，如果是的话，ptmalloc 会首先把它们<strong>合并</strong>为一个大的 chunk，然后将合并后的 chunk 放到 <strong>unstored bin</strong> 中。要注意的是，并不是所有的 chunk 被释放后就立即被放到 bin 中。ptmalloc 为了提高分配的速度，会把一些<strong>小的的 chunk 先放到一个叫做fast bins 的容器内。</strong> </p>
+</blockquote>
+<h5 id="fast-bins"><a href="#fast-bins" class="headerlink" title="fast bins"></a>fast bins</h5><p>不大于 max_fast （默认值为 64B）的 chunk 被释放后，首先会被放到 fast bins<br> 中，fast bins 中的 chunk <code>并不改变它的使用标志 P。这样也就无法将它们合并。</code></p>
+<blockquote>
+<p>当需要给用户分配的 <strong>chunk 小于或等于 max_fast 时</strong>，ptmalloc 首先会在 fast bins 中查找相应的空闲块，然后才会去查找bins中的空闲chunk。</p>
+</blockquote>
+<p>特定时候：ptmalloc会遍历fastbins中的chunk，将相邻的空闲的chunk合并。合并的chunk加入unsorted bin中，然后再将unsorted bin里的chunk加入bins中。</p>
+<h5 id="unsorted-bin"><a href="#unsorted-bin" class="headerlink" title="unsorted bin"></a>unsorted bin</h5><p>是bin数组的第一个，可以看作是bins的一个缓冲区。</p>
+<p>寻找合适的chunk：</p>
+<p>1.fast bins</p>
+<p>2.unsorted bin</p>
+<p>3.bins–(small\large)</p>
+<h5 id="特殊的chunk"><a href="#特殊的chunk" class="headerlink" title="特殊的chunk"></a>特殊的chunk</h5><p>并不是所有的 chunk 都按照上面的方式来组织，实际上，有三种例外情况。Top chunk，mmaped chunk 和 last remainder。</p>
+<h6 id="Top-chunk"><a href="#Top-chunk" class="headerlink" title="Top chunk"></a>Top chunk</h6><p>不包含在任何bin中。</p>
+<p>非主分配区：</p>
+<p>​      在非主分配区中会预先从mmap区域分配一块较大得到空闲内存模拟sub-heap，通过管理sub-heap来响应用户需求。</p>
+<p>内存是按地址<strong>从低向高进行分配</strong>的，在空闲内存的最高处，必然存在着一块空闲 chunk，叫做 top chunk。</p>
+<p><img src="https://i.imgur.com/P9qrTPp.png"></p>
+<p>当bin和fast bins不能满足分配需求，则从top chunk中分出一块给用户。</p>
+<p>若top chunk不够大，则重新分配一块sub-heap，将top chunk迁移到新sub-heap，新sub和旧sub用单向链表连接。再从新top chunk中分配一块内存。</p>
+<p>top chunk会随着分配合并变大缩小，当top chunk包含整个sub-heap，ptmalloc会调用munmap把整个sub-heap的内存返回给操作系统。 </p>
+<p>主分配区：</p>
+<p>​        <img src="https://i.imgur.com/awhRiCY.png"></p>
+<h6 id="mmaped-chunk"><a href="#mmaped-chunk" class="headerlink" title="mmaped chunk"></a>mmaped chunk</h6><p>当需要分配的 chunk 足够大，而且 fast bins 和 bins 都不能满足要求，甚至 top chunk 本身也不能满足分配需求时，ptmalloc 会使用 mmap 来直接使用内存映射来将页映射到进程空间。这样分配的 chunk 在被 free 时将直接解除映射，于是就将内存归还给了操作系统，再次对这样的内存区的引用将导致 segmentation fault 错误。这样的 chunk 也不会包含在任何bin 中。</p>
+<h6 id="Last-remainder"><a href="#Last-remainder" class="headerlink" title="Last remainder"></a>Last remainder</h6><p>Last remainder 是另外一种特殊的 chunk，就像 top chunk 和 mmaped chunk 一样，不会在任何 bins 中找到这种 chunk。当需要分配一个 small chunk，但在 small bins 中找不到合适的 chunk，如果 last remainder chunk 的大小大于所需的 small chunk 大小，last remainder chunk被分裂成两个 chunk，其中一个 chunk 返回给用户，另一个 chunk 变成新的 last remainder chuk。</p>
+<h4 id="sbrk和mmap"><a href="#sbrk和mmap" class="headerlink" title="sbrk和mmap"></a>sbrk和mmap</h4><p><img src="https://i.imgur.com/wMotikN.png"></p>
+<p>start_brk–heap的开始</p>
+<p>brk–heap的结束，可以通过brk（）sbrk（）来增加brk的值。</p>
+<p>ptmalloc在开始时，若请求的空间小于mmap的分配阈值128kb</p>
+<p>​                     |  主分配区：sbrk（）增加一块heap。</p>
+<p>​                     |  非主分配区：mmap（）映射一块sub-heap。</p>
+<p>需要分配的chunk：</p>
+<p>1.小于mmap分配阈值，heap不够sbrk（）增加heap大小，每次增加都会对齐到4kb。</p>
+<p>2.大于阈值，且主分配区sbrk（）失败，或者非主分配区在topchunk不能分配到需要的内存，直接mmap（）直接映射。</p>
+<p>回收时：</p>
+<p>若回收的chunk大于mmap分配阈值且小于default_mmap_threshold_max，调整分配阈值为当前回收的chunk的大小，并且将mmap收缩阈值设置为mmap分配阈值的两倍。—–动态调整机制</p>
+
       
     </div>
 
