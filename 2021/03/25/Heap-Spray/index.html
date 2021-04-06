@@ -23,17 +23,26 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"xiaosolll.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.2.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
   </script>
-<meta name="description" content="Windows内存保护机制 GS编译 SafeSEH机制 SEH覆盖保护 数据执行保护（DEP） 地址随机化（ASLR）  GS编译​             —linux【canary】 ​    GS编译保护技术是通过编译时添加相关代码而实现的，开启GS 编译选项后会在函数的开头和结尾添加代码来阻止栈溢出漏洞的利用。当应用程序启动时，程序的cookie被计算出来（伪随机数）并保存在.data">
+<meta name="description" content="Windows内存保护机制 GS编译 SafeSEH机制 SEH覆盖保护 数据执行保护（DEP） 地址随机化（ASLR）  GS编译–canary​             —linux【canary】 ​    GS编译保护技术是通过编译时添加相关代码而实现的，开启GS 编译选项后会在函数的开头和结尾添加代码来阻止栈溢出漏洞的利用。当应用程序启动时，程序的cookie被计算出来（伪随机数）并保存">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Heap Spray">
 <meta property="og:url" content="https://xiaosolll.github.io/2021/03/25/Heap-Spray/index.html">
 <meta property="og:site_name" content="Antinomy">
-<meta property="og:description" content="Windows内存保护机制 GS编译 SafeSEH机制 SEH覆盖保护 数据执行保护（DEP） 地址随机化（ASLR）  GS编译​             —linux【canary】 ​    GS编译保护技术是通过编译时添加相关代码而实现的，开启GS 编译选项后会在函数的开头和结尾添加代码来阻止栈溢出漏洞的利用。当应用程序启动时，程序的cookie被计算出来（伪随机数）并保存在.data">
+<meta property="og:description" content="Windows内存保护机制 GS编译 SafeSEH机制 SEH覆盖保护 数据执行保护（DEP） 地址随机化（ASLR）  GS编译–canary​             —linux【canary】 ​    GS编译保护技术是通过编译时添加相关代码而实现的，开启GS 编译选项后会在函数的开头和结尾添加代码来阻止栈溢出漏洞的利用。当应用程序启动时，程序的cookie被计算出来（伪随机数）并保存">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://i.imgur.com/b6xEJAG.png">
 <meta property="og:image" content="https://i.imgur.com/SsoJBNy.png">
+<meta property="og:image" content="https://i.imgur.com/cKrR3u7.png">
+<meta property="og:image" content="https://i.imgur.com/D3SdtC6.png">
+<meta property="og:image" content="https://i.imgur.com/EpjrAaB.png">
+<meta property="og:image" content="https://i.imgur.com/sb4QjrL.png">
+<meta property="og:image" content="https://i.imgur.com/WyBBxbg.png">
+<meta property="og:image" content="https://i.imgur.com/cEin8Em.png">
+<meta property="og:image" content="https://i.imgur.com/ECyv9JD.png">
+<meta property="og:image" content="https://i.imgur.com/BDtFkFN.png">
+<meta property="og:image" content="https://i.imgur.com/oTVR8vp.png">
 <meta property="article:published_time" content="2021-03-25T11:12:23.000Z">
-<meta property="article:modified_time" content="2021-03-25T12:13:43.002Z">
+<meta property="article:modified_time" content="2021-04-04T12:25:30.027Z">
 <meta property="article:author" content="eetan">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://i.imgur.com/b6xEJAG.png">
@@ -150,7 +159,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Windows%E5%86%85%E5%AD%98%E4%BF%9D%E6%8A%A4%E6%9C%BA%E5%88%B6"><span class="nav-number">1.</span> <span class="nav-text">Windows内存保护机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GS%E7%BC%96%E8%AF%91"><span class="nav-number">1.1.</span> <span class="nav-text">GS编译</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Windows%E5%86%85%E5%AD%98%E4%BF%9D%E6%8A%A4%E6%9C%BA%E5%88%B6"><span class="nav-number">1.</span> <span class="nav-text">Windows内存保护机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#GS%E7%BC%96%E8%AF%91%E2%80%93canary"><span class="nav-number">1.1.</span> <span class="nav-text">GS编译–canary</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A0%86%E5%9C%A8gdb%E4%B8%AD%E6%9F%A5%E7%9C%8B%E5%86%85%E5%AD%98"><span class="nav-number">1.2.</span> <span class="nav-text">堆在gdb中查看内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HEAP-SPRAY"><span class="nav-number">1.3.</span> <span class="nav-text">HEAP SPRAY</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E8%B7%B5%E5%A0%86%E5%96%B7MS06-055%E5%88%86%E6%9E%90"><span class="nav-number">1.3.1.</span> <span class="nav-text">实践堆喷MS06-055分析</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PDF%E4%B8%AD%E7%9A%84JS%E2%80%93cve-2009-0927"><span class="nav-number">1.4.</span> <span class="nav-text">PDF中的JS–cve-2009-0927</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#pdf%E6%96%87%E6%A1%A3%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.4.1.</span> <span class="nav-text">pdf文档格式</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -226,10 +235,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2021-03-25 19:12:23 / Modified: 20:13:43" itemprop="dateCreated datePublished" datetime="2021-03-25T19:12:23+08:00">2021-03-25</time>
+      <time title="Created: 2021-03-25 19:12:23" itemprop="dateCreated datePublished" datetime="2021-03-25T19:12:23+08:00">2021-03-25</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-04-04 20:25:30" itemprop="dateModified" datetime="2021-04-04T20:25:30+08:00">2021-04-04</time>
+      </span>
 
   
 </div>
@@ -248,7 +263,7 @@
 <li>数据执行保护（DEP）</li>
 <li>地址随机化（ASLR）</li>
 </ul>
-<h3 id="GS编译"><a href="#GS编译" class="headerlink" title="GS编译"></a>GS编译</h3><p>​             —linux【canary】</p>
+<h3 id="GS编译–canary"><a href="#GS编译–canary" class="headerlink" title="GS编译–canary"></a>GS编译–canary</h3><p>​             —linux【canary】</p>
 <p>​    GS编译保护技术是通过编译时添加相关代码而实现的，开启GS 编译选项后会在函数的开头和结尾添加代码来阻止栈溢出漏洞的利用。当应用程序启动时，程序的cookie被计算出来（伪随机数）并保存在.data 节段中，在函数的开头这个 cookie 被拷贝到栈中，位于返回地址和局部变量的中间。函数调用完后系统检测cookie值是否被修改。</p>
 <blockquote>
 <p>使用IDA反汇编会看到这个随机数被标记为：Security Cookie</p>
@@ -256,6 +271,37 @@
 <p>系统还将在.data的内存区域存放一个Security Cookie的副本</p>
 <p><img src="https://i.imgur.com/b6xEJAG.png"></p>
 <p><img src="https://i.imgur.com/SsoJBNy.png"></p>
+<h3 id="堆在gdb中查看内存"><a href="#堆在gdb中查看内存" class="headerlink" title="堆在gdb中查看内存"></a>堆在gdb中查看内存</h3><p><img src="https://i.imgur.com/cKrR3u7.png"></p>
+<p>？：21和20d51是什么意思</p>
+<p>21是AMP中的MP，M若不是1则就是heap分配的，p为1表示前一个chunk正在使用。</p>
+<p><img src="https://i.imgur.com/D3SdtC6.png"></p>
+<p>在 gdb 调试中，使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x&#x2F;32gx &amp;main_arena</span><br></pre></td></tr></table></figure>
+<p>可以看到 main_arena 的内存分配情况。</p>
+<p><img src="https://i.imgur.com/EpjrAaB.png"></p>
+<h3 id="HEAP-SPRAY"><a href="#HEAP-SPRAY" class="headerlink" title="HEAP SPRAY"></a>HEAP SPRAY</h3><p>无论是栈溢出还是堆溢出，最终都会获得EIP。我们很难的浏览器中复杂的内存环境下布置完整的shellcode。页面中的javascript可以申请堆内存，因此，shellcode</p>
+<p>通过javascript布置在堆中成为可能。</p>
+<p>在使用堆喷的时候，一般会将eip指向堆区的0x0c0c0c0c的位置。</p>
+<blockquote>
+<p>修改虚函数表，将其指向0x0c0c0c0c,为什么选择这个地址呢，因为执行这个地址也不会对我们shellcode有什么影响。</p>
+<p>0x0C0C0C0C将被含有shellcode的内存片覆盖，只要内存片中的0x90能够命中0x0c0c0c0c的位置，shellcode就能最终执行。 </p>
+</blockquote>
+<p><img src="https://i.imgur.com/sb4QjrL.png"></p>
+<p>任意nop命中0x0c0c0c0c攻击就能成功。</p>
+<h4 id="实践堆喷MS06-055分析"><a href="#实践堆喷MS06-055分析" class="headerlink" title="实践堆喷MS06-055分析"></a>实践堆喷MS06-055分析</h4><p>存在栈溢出，控制了eip。返回地址被填上0x0c0c0c0c。</p>
+<p>我们将nop和shellcode组合成的内存片填充直到200mb。</p>
+<p>当跳转到0x0c0c0c0c的时候就会执行nop最后执行我们的shellcode的。</p>
+<p>javascript以unicode形式识别字符串。</p>
+<blockquote>
+<p>“\x44\x77” 转化成“\u7744”以\u为转义符，将双字节逆序。</p>
+</blockquote>
+<h3 id="PDF中的JS–cve-2009-0927"><a href="#PDF中的JS–cve-2009-0927" class="headerlink" title="PDF中的JS–cve-2009-0927"></a>PDF中的JS–cve-2009-0927</h3><h4 id="pdf文档格式"><a href="#pdf文档格式" class="headerlink" title="pdf文档格式"></a>pdf文档格式</h4><p>是一种文本和二进制混排的格式。由四部分构成：</p>
+<p><img src="https://i.imgur.com/WyBBxbg.png"></p>
+<p><img src="https://i.imgur.com/cEin8Em.png"></p>
+<p><img src="https://i.imgur.com/ECyv9JD.png"></p>
+<p><img src="https://i.imgur.com/BDtFkFN.png"></p>
+<p><img src="https://i.imgur.com/oTVR8vp.png"></p>
+<p>一个pdf文件被打开时就会执行openaction对象里面的脚本，只要在openaction对象里添加精心构造的JS脚本就可以实现对ADOBE READER的攻击。</p>
 
     </div>
 

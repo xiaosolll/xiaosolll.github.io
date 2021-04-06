@@ -35,12 +35,14 @@
 <meta property="og:image" content="https://i.imgur.com/P9qrTPp.png">
 <meta property="og:image" content="https://i.imgur.com/7iZjNvQ.png">
 <meta property="og:image" content="https://i.imgur.com/qNCQfMF.png">
+<meta property="og:image" content="https://i.imgur.com/ua5MFL5.png">
+<meta property="og:image" content="https://i.imgur.com/eTCqD64.png">
 <meta property="og:image" content="https://i.imgur.com/v5nDgRk.png">
 <meta property="og:image" content="https://i.imgur.com/P9qrTPp.png">
 <meta property="og:image" content="https://i.imgur.com/awhRiCY.png">
 <meta property="og:image" content="https://i.imgur.com/wMotikN.png">
 <meta property="article:published_time" content="2021-03-23T05:41:19.244Z">
-<meta property="article:modified_time" content="2021-03-27T07:32:50.449Z">
+<meta property="article:modified_time" content="2021-03-28T13:03:25.953Z">
 <meta property="article:author" content="eetan">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://i.imgur.com/2bvQPBh.png">
@@ -241,7 +243,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-03-27 15:32:50" itemprop="dateModified" datetime="2021-03-27T15:32:50+08:00">2021-03-27</time>
+        <time title="Modified: 2021-03-28 21:03:25" itemprop="dateModified" datetime="2021-03-28T21:03:25+08:00">2021-03-28</time>
       </span>
 
   
@@ -332,6 +334,9 @@
 <h5 id="chunke-的格式"><a href="#chunke-的格式" class="headerlink" title="chunke 的格式"></a>chunke 的格式</h5><h6 id="使用中"><a href="#使用中" class="headerlink" title="使用中"></a>使用中</h6><p><img src="https://i.imgur.com/7iZjNvQ.png"></p>
 <p>mem指针才是真正返回给用户的内存指针</p>
 <p>AMP：</p>
+<blockquote>
+<p>1.NON_MAIN_ARENA     这个堆块是否位于主线程<br>2.IS_MAPPED          记录当前 chunk 是否是由 mmap 分配的<br>3.PREV_INUSE         记录前一个 chunk 块是否被分配</p>
+</blockquote>
 <p>A:表示当前chunk属于主分配区还是非主分配区。1：主分配区，否则置零。</p>
 <p>M:当前chunk从哪个内存区域获得的虚拟内存。1：从mmap映射区域分配的，否则从heap区分配。</p>
 <p>P：<strong>前一个chunk</strong>的使用情况，1表示正在使用，不能对前一个chunk进行任何操作，不可以得到前一个chunk的大小。</p>
@@ -339,6 +344,8 @@
 <p>P 为 0 则表示前一个 chunk 为空闲，这时<br>chunk 的第一个域 prev_size 才有效，prev_size 表示前一个 chunk 的 size，程序可以使用这个<br>值来找到前一个 chunk 的开始地址。</p>
 </blockquote>
 <h6 id="空闲中"><a href="#空闲中" class="headerlink" title="空闲中"></a>空闲中</h6><p><img src="https://i.imgur.com/qNCQfMF.png"></p>
+<p><img src="https://i.imgur.com/ua5MFL5.png"></p>
+<p><img src="https://i.imgur.com/eTCqD64.png"></p>
 <p>无M状态。</p>
 <p>原本属于用户数据区的地方存储了四个指针。</p>
 <p>fd–&gt;指向后一个空闲的chunk</p>

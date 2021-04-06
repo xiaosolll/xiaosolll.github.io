@@ -217,10 +217,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2021-03-25 19:12:23 / Modified: 20:13:43" itemprop="dateCreated datePublished" datetime="2021-03-25T19:12:23+08:00">2021-03-25</time>
+      <time title="Created: 2021-03-25 19:12:23" itemprop="dateCreated datePublished" datetime="2021-03-25T19:12:23+08:00">2021-03-25</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-04-04 20:25:30" itemprop="dateModified" datetime="2021-04-04T20:25:30+08:00">2021-04-04</time>
+      </span>
 
   
 </div>
@@ -239,7 +245,7 @@
 <li>数据执行保护（DEP）</li>
 <li>地址随机化（ASLR）</li>
 </ul>
-<h3 id="GS编译"><a href="#GS编译" class="headerlink" title="GS编译"></a>GS编译</h3><p>​             —linux【canary】</p>
+<h3 id="GS编译–canary"><a href="#GS编译–canary" class="headerlink" title="GS编译–canary"></a>GS编译–canary</h3><p>​             —linux【canary】</p>
 <p>​    GS编译保护技术是通过编译时添加相关代码而实现的，开启GS 编译选项后会在函数的开头和结尾添加代码来阻止栈溢出漏洞的利用。当应用程序启动时，程序的cookie被计算出来（伪随机数）并保存在.data 节段中，在函数的开头这个 cookie 被拷贝到栈中，位于返回地址和局部变量的中间。函数调用完后系统检测cookie值是否被修改。</p>
 <blockquote>
 <p>使用IDA反汇编会看到这个随机数被标记为：Security Cookie</p>
@@ -247,6 +253,37 @@
 <p>系统还将在.data的内存区域存放一个Security Cookie的副本</p>
 <p><img src="https://i.imgur.com/b6xEJAG.png"></p>
 <p><img src="https://i.imgur.com/SsoJBNy.png"></p>
+<h3 id="堆在gdb中查看内存"><a href="#堆在gdb中查看内存" class="headerlink" title="堆在gdb中查看内存"></a>堆在gdb中查看内存</h3><p><img src="https://i.imgur.com/cKrR3u7.png"></p>
+<p>？：21和20d51是什么意思</p>
+<p>21是AMP中的MP，M若不是1则就是heap分配的，p为1表示前一个chunk正在使用。</p>
+<p><img src="https://i.imgur.com/D3SdtC6.png"></p>
+<p>在 gdb 调试中，使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x&#x2F;32gx &amp;main_arena</span><br></pre></td></tr></table></figure>
+<p>可以看到 main_arena 的内存分配情况。</p>
+<p><img src="https://i.imgur.com/EpjrAaB.png"></p>
+<h3 id="HEAP-SPRAY"><a href="#HEAP-SPRAY" class="headerlink" title="HEAP SPRAY"></a>HEAP SPRAY</h3><p>无论是栈溢出还是堆溢出，最终都会获得EIP。我们很难的浏览器中复杂的内存环境下布置完整的shellcode。页面中的javascript可以申请堆内存，因此，shellcode</p>
+<p>通过javascript布置在堆中成为可能。</p>
+<p>在使用堆喷的时候，一般会将eip指向堆区的0x0c0c0c0c的位置。</p>
+<blockquote>
+<p>修改虚函数表，将其指向0x0c0c0c0c,为什么选择这个地址呢，因为执行这个地址也不会对我们shellcode有什么影响。</p>
+<p>0x0C0C0C0C将被含有shellcode的内存片覆盖，只要内存片中的0x90能够命中0x0c0c0c0c的位置，shellcode就能最终执行。 </p>
+</blockquote>
+<p><img src="https://i.imgur.com/sb4QjrL.png"></p>
+<p>任意nop命中0x0c0c0c0c攻击就能成功。</p>
+<h4 id="实践堆喷MS06-055分析"><a href="#实践堆喷MS06-055分析" class="headerlink" title="实践堆喷MS06-055分析"></a>实践堆喷MS06-055分析</h4><p>存在栈溢出，控制了eip。返回地址被填上0x0c0c0c0c。</p>
+<p>我们将nop和shellcode组合成的内存片填充直到200mb。</p>
+<p>当跳转到0x0c0c0c0c的时候就会执行nop最后执行我们的shellcode的。</p>
+<p>javascript以unicode形式识别字符串。</p>
+<blockquote>
+<p>“\x44\x77” 转化成“\u7744”以\u为转义符，将双字节逆序。</p>
+</blockquote>
+<h3 id="PDF中的JS–cve-2009-0927"><a href="#PDF中的JS–cve-2009-0927" class="headerlink" title="PDF中的JS–cve-2009-0927"></a>PDF中的JS–cve-2009-0927</h3><h4 id="pdf文档格式"><a href="#pdf文档格式" class="headerlink" title="pdf文档格式"></a>pdf文档格式</h4><p>是一种文本和二进制混排的格式。由四部分构成：</p>
+<p><img src="https://i.imgur.com/WyBBxbg.png"></p>
+<p><img src="https://i.imgur.com/cEin8Em.png"></p>
+<p><img src="https://i.imgur.com/ECyv9JD.png"></p>
+<p><img src="https://i.imgur.com/BDtFkFN.png"></p>
+<p><img src="https://i.imgur.com/oTVR8vp.png"></p>
+<p>一个pdf文件被打开时就会执行openaction对象里面的脚本，只要在openaction对象里添加精心构造的JS脚本就可以实现对ADOBE READER的攻击。</p>
 
       
     </div>
@@ -304,7 +341,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-03-25 20:13:48" itemprop="dateModified" datetime="2021-03-25T20:13:48+08:00">2021-03-25</time>
+        <time title="Modified: 2021-03-30 16:07:55" itemprop="dateModified" datetime="2021-03-30T16:07:55+08:00">2021-03-30</time>
       </span>
 
   
@@ -320,7 +357,7 @@
           <p>[<a target="_blank" rel="noopener" href="https://blog.51cto.com/chenxinjie/2094140">漏洞复现] CVE-2010-2883 Adobe Reader 打开pdf即刻中招-拼客学院陈鑫杰-51CTO博客</a></p>
 <p>Windows XP Professional with Service Pack 3 (x86) - CD (Chinese-Simplified)<br>文件名<br>zh-hans_windows_xp_professional_with_service_pack_3_x86_cd_x14-80404.iso<br>SHA1<br>69DBF131116760932DCF132ADE111D6B45778098<br>文件大小<br>601.04MB<br>发布时间<br>2008-05-01</p>
 <p>ed2k://|file|zh-hans_windows_xp_professional_with_service_pack_3_x86_cd_x14-80404.iso|630239232|CD0900AFA058ACB6345761969CBCBFF4|/</p>
-<p>出现百度打得开其他adode这种网页和网易云网页打不开下载一个火狐，ie版本可能跟不上了。<br>下载9.3.4版本的acrobat adobe<br><a target="_blank" rel="noopener" href="http://www.oldversion.cn/windows/download/acrobat-reader-9-3-4">http://www.oldversion.cn/windows/download/acrobat-reader-9-3-4</a></p>
+<p>下载9.3.4版本的acrobat adobe<br><a target="_blank" rel="noopener" href="http://www.oldversion.cn/windows/download/acrobat-reader-9-3-4">http://www.oldversion.cn/windows/download/acrobat-reader-9-3-4</a></p>
 <p>IDA分析（CoolType.dll文件）定位漏洞所在位置，</p>
 <p>text:0803DD74 SING<br>0803DDAB strcat</p>
 <p>PdfStreamDumper pdf恶意代码文档分析工具</p>
@@ -329,6 +366,8 @@
 <p>堆喷射：</p>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/magictong/article/details/7391397">Heap Spray原理浅析_magictong的专栏-CSDN博客</a></p>
 <p>0803DD74    68 4CDB1908     push CoolType.0819DB4C   ; ASCII53,”ING”参数入栈<br>0803DD79    57                         push edi                                           ;参数入栈<br>0803DD7A    8D4D DC             lea ecx,dword ptr ss:[ebp-0x24]；ecx是个指针变量存了ebp-0x24的地址<br>0803DD7D    E8 843DFEFF     call CoolType.08021B06              ；返回sing表入口<br>0803DD82    8B45 DC         mov eax,dword ptr ss:[ebp-0x24]    ；通过eax返回<br>0803DD85    3BC6            cmp eax,esi                                        ；对比，看看返回的地址是否有效。<br>0803DD87    C645 FC 02      mov byte ptr ss:[ebp-0x4],0x2<br>0803DD8B    74 37           je short CoolType.0803DDC4      ；不执行<br>0803DD8D    8B08            mov ecx,dword ptr ds:[eax]      ；ecx保存的是ttf的版本号<br>0803DD8F    81E1 FFFF0000   and ecx,0xFFFF       ；然后清掉低4位，结果为零，je跳转，继续往下<br>0803DD95    74 08           je short CoolType.0803DD9F<br>0803DD97    81F9 00010000   cmp ecx,0x100<br>0803DD9D    75 21           jnz short CoolType.0803DDC0<br>0803DD9F    83C0 10         add eax,0x10<br>0803DDA2    50              push eax<br>0803DDA3    8D45 00         lea eax,dword ptr ss:[ebp]<br>0803DDA6    50              push eax<br>0803DDA7    C645 00 00      mov byte ptr ss:[ebp],0x0<br>0803DDAB    E8 483D1300     call &lt;jmp.&amp;MSVCR80.strcat&gt;</p>
+<p>前提知识：相关的<a target="_blank" rel="noopener" href="https://www.oschina.net/action/GoToLink?url=http://netsecurity.51cto.com/art/200907/138668.htm">PDF格式说明</a>，以及<a target="_blank" rel="noopener" href="https://www.oschina.net/action/GoToLink?url=https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6.html">TTF字体</a>和相关的SING表、堆喷射</p>
+<p>堆喷、PDF中的JS以及动态定位API都是0day安全这本书中详细说过的，尤其是shellcode中的定位API，0day安全这本书中有它的汇编代码.</p>
 
       
     </div>
@@ -386,7 +425,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-03-27 15:32:50" itemprop="dateModified" datetime="2021-03-27T15:32:50+08:00">2021-03-27</time>
+        <time title="Modified: 2021-03-28 21:03:25" itemprop="dateModified" datetime="2021-03-28T21:03:25+08:00">2021-03-28</time>
       </span>
 
   
@@ -477,6 +516,9 @@
 <h5 id="chunke-的格式"><a href="#chunke-的格式" class="headerlink" title="chunke 的格式"></a>chunke 的格式</h5><h6 id="使用中"><a href="#使用中" class="headerlink" title="使用中"></a>使用中</h6><p><img src="https://i.imgur.com/7iZjNvQ.png"></p>
 <p>mem指针才是真正返回给用户的内存指针</p>
 <p>AMP：</p>
+<blockquote>
+<p>1.NON_MAIN_ARENA     这个堆块是否位于主线程<br>2.IS_MAPPED          记录当前 chunk 是否是由 mmap 分配的<br>3.PREV_INUSE         记录前一个 chunk 块是否被分配</p>
+</blockquote>
 <p>A:表示当前chunk属于主分配区还是非主分配区。1：主分配区，否则置零。</p>
 <p>M:当前chunk从哪个内存区域获得的虚拟内存。1：从mmap映射区域分配的，否则从heap区分配。</p>
 <p>P：<strong>前一个chunk</strong>的使用情况，1表示正在使用，不能对前一个chunk进行任何操作，不可以得到前一个chunk的大小。</p>
@@ -484,6 +526,8 @@
 <p>P 为 0 则表示前一个 chunk 为空闲，这时<br>chunk 的第一个域 prev_size 才有效，prev_size 表示前一个 chunk 的 size，程序可以使用这个<br>值来找到前一个 chunk 的开始地址。</p>
 </blockquote>
 <h6 id="空闲中"><a href="#空闲中" class="headerlink" title="空闲中"></a>空闲中</h6><p><img src="https://i.imgur.com/qNCQfMF.png"></p>
+<p><img src="https://i.imgur.com/ua5MFL5.png"></p>
+<p><img src="https://i.imgur.com/eTCqD64.png"></p>
 <p>无M状态。</p>
 <p>原本属于用户数据区的地方存储了四个指针。</p>
 <p>fd–&gt;指向后一个空闲的chunk</p>
@@ -596,7 +640,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-03-25 20:13:56" itemprop="dateModified" datetime="2021-03-25T20:13:56+08:00">2021-03-25</time>
+        <time title="Modified: 2021-03-30 18:52:06" itemprop="dateModified" datetime="2021-03-30T18:52:06+08:00">2021-03-30</time>
       </span>
 
   
@@ -630,6 +674,16 @@
 </blockquote>
 <h2 id="网址-搜索引擎"><a href="#网址-搜索引擎" class="headerlink" title="网址/搜索引擎"></a>网址/搜索引擎</h2><p><a target="_blank" rel="noopener" href="https://admin-root.blog.csdn.net/article/details/109069749">https://admin-root.blog.csdn.net/article/details/109069749</a></p>
 <h2 id="用vmware安装window-xp系统"><a href="#用vmware安装window-xp系统" class="headerlink" title="用vmware安装window xp系统"></a>用vmware安装window xp系统</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/linxinfa/article/details/112768896">https://blog.csdn.net/linxinfa/article/details/112768896</a></p>
+<p>itellyou:<a target="_blank" rel="noopener" href="https://msdn.itellyou.cn/">MSDN, 我告诉你 - 做一个安静的工具站 (itellyou.cn)</a></p>
+<h2 id="GDB调试"><a href="#GDB调试" class="headerlink" title="GDB调试"></a>GDB调试</h2><p>i r：查看寄存器值</p>
+<p>vmmap查看进程内存分布</p>
+<p>pmap  PID 查看进程内存分布</p>
+<p>在 gdb 调试中，使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x&#x2F;32gx &amp;main_arena</span><br></pre></td></tr></table></figure>
+<p>可以看到 main_arena 的内存分配情况。</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/yeholmes/article/details/106454289">GDB内存调试初探二_yeholmes的专栏-CSDN博客</a>   </p>
+<h2 id="IDA-版本下载"><a href="#IDA-版本下载" class="headerlink" title="IDA 版本下载"></a>IDA 版本下载</h2><p><a target="_blank" rel="noopener" href="https://down.52pojie.cn/?query=ida">爱盘 - 最新的在线破解工具包 (52pojie.cn)</a></p>
+<h2 id="ACM-ICPC培训资料汇编-2-基本数据结构与算法分册"><a href="#ACM-ICPC培训资料汇编-2-基本数据结构与算法分册" class="headerlink" title="ACM-ICPC培训资料汇编(2)基本数据结构与算法分册"></a>ACM-ICPC培训资料汇编(2)基本数据结构与算法分册</h2><p><a target="_blank" rel="noopener" href="http://www.doc88.com/p-3059640614423.html">ACM-ICPC培训资料汇编(2)基本数据结构与算法分册 - 道客巴巴 (doc88.com)</a></p>
 
       
     </div>
