@@ -155,7 +155,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -225,7 +225,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-04-04 20:25:30" itemprop="dateModified" datetime="2021-04-04T20:25:30+08:00">2021-04-04</time>
+        <time title="Modified: 2021-04-06 15:00:13" itemprop="dateModified" datetime="2021-04-06T15:00:13+08:00">2021-04-06</time>
       </span>
 
   
@@ -284,90 +284,8 @@
 <p><img src="https://i.imgur.com/BDtFkFN.png"></p>
 <p><img src="https://i.imgur.com/oTVR8vp.png"></p>
 <p>一个pdf文件被打开时就会执行openaction对象里面的脚本，只要在openaction对象里添加精心构造的JS脚本就可以实现对ADOBE READER的攻击。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://xiaosolll.github.io/2021/03/24/cve-2010-2883/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="eetan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Antinomy">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/03/24/cve-2010-2883/" class="post-title-link" itemprop="url">cve-2010-2883</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-03-24 20:31:30" itemprop="dateCreated datePublished" datetime="2021-03-24T20:31:30+08:00">2021-03-24</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-03-30 16:07:55" itemprop="dateModified" datetime="2021-03-30T16:07:55+08:00">2021-03-30</time>
-      </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>[<a target="_blank" rel="noopener" href="https://blog.51cto.com/chenxinjie/2094140">漏洞复现] CVE-2010-2883 Adobe Reader 打开pdf即刻中招-拼客学院陈鑫杰-51CTO博客</a></p>
-<p>Windows XP Professional with Service Pack 3 (x86) - CD (Chinese-Simplified)<br>文件名<br>zh-hans_windows_xp_professional_with_service_pack_3_x86_cd_x14-80404.iso<br>SHA1<br>69DBF131116760932DCF132ADE111D6B45778098<br>文件大小<br>601.04MB<br>发布时间<br>2008-05-01</p>
-<p>ed2k://|file|zh-hans_windows_xp_professional_with_service_pack_3_x86_cd_x14-80404.iso|630239232|CD0900AFA058ACB6345761969CBCBFF4|/</p>
-<p>下载9.3.4版本的acrobat adobe<br><a target="_blank" rel="noopener" href="http://www.oldversion.cn/windows/download/acrobat-reader-9-3-4">http://www.oldversion.cn/windows/download/acrobat-reader-9-3-4</a></p>
-<p>IDA分析（CoolType.dll文件）定位漏洞所在位置，</p>
-<p>text:0803DD74 SING<br>0803DDAB strcat</p>
-<p>PdfStreamDumper pdf恶意代码文档分析工具</p>
-<p>下载链接：<a target="_blank" rel="noopener" href="http://sandsprite.com/CodeStuff/PDFStreamDumper_Setup.exe">http://sandsprite.com/CodeStuff/PDFStreamDumper_Setup.exe</a></p>
-<p>CVE-2010-2883漏洞原理：“Adobe Reader在处理CoolType字体文件的sing表时，存在栈溢出漏洞，当打开特制的恶意PDF文件时，可允许任意代码远程执行。”</p>
-<p>堆喷射：</p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/magictong/article/details/7391397">Heap Spray原理浅析_magictong的专栏-CSDN博客</a></p>
-<p>0803DD74    68 4CDB1908     push CoolType.0819DB4C   ; ASCII53,”ING”参数入栈<br>0803DD79    57                         push edi                                           ;参数入栈<br>0803DD7A    8D4D DC             lea ecx,dword ptr ss:[ebp-0x24]；ecx是个指针变量存了ebp-0x24的地址<br>0803DD7D    E8 843DFEFF     call CoolType.08021B06              ；返回sing表入口<br>0803DD82    8B45 DC         mov eax,dword ptr ss:[ebp-0x24]    ；通过eax返回<br>0803DD85    3BC6            cmp eax,esi                                        ；对比，看看返回的地址是否有效。<br>0803DD87    C645 FC 02      mov byte ptr ss:[ebp-0x4],0x2<br>0803DD8B    74 37           je short CoolType.0803DDC4      ；不执行<br>0803DD8D    8B08            mov ecx,dword ptr ds:[eax]      ；ecx保存的是ttf的版本号<br>0803DD8F    81E1 FFFF0000   and ecx,0xFFFF       ；然后清掉低4位，结果为零，je跳转，继续往下<br>0803DD95    74 08           je short CoolType.0803DD9F<br>0803DD97    81F9 00010000   cmp ecx,0x100<br>0803DD9D    75 21           jnz short CoolType.0803DDC0<br>0803DD9F    83C0 10         add eax,0x10<br>0803DDA2    50              push eax<br>0803DDA3    8D45 00         lea eax,dword ptr ss:[ebp]<br>0803DDA6    50              push eax<br>0803DDA7    C645 00 00      mov byte ptr ss:[ebp],0x0<br>0803DDAB    E8 483D1300     call &lt;jmp.&amp;MSVCR80.strcat&gt;</p>
-<p>前提知识：相关的<a target="_blank" rel="noopener" href="https://www.oschina.net/action/GoToLink?url=http://netsecurity.51cto.com/art/200907/138668.htm">PDF格式说明</a>，以及<a target="_blank" rel="noopener" href="https://www.oschina.net/action/GoToLink?url=https://developer.apple.com/fonts/TrueType-Reference-Manual/RM06/Chap6.html">TTF字体</a>和相关的SING表、堆喷射</p>
-<p>堆喷、PDF中的JS以及动态定位API都是0day安全这本书中详细说过的，尤其是shellcode中的定位API，0day安全这本书中有它的汇编代码.</p>
+<p>xref:f表示被删除或者没有用。</p>
+<p>pdf格式详解：<a target="_blank" rel="noopener" href="https://blog.csdn.net/bobob/article/details/751381?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_title-6&amp;spm=1001.2101.3001.4242">https://blog.csdn.net/bobob/article/details/751381?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_title-6&amp;spm=1001.2101.3001.4242</a></p>
 
       
     </div>
