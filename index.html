@@ -155,7 +155,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -185,6 +185,117 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://xiaosolll.github.io/2021/04/27/codeql-learn/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="eetan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Antinomy">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/04/27/codeql-learn/" class="post-title-link" itemprop="url">codeql_learn</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-04-27 14:44:41 / Modified: 21:48:57" itemprop="dateCreated datePublished" datetime="2021-04-27T14:44:41+08:00">2021-04-27</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="CodeQL"><a href="#CodeQL" class="headerlink" title="CodeQL"></a>CodeQL</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>CodeQL是一个语义代码分析引擎，它允许我们将代码视为数据进行查询。编写一个查询，找到一个漏洞的所有变种，永远消除它。</p>
+<p>它的整体思路是把源代码转化成一个可查询的数据库，通过Extractor模块对源代码工程进行关键信息分析提取，构成一个关系数据库。但是他的数据库并没有使用现有的数据库计数，而是一套基于文件的自己的实现。</p>
+<blockquote>
+<p>区别在哪？</p>
+</blockquote>
+<h2 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h2><p>对于编译型语言,Extractor会监控编译过程，编译器每处理一个源代码文件，它都会收集源代码的相关信息，比如(语法信息–AST抽象语法树)、（语义信息–名称绑定、类型信息、运算操作等）、（控制流）、（数据流），同时也会复制一份源代码文件。</p>
+<p>对于解释性语言，Extractor则直接分析源代码，得到类似的相关信息。</p>
+<blockquote>
+<p>解释性语言</p>
+<p>编译型语言</p>
+</blockquote>
+<p>关键信息提取完成后，所有分析所需数据都导入到一个文件夹—CodeQL database（其中包括了源代码文件、关系数据、语言相关的 database schema（schema 定义了数据之间的相互关系）。）</p>
+<h2 id="官方手册"><a href="#官方手册" class="headerlink" title="官方手册"></a>官方手册</h2><p><a target="_blank" rel="noopener" href="https://codeql.github.com/docs/codeql-cli/">https://codeql.github.com/docs/codeql-cli/</a></p>
+<h2 id="安装CodeQL"><a href="#安装CodeQL" class="headerlink" title="安装CodeQL"></a>安装CodeQL</h2><p>1.下载分析程序：<a target="_blank" rel="noopener" href="https://github.com/github/codeql-cli-binaries/releases/latest/download/codeql.zip">https://github.com/github/codeql-cli-binaries/releases/latest/download/codeql.zip</a></p>
+<p>2.下载相关库文件：<a target="_blank" rel="noopener" href="https://github.com/Semmle/ql">https://github.com/Semmle/ql</a></p>
+<p>3.下载最新版的VScode，安装CodeQL扩展程序：<a target="_blank" rel="noopener" href="https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-codeql">https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-codeql</a></p>
+<ul>
+<li>到扩展中心配置相关参数</li>
+</ul>
+<p><img src="https://i.imgur.com/eUpyeiY.png"></p>
+<p><img src="https://i.imgur.com/rPltxcs.png"></p>
+<p><img src="https://i.imgur.com/cRd4nPv.png"></p>
+<blockquote>
+<p>这里填写的路径是分析程序的路径</p>
+<p>首先将下载的分析程序解压</p>
+<p>将codeql.cmd这个文件所在的路径复制到框里</p>
+</blockquote>
+<h2 id="样例"><a href="#样例" class="headerlink" title="样例"></a>样例</h2><h3 id="利用codeql利用uaf："><a href="#利用codeql利用uaf：" class="headerlink" title="利用codeql利用uaf："></a>利用codeql利用uaf：</h3><p><a target="_blank" rel="noopener" href="https://vasco-jofra.github.io/articles/codeql-kernel">https://vasco-jofra.github.io/articles/codeql-kernel</a></p>
+<h4 id="kmalloc-源码分析"><a href="#kmalloc-源码分析" class="headerlink" title="kmalloc()源码分析"></a>kmalloc()源码分析</h4><h5 id="slab-h"><a href="#slab-h" class="headerlink" title="slab.h"></a>slab.h</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line">【file:/include/linux/slab.h】</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * kmalloc - allocate memory</span></span><br><span class="line"><span class="comment"> * @size: how many bytes of memory are required.//多少比特的内存被申请</span></span><br><span class="line"><span class="comment"> * @flags: the type of memory to allocate.//分配的内存的类型</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * kmalloc is the normal method of allocating memory//kmalloc是一种用来分配内存的普通办法</span></span><br><span class="line"><span class="comment"> * for objects smaller than page size in the kernel.//对那些对象比页大小还小的</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * The @flags argument may be one of://flag的值可能是下面的其中之一</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * %GFP_USER - Allocate memory on behalf of user.  May sleep.</span></span><br><span class="line"><span class="comment"> */</span>/为用户分配内存，可能会引起休眠</span><br><span class="line"> * %GFP_KERNEL - Allocate normal kernel ram.  May sleep.</span><br><span class="line"> *<span class="comment">//内核内存的常规分配，可能会引起休眠</span></span><br><span class="line"> * %GFP_ATOMIC - Allocation will <span class="keyword">not</span> sleep.  May use emergency pools.</span><br><span class="line"> *   For example, use <span class="keyword">this</span> inside interrupt handlers.</span><br><span class="line"> *<span class="comment">//该分配不会引起休眠,但可能会使用应急内存，通常用于中断处理中</span></span><br><span class="line"> * %GFP_HIGHUSER - Allocate pages from high memory.</span><br><span class="line"> *<span class="comment">//使用高端内存进行分配</span></span><br><span class="line"> * %GFP_NOIO - Do <span class="keyword">not</span> <span class="keyword">do</span> any I/O at all <span class="keyword">while</span> trying to get memory.</span><br><span class="line"> *<span class="comment">//分配内存时禁止任何IO操作</span></span><br><span class="line"> * %GFP_NOFS - Do <span class="keyword">not</span> make any fs calls <span class="keyword">while</span> trying to get memory.</span><br><span class="line"> *<span class="comment">//分配内存时，禁止任何文件系统操作</span></span><br><span class="line"> * %GFP_NOWAIT - Allocation will <span class="keyword">not</span> sleep.</span><br><span class="line"> *<span class="comment">//分配内存时禁止休眠</span></span><br><span class="line"> * %__GFP_THISNODE - Allocate node-local memory only.</span><br><span class="line"> *<span class="comment">//分配内存时，仅从本地节点内存中分配</span></span><br><span class="line"> * %GFP_DMA - Allocation suitable <span class="keyword">for</span> DMA.</span><br><span class="line"> *   Should only be used for kmalloc() caches. Otherwise, use a</span><br><span class="line"> *   slab created with SLAB_DMA.</span><br><span class="line"> *<span class="comment">//从DMA内存中分配合适的内存，应仅使用于kmalloc的cache分配；</span></span><br><span class="line"> * Also it is possible to <span class="built_in">set</span> different flags by OR<span class="number">&#x27;</span>ing</span><br><span class="line"> * in one <span class="keyword">or</span> more of the following additional @flags:</span><br><span class="line"> *</span><br><span class="line"> * %__GFP_COLD - Request cache-cold pages instead of</span><br><span class="line"> *   trying to <span class="keyword">return</span> cache-warm pages.</span><br><span class="line"> *<span class="comment">//用于请求分配冷热页中的冷页；</span></span><br><span class="line"> * %__GFP_HIGH - This allocation has high priority <span class="keyword">and</span> may use emergency pools.</span><br><span class="line"> *<span class="comment">//用于表示该分配优先级较高并可能会使用应急内存资源；</span></span><br><span class="line"> * %__GFP_NOFAIL - Indicate that <span class="keyword">this</span> allocation is in no way allowed to fail</span><br><span class="line"> *   (think twice before <span class="keyword">using</span>).</span><br><span class="line"> *<span class="comment">//用于指示该分配不允许分配失败，该标志需要慎用；</span></span><br><span class="line"> * %__GFP_NORETRY - If memory is <span class="keyword">not</span> immediately available,</span><br><span class="line"> *   then give up at once.</span><br><span class="line"> *<span class="comment">//如果分配内存未能够直接获取到，则不再尝试分配，直接放弃；</span></span><br><span class="line"> * %__GFP_NOWARN - If allocation fails, don<span class="number">&#x27;</span>t issue any warnings.</span><br><span class="line"> *<span class="comment">//如果分配过程中失败，不上报任何告警；</span></span><br><span class="line"> * %__GFP_REPEAT - If allocation fails initially, <span class="keyword">try</span> once more before failing.</span><br><span class="line"> *<span class="comment">//如果分配过程中失败，则尝试再次申请；</span></span><br><span class="line"> * There are other flags available as well, but these are <span class="keyword">not</span> intended</span><br><span class="line"> * <span class="keyword">for</span> general use, <span class="keyword">and</span> so are <span class="keyword">not</span> documented here. For a full <span class="built_in">list</span> of</span><br><span class="line"> * potential flags, always refer to linux/gfp.h.</span><br><span class="line"> */</span><br><span class="line"><span class="keyword">static</span> __always_inline <span class="keyword">void</span> *kmalloc(<span class="keyword">size_t</span> size, <span class="keyword">gfp_t</span> flags)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span> (__builtin_constant_p(size)) &#123;<span class="comment">//__builtin_constant_p 是编译器gcc内置函数，用于判断一个值是否为编译时常量，如果是常数，函数返回1 ，否则返回0。此内置函数的典型用法是在宏中用于手动编译时优化。</span></span><br><span class="line">		<span class="keyword">if</span> (size &gt; KMALLOC_MAX_CACHE_SIZE)<span class="comment">//（即申请空间超过kmalloc()所能分配最大cache的大小）</span></span><br><span class="line">			<span class="keyword">return</span> kmalloc_large(size, flags);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> CONFIG_SLOB</span></span><br><span class="line">		<span class="keyword">if</span> (!(flags &amp; GFP_DMA)) &#123;</span><br><span class="line">			<span class="keyword">int</span> index = kmalloc_index(size);</span><br><span class="line"></span><br><span class="line">			<span class="keyword">if</span> (!index)</span><br><span class="line">				<span class="keyword">return</span> ZERO_SIZE_PTR;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">return</span> kmem_cache_alloc_trace(kmalloc_caches[index],</span><br><span class="line">					flags, size);</span><br><span class="line">		&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> __kmalloc(size, flags);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果通过kmalloc_large()进行内存分配，将会经kmalloc_large()-&gt;kmalloc_order()-&gt;__get_free_pages()，最终通过Buddy伙伴算法申请所需内存。</p>
+</blockquote>
+<h5 id="slub-c"><a href="#slub-c" class="headerlink" title="slub.c"></a>slub.c</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">【file:/mm/slub.c】</span><br><span class="line"><span class="keyword">void</span> *__kmalloc(<span class="keyword">size_t</span> size, <span class="keyword">gfp_t</span> flags)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">kmem_cache</span> *<span class="title">s</span>;</span></span><br><span class="line">	<span class="keyword">void</span> *ret;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (unlikely(size &gt; KMALLOC_MAX_CACHE_SIZE))<span class="comment">//同样判断申请是否超过最大cache大小，如果是则通过kmalloc_large()进行分配</span></span><br><span class="line">		<span class="keyword">return</span> kmalloc_large(size, flags);</span><br><span class="line"></span><br><span class="line">	s = kmalloc_slab(size, flags);<span class="comment">//接着通过申请大小及申请标志调用kmalloc_slab()查找适用的kmem_cache；最后通过slab_alloc()进行slab分配。</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (unlikely(ZERO_OR_NULL_PTR(s)))</span><br><span class="line">		<span class="keyword">return</span> s;</span><br><span class="line"></span><br><span class="line">	ret = slab_alloc(s, flags, _RET_IP_);</span><br><span class="line"></span><br><span class="line">	trace_kmalloc(_RET_IP_, ret, size, s-&gt;size, flags);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>为啥这里又判断一次是否申请超过最大cache大小？</p>
+</blockquote>
+<h5 id="kmalloc-slab"><a href="#kmalloc-slab" class="headerlink" title="kmalloc_slab()"></a>kmalloc_slab()</h5><p>可以来看下kmalloc_slab()的实现：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">【file:/mm/slab_commmon.c】</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Find the kmem_cache structure that serves a given size of</span></span><br><span class="line"><span class="comment"> * allocation</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function">struct kmem_cache *<span class="title">kmalloc_slab</span><span class="params">(<span class="keyword">size_t</span> size, <span class="keyword">gfp_t</span> flags)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> index;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (unlikely(size &gt; KMALLOC_MAX_SIZE)) &#123;</span><br><span class="line">		WARN_ON_ONCE(!(flags &amp; __GFP_NOWARN));</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (size &lt;= <span class="number">192</span>) &#123;</span><br><span class="line">		<span class="keyword">if</span> (!size)</span><br><span class="line">			<span class="keyword">return</span> ZERO_SIZE_PTR;</span><br><span class="line"></span><br><span class="line">		index = size_index[size_index_elem(size)];</span><br><span class="line">	&#125; <span class="keyword">else</span></span><br><span class="line">		index = fls(size - <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> CONFIG_ZONE_DMA</span></span><br><span class="line">	<span class="keyword">if</span> (unlikely((flags &amp; GFP_DMA)))</span><br><span class="line">		<span class="keyword">return</span> kmalloc_dma_caches[index];</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">	<span class="keyword">return</span> kmalloc_caches[index];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<blockquote>
+<p>如果申请的大小超过KMALLOC_MAX_SIZE最大值，则返回NULL表示失败；如果申请大小小于192,且不为0，将通过size_index_elem宏转换为下标后，经size_index全局数组取得索引值，否则将直接通过fls()取得索引值；最后如果开启了DMA内存配置且设置了GFP_DMA标志，将结合索引值通过kmalloc_dma_caches返回kmem_cache管理结构信息，否则将通过kmalloc_caches返回该结构。</p>
+<p>由此可以看出kmalloc()实现较为简单，起分配所得的内存不仅是虚拟地址上的连续存储空间，同时也是物理地址上的连续存储空间。这是有别于后面将会分析到的vmalloc()申请所得的内存。</p>
+</blockquote>
+<h5 id="DMA内存分配"><a href="#DMA内存分配" class="headerlink" title="DMA内存分配"></a>DMA内存分配</h5><p>linux系统启动过程中，会初始化整个内核地址空间，将其划分为各个类型段，其中包括物理内存映射区(又称之为逻辑地址映射区)、虚拟内存分配区、高端页面映射区、系统保留映射区、DMA映射区(这个类似物理内存映射区，其映射的物理地址是连续的)这几个区域等等，linux内核在启动的时候通过arch/arm/include/asm/memory.h中的CONSISTENT_DMA_SIZE宏配置内核地址空间DMA大小。代码位置如下：</p>
+<p>#ifndef CONSISTENT_DMA_SIZE<br>#define CONSISTENT_DMA_SIZE SZ_2M<br>#endif<br>CONSISTENT_DMA_SIZE 大小根据自己系统需求的情况来分配，比如做大数据高速采集一般这个DMA的值就应该设置大一些，否则在内核申请会报下面错误：</p>
+<p>(NULL device <em>): dma_alloc_coherent size ****</em>  failed</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -324,7 +435,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-04-24 10:08:12" itemprop="dateModified" datetime="2021-04-24T10:08:12+08:00">2021-04-24</time>
+        <time title="Modified: 2021-04-25 10:07:40" itemprop="dateModified" datetime="2021-04-25T10:07:40+08:00">2021-04-25</time>
       </span>
 
   
@@ -407,7 +518,7 @@
 <p><img src="https://i.imgur.com/lVsP3IX.png"></p>
 <h4 id="查看程序内存结构"><a href="#查看程序内存结构" class="headerlink" title="查看程序内存结构"></a>查看程序内存结构</h4><p>vmmap</p>
 <p><img src="https://i.imgur.com/SlGTNMF.png"></p>
-<h3 id="pwntools-1"><a href="#pwntools-1" class="headerlink" title="pwntools"></a>pwntools</h3><h4 id="Pwntools主要模块及其使用"><a href="#Pwntools主要模块及其使用" class="headerlink" title="Pwntools主要模块及其使用"></a>Pwntools主要模块及其使用</h4><p>from pwn import *<br>io = remote(“127.0.0.1”, 32152)<br>#与互联网主机交互<br>io.sendline(“hello”)<br>io.send(“hello”)<br>#sendline发送数据会在最后多添加一个回车<br>io.recv(1024)<br>io.revuntil()<br>io.recvline(“hello”)<br>#recv()读取1024个字节，recvline()会读取一直到回车，recvuntil()读取到指定数据<br>io.interactive()</p>
+<h3 id="pwntools-1"><a href="#pwntools-1" class="headerlink" title="pwntools"></a>pwntools</h3><h4 id="Pwntools主要模块及其使用"><a href="#Pwntools主要模块及其使用" class="headerlink" title="Pwntools主要模块及其使用"></a>Pwntools主要模块及其使用</h4><p>from pwn import *<br>io = remote(“127.0.0.1”, 32152)<br>#与互联网主机交互<br>io.sendline(“hello”)<br>io.send(“hello”)<br>#sendline发送数据会在最后多添加一个回车<br>io.recv(1024)<br>io.revuntil()<br>io.recvline()<br>#recv()读取1024个字节，recvline()会读取一直到回车，recvuntil()读取到指定数据<br>io.interactive()</p>
 <p>io = process(“./bin”, shell=True)<br>#启动本地程序进行交互，用于gdb调试</p>
 <p>io.interactive()<br>io.p32(0xdeadbeef)<br>io.p64(0xdeadbeefdeadbeef)</p>
 <blockquote>
@@ -482,7 +593,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-04-06 15:00:13" itemprop="dateModified" datetime="2021-04-06T15:00:13+08:00">2021-04-06</time>
+        <time title="Modified: 2021-04-24 23:40:54" itemprop="dateModified" datetime="2021-04-24T23:40:54+08:00">2021-04-24</time>
       </span>
 
   
@@ -815,7 +926,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-04-17 21:15:03" itemprop="dateModified" datetime="2021-04-17T21:15:03+08:00">2021-04-17</time>
+        <time title="Modified: 2021-04-27 20:46:16" itemprop="dateModified" datetime="2021-04-27T20:46:16+08:00">2021-04-27</time>
       </span>
 
   
@@ -863,6 +974,7 @@
 <h2 id="汇编和机器码的转换"><a href="#汇编和机器码的转换" class="headerlink" title="汇编和机器码的转换"></a>汇编和机器码的转换</h2><p>radare</p>
 <p>rasm2 -L    #查看architectures<br>rasm2 -a x86 -b 32 ‘mov eax, 33’    #转机器码<br>echo ‘push eax;nop;nop’ | rasm2 -f -   </p>
 <p>rasm2 -a x86 -d 55  #转汇编 push ebp</p>
+<h2 id="inux源码分析"><a href="#inux源码分析" class="headerlink" title="inux源码分析"></a>inux源码分析</h2><p><a target="_blank" rel="noopener" href="https://www.jeanleo.com/">https://www.jeanleo.com/</a></p>
 
       
     </div>
