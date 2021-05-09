@@ -155,7 +155,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-count">16</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -185,6 +185,374 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://xiaosolll.github.io/2021/03/23/glibc-ptmalloc1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="eetan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Antinomy">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/03/23/glibc-ptmalloc1/" class="post-title-link" itemprop="url">Untitled</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-03-23 13:41:19" itemprop="dateCreated datePublished" datetime="2021-03-23T13:41:19+08:00">2021-03-23</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-03-28 21:03:25" itemprop="dateModified" datetime="2021-03-28T21:03:25+08:00">2021-03-28</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>title: glibc ptmalloc1<br>date: 2021-03-23 13:41:19<br>tags:</p>
+<h3 id="x86平台linux进程内存布局"><a href="#x86平台linux进程内存布局" class="headerlink" title="x86平台linux进程内存布局"></a>x86平台linux进程内存布局</h3><blockquote>
+<p>Linux 系统在装载 elf 格式的程序文件时，会调用 loader 把可执行文件中的各个段依次 载入到从某一地址开始的空间中（载入地址取决 link editor(ld)和机器地址位数，在 32 位机 器上是 0x8048000，即 128M 处）。</p>
+</blockquote>
+<h4 id="32位"><a href="#32位" class="headerlink" title="32位"></a>32位</h4><p><img src="https://i.imgur.com/2bvQPBh.png"></p>
+<p>mmap映射区域一般从TASK_SIZE/3开始.栈是有界的</p>
+<h4 id="64位"><a href="#64位" class="headerlink" title="64位"></a>64位</h4><p><img src="https://i.imgur.com/YeVDhxg.png"></p>
+<blockquote>
+<p>上图是 X86_64 下 Linux 进程的默认内存布局形式，这只是一个示意图.</p>
+<p>当前内核默认 配置下，进程的栈和 mmap 映射区域<strong>并不是从一个固定地址开始</strong>，并且每次启动时的值都 不一样，这是程序在启动时随机改变这些值的设置，使得使用缓冲区溢出进行攻击更加困难。 </p>
+<p>当然也可以让进程的栈和 mmap 映射区域从一个固定位置开始，只需要设置全局变量 randomize_va_space 值 为 0 ， 这 个 变 量 默 认 值 为 1 。 用 户 可 以 通 过 设 置 /proc/sys/kernel/randomize_va_space 来停用该特性，也可以用如下命令： sudo sysctl -w kernel.randomize_va_space=0</p>
+</blockquote>
+<p>heap 和 mmap 映射区域是可以提供给用户程序使用的虚拟内存空间。</p>
+<blockquote>
+<p>堆至底向上扩展，mmap 映射区 域至顶向下扩展，mmap 映射区域和堆相对扩展，直至耗尽虚拟地址空间中的剩余区域，这 种结构便于 C 运行时库使用 mmap 映射区域和堆进行内存分配。</p>
+</blockquote>
+<h3 id="操作系统内存分配的相关函数"><a href="#操作系统内存分配的相关函数" class="headerlink" title="操作系统内存分配的相关函数"></a>操作系统内存分配的相关函数</h3><p>head—-brk()[系统调用]/sbrk()[c库函数]</p>
+<p>mmap—-mmap()\munmap()</p>
+<p>这些函数都可以用来向我们的进程添加额外的虚拟内存。</p>
+<h4 id="内存的延迟分配"><a href="#内存的延迟分配" class="headerlink" title="内存的延迟分配"></a>内存的延迟分配</h4><p>只有在真正访问一个地址的时候才建立这个地址的物理映射，之前只是线性区（虚拟内存）</p>
+<blockquote>
+<p>内核释放物理页面是通过释放线性区，找到其所对应的物理页面，将其全部释放的过 程。</p>
+</blockquote>
+<h4 id="进程描述符task-struct"><a href="#进程描述符task-struct" class="headerlink" title="进程描述符task_struct"></a>进程描述符task_struct</h4><h4 id="内存描述符mm-struct"><a href="#内存描述符mm-struct" class="headerlink" title="内存描述符mm_struct"></a>内存描述符mm_struct</h4><p>mm_struct是内核数据结构。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/xiaosolll/eetan/blob/main/mm_struct%E6%B3%A8%E9%87%8A%E6%BA%90%E7%A0%81%E8%AE%B0%E5%BD%95">https://github.com/xiaosolll/eetan/blob/main/mm_struct%E6%B3%A8%E9%87%8A%E6%BA%90%E7%A0%81%E8%AE%B0%E5%BD%95</a>    —–【mm_struct的源码注释】</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unsigned long start_code, end_code, start_data, end_data;</span><br></pre></td></tr></table></figure>
+<p>start_code和end_code是进程代码段的起始和终止地址,start_data和end_data是进程数据段的起始和终止地址。</p>
+<p>来自：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_26768741/article/details/54375524">https://blog.csdn.net/qq_26768741/article/details/54375524</a></p>
+<h4 id="heap操作相关函数"><a href="#heap操作相关函数" class="headerlink" title="heap操作相关函数"></a>heap操作相关函数</h4><blockquote>
+<p>start_stack 是进程堆栈 段起始地址，start_brk 是进程动态内存分配起始地址（堆的起始地址），还有一个 brk（堆 的当前最后地址），就是动态内存分配当前的终止地址。</p>
+<p>C 语言的动态内存分配基本函数是 malloc()，在 Linux 上的实现是通过内核的 brk 系统调用。brk()是一个非常简单的系统调用， 只是简单地<strong>改变 mm_struct 结构的成员变量 brk</strong> 的值。</p>
+</blockquote>
+<h4 id="Mmap映射区域操作相关函数"><a href="#Mmap映射区域操作相关函数" class="headerlink" title="Mmap映射区域操作相关函数"></a>Mmap映射区域操作相关函数</h4><p>mmap()函数将一个文件或者其它对象映射进内存。</p>
+<p>实现文件磁盘地址和进程虚拟地址空间中一段虚拟地址的一一对映关系</p>
+<p><img src="https://i.imgur.com/P9qrTPp.png"></p>
+<blockquote>
+<p>操作系统以**<em>内存页**</em>为<em>单位</em>管理内存</p>
+</blockquote>
+<p>munmap 执行相反的操作，删除特定地址区域的对象映射。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;sys&#x2F;mman.h&gt;</span><br><span class="line"></span><br><span class="line">void *mmap(void *addr, size_t length, int prot(期望的内存保护标志), int flags（指定映射对象类型，映射选项和映射页是否可以共享）, int fd, off_t offset);</span><br><span class="line"></span><br><span class="line">int munmap(void *addr, size_t length);</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="内存管理的方法"><a href="#内存管理的方法" class="headerlink" title="内存管理的方法"></a>内存管理的方法</h4><h5 id="c风格–malloc、free"><a href="#c风格–malloc、free" class="headerlink" title="c风格–malloc、free"></a>c风格–malloc、free</h5><p>程序主要通过调用brk（）或者mmap（）进程添加额外的虚拟内存。</p>
+<h5 id="池式内存管理"><a href="#池式内存管理" class="headerlink" title="池式内存管理"></a>池式内存管理</h5><p>内存池–自动内存管理</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/bangerlee/archive/2011/09/01/2161437.html">内存池的实现(二) - bangerlee - 博客园 (cnblogs.com)</a></p>
+<h5 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h5><p>当传递一个指向某个数据结构指针，引用计数+1</p>
+<p>当程序完成对这个数据结构的使用的时候，计数-1，结束动作，检查计数器是否为0，为0释放内存。</p>
+<h5 id="垃圾收集"><a href="#垃圾收集" class="headerlink" title="垃圾收集"></a>垃圾收集</h5><p>全自动检测并移除不再使用的数据对象</p>
+<p>运行：当可用内存减少到一个具体阈值。</p>
+<h4 id="c内存管理程序"><a href="#c内存管理程序" class="headerlink" title="c内存管理程序"></a>c内存管理程序</h4><h5 id="doug-lea-malloc"><a href="#doug-lea-malloc" class="headerlink" title="doug lea malloc"></a>doug lea malloc</h5><p>包括：doug lea的原始分配程序、GNU libc 分配程序和 ptmalloc</p>
+<blockquote>
+<p>加入了索引，搜索速度up</p>
+</blockquote>
+<h5 id="BSD-malloc"><a href="#BSD-malloc" class="headerlink" title="BSD malloc"></a>BSD malloc</h5><p>从预先确定大小的对象构成的池中分配对象。</p>
+<h5 id="Hoard"><a href="#Hoard" class="headerlink" title="Hoard"></a>Hoard</h5><p>多线程环境、锁的使用为中心</p>
+<h5 id="TCMalloc"><a href="#TCMalloc" class="headerlink" title="TCMalloc"></a>TCMalloc</h5><p>集成内存池和垃圾回收的优点</p>
+<p>小内存：8整数倍分配</p>
+<p>大内存：4k的整数倍分配</p>
+<h3 id="ptmalloc"><a href="#ptmalloc" class="headerlink" title="ptmalloc"></a>ptmalloc</h3><blockquote>
+<p>使用环形链表管理，每个分配区利用互斥锁（mutex）使线程对于该分配区的访问互斥。</p>
+<p>每个进程只有一个主分配区，但可能存在多个非主分配区</p>
+</blockquote>
+<h4 id="主分配区-main-arena"><a href="#主分配区-main-arena" class="headerlink" title="主分配区  main_arena"></a>主分配区  main_arena</h4><p>可访问<strong>heap区域和mmap区域</strong>,可以用sbrk和mmap向操作系统申请虚拟内存。</p>
+<h4 id="非主分配区-non-main-arena"><a href="#非主分配区-non-main-arena" class="headerlink" title="非主分配区    non_main_arena"></a>非主分配区    non_main_arena</h4><p>只能访问<strong>mmap映射区域</strong></p>
+<p>mmap（）向操作系统‘批发‘HEAP_MAX_SIZE默认大小：</p>
+<p>32位:1MB</p>
+<p>64位:64MB</p>
+<blockquote>
+<p>为什么要先批发一块大小?</p>
+<p>系统调用是相对低效的，直接从用户空间分配内存快多了。讲这块大小切割成小块。</p>
+</blockquote>
+<p>线程调用malloc分配内存空间时：</p>
+<p>先查看线程私有变量是否已经存在一个分配区，存在尝试加锁，失败则去分配区链表试图获取一个没有加锁的分配区，如果链表中所有分配区都加锁，则malloc会新开辟一个分配区，将其加入到全局分配区循环链表并加锁且使用这个分配区分配内存。</p>
+<p>释放时同样要获取锁。</p>
+<h4 id="chunk的组织"><a href="#chunk的组织" class="headerlink" title="chunk的组织"></a>chunk的组织</h4><blockquote>
+<p>不管内存是在哪里被分配的，用什么方法分配，用户请求分配的空间在 ptmalloc 中都使用一个 chunk 来表示。用户调用 free()函数释放掉的内存也并不是立即就归还给操作系统，相反，它们也会被表示为一个 <strong>chunk</strong></p>
+</blockquote>
+<h5 id="chunke-的格式"><a href="#chunke-的格式" class="headerlink" title="chunke 的格式"></a>chunke 的格式</h5><h6 id="使用中"><a href="#使用中" class="headerlink" title="使用中"></a>使用中</h6><p><img src="https://i.imgur.com/7iZjNvQ.png"></p>
+<p>mem指针才是真正返回给用户的内存指针</p>
+<p>AMP：</p>
+<blockquote>
+<p>1.NON_MAIN_ARENA     这个堆块是否位于主线程<br>2.IS_MAPPED          记录当前 chunk 是否是由 mmap 分配的<br>3.PREV_INUSE         记录前一个 chunk 块是否被分配</p>
+</blockquote>
+<p>A:表示当前chunk属于主分配区还是非主分配区。1：主分配区，否则置零。</p>
+<p>M:当前chunk从哪个内存区域获得的虚拟内存。1：从mmap映射区域分配的，否则从heap区分配。</p>
+<p>P：<strong>前一个chunk</strong>的使用情况，1表示正在使用，不能对前一个chunk进行任何操作，不可以得到前一个chunk的大小。</p>
+<blockquote>
+<p>P 为 0 则表示前一个 chunk 为空闲，这时<br>chunk 的第一个域 prev_size 才有效，prev_size 表示前一个 chunk 的 size，程序可以使用这个<br>值来找到前一个 chunk 的开始地址。</p>
+</blockquote>
+<h6 id="空闲中"><a href="#空闲中" class="headerlink" title="空闲中"></a>空闲中</h6><p><img src="https://i.imgur.com/qNCQfMF.png"></p>
+<p><img src="https://i.imgur.com/ua5MFL5.png"></p>
+<p><img src="https://i.imgur.com/eTCqD64.png"></p>
+<p>无M状态。</p>
+<p>原本属于用户数据区的地方存储了四个指针。</p>
+<p>fd–&gt;指向后一个空闲的chunk</p>
+<p>bk–&gt;指向前一个空闲的chunk</p>
+<p>fdsize、bksize用用于加快在large bin中查找最近匹配的空闲chunk。</p>
+<h4 id="chunk的空间复用"><a href="#chunk的空间复用" class="headerlink" title="chunk的空间复用"></a>chunk的空间复用</h4><p>一chunk 或者正在被使用，或者已经被 free 掉，所以 chunk 的中的一些域可以在使用状态和空闲状态表示不同的意义，来达到空间复用的效果。</p>
+<blockquote>
+<p>一个使用中的 chunk 的大小的计算公式应该是：</p>
+<p>in_use_size = (用户请求大小+ 8 - 4 ) align to 8B，这里加 8 是因为需要存储 prev_size 和 size，</p>
+<p>但又因为向下一个 chunk“借”了 4B，所以要减去 4。最后，因为空闲的 chunk 和使用中的</p>
+<p>chunk 使用的是同一块空间。所以肯定要取其中最大者作为实际的分配空间。即最终的分配空间 chunk_size = max(in_use_size, 16)。这就是当用户请求内存分配时，ptmalloc 实际需要分配的内存大小</p>
+</blockquote>
+<h4 id="空闲的chunk容器"><a href="#空闲的chunk容器" class="headerlink" title="空闲的chunk容器"></a>空闲的chunk容器</h4><h5 id="bins"><a href="#bins" class="headerlink" title="bins"></a>bins</h5><p>用户free掉的内存不会马上归还给系统，。ptmalloc将相似大小的 chunk 用双向链表链接起来，这样的一个链表被称为一个 bin(unsorted bin   small bins large bins)。ptmalloc一共维护了128个bin。</p>
+<p><img src="https://i.imgur.com/v5nDgRk.png"></p>
+<blockquote>
+<p>下次分配请求时，ptmalloc首先从空闲的chunk中挑选一块给用户。</p>
+<p>最后释放的 chunk 被链接到链表的头部，而申请 chunk 是从链表尾部开始</p>
+</blockquote>
+<blockquote>
+<p>当空闲的 chunk 被链接到 bin 中的时候，ptmalloc 会把表示该 chunk 是否处于使用中的标志 P 设为 0（注意，<strong>这个标志实际上处在下一个 chunk 中</strong>），同时 ptmalloc 还会检查它<strong>前后的 chunk</strong> 是否也是空闲的，如果是的话，ptmalloc 会首先把它们<strong>合并</strong>为一个大的 chunk，然后将合并后的 chunk 放到 <strong>unstored bin</strong> 中。要注意的是，并不是所有的 chunk 被释放后就立即被放到 bin 中。ptmalloc 为了提高分配的速度，会把一些<strong>小的的 chunk 先放到一个叫做fast bins 的容器内。</strong> </p>
+</blockquote>
+<h5 id="fast-bins"><a href="#fast-bins" class="headerlink" title="fast bins"></a>fast bins</h5><p>不大于 max_fast （默认值为 64B）的 chunk 被释放后，首先会被放到 fast bins<br> 中，fast bins 中的 chunk <code>并不改变它的使用标志 P。这样也就无法将它们合并。</code></p>
+<blockquote>
+<p>当需要给用户分配的 <strong>chunk 小于或等于 max_fast 时</strong>，ptmalloc 首先会在 fast bins 中查找相应的空闲块，然后才会去查找bins中的空闲chunk。</p>
+</blockquote>
+<p>特定时候：ptmalloc会遍历fastbins中的chunk，将相邻的空闲的chunk合并。合并的chunk加入unsorted bin中，然后再将unsorted bin里的chunk加入bins中。</p>
+<h5 id="unsorted-bin"><a href="#unsorted-bin" class="headerlink" title="unsorted bin"></a>unsorted bin</h5><p>是bin数组的第一个，可以看作是bins的一个缓冲区。</p>
+<p>寻找合适的chunk：</p>
+<p>1.fast bins</p>
+<p>2.unsorted bin</p>
+<p>3.bins–(small\large)</p>
+<h5 id="特殊的chunk"><a href="#特殊的chunk" class="headerlink" title="特殊的chunk"></a>特殊的chunk</h5><p>并不是所有的 chunk 都按照上面的方式来组织，实际上，有三种例外情况。Top chunk，mmaped chunk 和 last remainder。</p>
+<h6 id="Top-chunk"><a href="#Top-chunk" class="headerlink" title="Top chunk"></a>Top chunk</h6><p>不包含在任何bin中。</p>
+<p>非主分配区：</p>
+<p>​      在非主分配区中会预先从mmap区域分配一块较大得到空闲内存模拟sub-heap，通过管理sub-heap来响应用户需求。</p>
+<p>内存是按地址<strong>从低向高进行分配</strong>的，在空闲内存的最高处，必然存在着一块空闲 chunk，叫做 top chunk。</p>
+<p><img src="https://i.imgur.com/P9qrTPp.png"></p>
+<p>当bin和fast bins不能满足分配需求，则从top chunk中分出一块给用户。</p>
+<p>若top chunk不够大，则重新分配一块sub-heap，将top chunk迁移到新sub-heap，新sub和旧sub用单向链表连接。再从新top chunk中分配一块内存。</p>
+<p>top chunk会随着分配合并变大缩小，当top chunk包含整个sub-heap，ptmalloc会调用munmap把整个sub-heap的内存返回给操作系统。 </p>
+<p>主分配区：</p>
+<p>​        <img src="https://i.imgur.com/awhRiCY.png"></p>
+<h6 id="mmaped-chunk"><a href="#mmaped-chunk" class="headerlink" title="mmaped chunk"></a>mmaped chunk</h6><p>当需要分配的 chunk 足够大，而且 fast bins 和 bins 都不能满足要求，甚至 top chunk 本身也不能满足分配需求时，ptmalloc 会使用 mmap 来直接使用内存映射来将页映射到进程空间。这样分配的 chunk 在被 free 时将直接解除映射，于是就将内存归还给了操作系统，再次对这样的内存区的引用将导致 segmentation fault 错误。这样的 chunk 也不会包含在任何bin 中。</p>
+<h6 id="Last-remainder"><a href="#Last-remainder" class="headerlink" title="Last remainder"></a>Last remainder</h6><p>Last remainder 是另外一种特殊的 chunk，就像 top chunk 和 mmaped chunk 一样，不会在任何 bins 中找到这种 chunk。当需要分配一个 small chunk，但在 small bins 中找不到合适的 chunk，如果 last remainder chunk 的大小大于所需的 small chunk 大小，last remainder chunk被分裂成两个 chunk，其中一个 chunk 返回给用户，另一个 chunk 变成新的 last remainder chuk。</p>
+<h4 id="sbrk和mmap"><a href="#sbrk和mmap" class="headerlink" title="sbrk和mmap"></a>sbrk和mmap</h4><p><img src="https://i.imgur.com/wMotikN.png"></p>
+<p>start_brk–heap的开始</p>
+<p>brk–heap的结束，可以通过brk（）sbrk（）来增加brk的值。</p>
+<p>ptmalloc在开始时，若请求的空间小于mmap的分配阈值128kb</p>
+<p>​                     |  主分配区：sbrk（）增加一块heap。</p>
+<p>​                     |  非主分配区：mmap（）映射一块sub-heap。</p>
+<p>需要分配的chunk：</p>
+<p>1.小于mmap分配阈值，heap不够sbrk（）增加heap大小，每次增加都会对齐到4kb。</p>
+<p>2.大于阈值，且主分配区sbrk（）失败，或者非主分配区在topchunk不能分配到需要的内存，直接mmap（）直接映射。</p>
+<p>回收时：</p>
+<p>若回收的chunk大于mmap分配阈值且小于default_mmap_threshold_max，调整分配阈值为当前回收的chunk的大小，并且将mmap收缩阈值设置为mmap分配阈值的两倍。—–动态调整机制</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://xiaosolll.github.io/2021/03/17/Daily-learning-and-document-collection/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="eetan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Antinomy">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/03/17/Daily-learning-and-document-collection/" class="post-title-link" itemprop="url">Daily learning and document collection</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-03-17 08:49:46" itemprop="dateCreated datePublished" datetime="2021-03-17T08:49:46+08:00">2021-03-17</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-05-08 21:44:08" itemprop="dateModified" datetime="2021-05-08T21:44:08+08:00">2021-05-08</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h4 id="C-C-sizeof函数解析——解决sizeof求结构体大小的问题"><a href="#C-C-sizeof函数解析——解决sizeof求结构体大小的问题" class="headerlink" title="C/C++ sizeof函数解析——解决sizeof求结构体大小的问题"></a><a target="_blank" rel="noopener" href="https://www.cnblogs.com/0201zcr/p/4789332.html">C/C++ sizeof函数解析——解决sizeof求结构体大小的问题</a></h4><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/0201zcr/p/4789332.html">C/C++ sizeof函数解析——解决sizeof求结构体大小的问题 - WhyWin - 博客园 (cnblogs.com)</a></p>
+<p><a href="javascript:void(0);"><img src="https://common.cnblogs.com/images/copycode.gif" alt="复制代码"></a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">struct stu1  </span><br><span class="line">&#123;  </span><br><span class="line">     int i;  </span><br><span class="line">     char c;  </span><br><span class="line">     int j;  </span><br><span class="line">&#125;；  </span><br></pre></td></tr></table></figure>
+<p><a href="javascript:void(0);"><img src="https://common.cnblogs.com/images/copycode.gif" alt="复制代码"></a></p>
+<p>   用sizeof求该结构体的大小，发现值为12。int占4个字节，char占1个字节，结果应该是9个字节才对啊，为什么呢？</p>
+<p>   先介绍一个相关的概念——偏移量。偏移量<strong>指的是结构体变量中成员的地址和结构体变量地址的差</strong>。结构体大小<strong>等于最后一个成员的偏移量加上最后一个成员的大小</strong>。显然，结构体变量中第一个成员的地址就是结构体变量的首地址。因此，第一个成员i的偏移量为0。第二个成员c的偏移量是第一个成员的偏移量加上第一个成员的大小（0+4）,其值为4；第三个成员j的偏移量是第二个成员的偏移量加上第二个成员的大小（4+1）,其值为5。</p>
+<p>   然而，在实际中，<strong>存储变量时地址要求对齐</strong>，编译器在编译程序时会遵循两条<strong>原则</strong>：</p>
+<p>   <strong>（1）结构体变量中成员的偏移量必须是成员大小的整数倍（0被认为是任何数的整数倍）</strong> </p>
+<p>   <strong>（2）结构体大小必须是所有成员大小的整数倍，也即所有成员大小的公倍数。</strong></p>
+<h2 id="期刊"><a href="#期刊" class="headerlink" title="期刊"></a>期刊</h2><blockquote>
+<p>序号 期刊名称 主办单位 网址 </p>
+<p>1 软件学报 中国科学院软件研究所 中国计算机学会 <a target="_blank" rel="noopener" href="http://www.jos.org.cn/">http://www.jos.org.cn</a> </p>
+<p>2 计算机学报 中国计算机学会 中国科学院计算技术研究所 <a target="_blank" rel="noopener" href="http://cjc.ict.ac.cn/">http://cjc.ict.ac.cn</a></p>
+<p>3 中国科学：信息科学 中国科学院 国家自然科学基金委员会 <a target="_blank" rel="noopener" href="http://infocn.scichina.com/">http://infocn.scichina.com</a></p>
+<p> 4 计算机研究与发展 中国科学院计算技术研究所 中国计算机学会 <a target="_blank" rel="noopener" href="http://crad.ict.ac.cn/">http://crad.ict.ac.cn</a> </p>
+<p>5 计算机辅助设计与图形学学报 中国计算机学会 中国科学院计算技术研究所 <a target="_blank" rel="noopener" href="http://www.jcad.cn/">http://www.jcad.cn</a> </p>
+<p>6 电子学报 中国电子学会 <a target="_blank" rel="noopener" href="http://www.ejournal.org.cn/">http://www.ejournal.org.cn</a> </p>
+<p>7 自动化学报 中国自动化学会 中国科学院自动化研究所 <a target="_blank" rel="noopener" href="http://www.aas.net.cn/">http://www.aas.net.cn</a></p>
+</blockquote>
+<h2 id="网址-搜索引擎"><a href="#网址-搜索引擎" class="headerlink" title="网址/搜索引擎"></a>网址/搜索引擎</h2><p><a target="_blank" rel="noopener" href="https://admin-root.blog.csdn.net/article/details/109069749">https://admin-root.blog.csdn.net/article/details/109069749</a></p>
+<h2 id="用vmware安装window-xp系统"><a href="#用vmware安装window-xp系统" class="headerlink" title="用vmware安装window xp系统"></a>用vmware安装window xp系统</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/linxinfa/article/details/112768896">https://blog.csdn.net/linxinfa/article/details/112768896</a></p>
+<p>itellyou:<a target="_blank" rel="noopener" href="https://msdn.itellyou.cn/">MSDN, 我告诉你 - 做一个安静的工具站 (itellyou.cn)</a></p>
+<h2 id="GDB调试"><a href="#GDB调试" class="headerlink" title="GDB调试"></a>GDB调试</h2><p>i r：查看寄存器值</p>
+<p>vmmap查看进程内存分布</p>
+<p>pmap  PID 查看进程内存分布</p>
+<p>在 gdb 调试中，使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x&#x2F;32gx &amp;main_arena</span><br></pre></td></tr></table></figure>
+<p>可以看到 main_arena 的内存分配情况。</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/yeholmes/article/details/106454289">GDB内存调试初探二_yeholmes的专栏-CSDN博客</a>   </p>
+<h2 id="IDA-版本下载"><a href="#IDA-版本下载" class="headerlink" title="IDA 版本下载"></a>IDA 版本下载</h2><p><a target="_blank" rel="noopener" href="https://down.52pojie.cn/?query=ida">爱盘 - 最新的在线破解工具包 (52pojie.cn)</a></p>
+<h2 id="ACM-ICPC培训资料汇编-2-基本数据结构与算法分册"><a href="#ACM-ICPC培训资料汇编-2-基本数据结构与算法分册" class="headerlink" title="ACM-ICPC培训资料汇编(2)基本数据结构与算法分册"></a>ACM-ICPC培训资料汇编(2)基本数据结构与算法分册</h2><p><a target="_blank" rel="noopener" href="http://www.doc88.com/p-3059640614423.html">ACM-ICPC培训资料汇编(2)基本数据结构与算法分册 - 道客巴巴 (doc88.com)</a></p>
+<h2 id="堆利用方法"><a href="#堆利用方法" class="headerlink" title="堆利用方法"></a>堆利用方法</h2><p><a target="_blank" rel="noopener" href="https://github.com/shellphish/how2heap">https://github.com/shellphish/how2heap</a></p>
+<h2 id="汇编和机器码的转换"><a href="#汇编和机器码的转换" class="headerlink" title="汇编和机器码的转换"></a>汇编和机器码的转换</h2><p>radare</p>
+<p>rasm2 -L    #查看architectures<br>rasm2 -a x86 -b 32 ‘mov eax, 33’    #转机器码<br>echo ‘push eax;nop;nop’ | rasm2 -f -   </p>
+<p>rasm2 -a x86 -d 55  #转汇编 push ebp</p>
+<h2 id="linux源码分析"><a href="#linux源码分析" class="headerlink" title="linux源码分析"></a>linux源码分析</h2><p><a target="_blank" rel="noopener" href="https://www.jeanleo.com/">https://www.jeanleo.com/</a></p>
+<h2 id="linux-权限详解"><a href="#linux-权限详解" class="headerlink" title="linux 权限详解"></a>linux 权限详解</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u013197629/article/details/73608613">https://blog.csdn.net/u013197629/article/details/73608613</a></p>
+<h3 id="权限简介"><a href="#权限简介" class="headerlink" title="权限简介"></a>权限简介</h3><p>Linux系统上对文件的权限有着严格的控制，用于如果相对某个文件执行某种操作，必须具有对应的权限方可执行成功。<br>Linux下文件的权限类型一般包括读，写，执行。对应字母为 r、w、x。<br>Linux下权限的粒度有 拥有者 、群组 、其它组 三种。每个文件都可以针对三个粒度，设置不同的rwx(读写执行)权限。通常情况下，一个文件只能归属于一个用户和组， 如果其它的用户想有这个文件的权限，则可以将该用户加入具备权限的群组，一个用户可以同时归属于多个组。<br>Linux上通常使用chmod命令对文件的权限进行设置和更改。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">范例：</span><br><span class="line"></span><br><span class="line">设置所有人可以读写及执行</span><br><span class="line">chmod 777 file  (等价于  chmod u&#x3D;rwx,g&#x3D;rwx,o&#x3D;rwx file 或  chmod a&#x3D;rwx file)</span><br><span class="line">设置拥有者可读写，其他人不可读写执行</span><br><span class="line">chmod 600 file (等价于  chmod u&#x3D;rw,g&#x3D;---,o&#x3D;--- file 或 chmod u&#x3D;rw,go-rwx file )</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">十位权限表示</span><br><span class="line">常见的权限表示形式有：</span><br><span class="line"></span><br><span class="line">-rw------- (600)    只有拥有者有读写权限。</span><br><span class="line">-rw-r--r-- (644)    只有拥有者有读写权限；而属组用户和其他用户只有读权限。</span><br><span class="line">-rwx------ (700)    只有拥有者有读、写、执行权限。</span><br><span class="line">-rwxr-xr-x (755)    拥有者有读、写、执行权限；而属组用户和其他用户只有读、执行权限。</span><br><span class="line">-rwx--x--x (711)    拥有者有读、写、执行权限；而属组用户和其他用户只有执行权限。</span><br><span class="line">-rw-rw-rw- (666)    所有用户都有文件读、写权限。</span><br><span class="line">-rwxrwxrwx (777)    所有用户都有读、写、执行权限。</span><br></pre></td></tr></table></figure>
+<h2 id="IDA反汇编失败–函数参数的问题"><a href="#IDA反汇编失败–函数参数的问题" class="headerlink" title="IDA反汇编失败–函数参数的问题"></a>IDA反汇编失败–函数参数的问题</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_30389003/article/details/97561175">https://blog.csdn.net/weixin_30389003/article/details/97561175</a></p>
+<h2 id="读反汇编出的c语言代码"><a href="#读反汇编出的c语言代码" class="headerlink" title="读反汇编出的c语言代码"></a>读反汇编出的c语言代码</h2><p><img src="https://i.imgur.com/2102GnB.png"></p>
+<p>这是一个数组，首地址(&amp;v17),a2是数组的长度。</p>
+<p><img src="https://i.imgur.com/ZduiP7i.png"></p>
+<p>这也是一个char数组的循环赋值</p>
+<h3 id="基础c语言知识"><a href="#基础c语言知识" class="headerlink" title="基础c语言知识"></a>基础c语言知识</h3><p><strong>%.2lf——&gt;</strong></p>
+<blockquote>
+<p>在printf()里表示按下面格式输出一个long double型数：整数部分输出全部输出小数部分输出2位，没有小数的输出两个0，不足两位的后面补0，大于两位的截短到两位。</p>
+</blockquote>
+<p><strong>%.2f ——&gt;</strong></p>
+<blockquote>
+<p>在printf()里按下面格式输出一个浮点型数，整数部分输出全部输出小数部分输出2位，没有小数的输出两个0，不足两位的后面补0，大于两位的截短到两位。</p>
+</blockquote>
+<p><strong>ifndef/define/endif 的含义:</strong></p>
+<blockquote>
+<p>如果未定义 / 那么定义 / 完成假设 </p>
+<p>一般是用来防止头文件被重复包含,提高编译效率的。</p>
+</blockquote>
+<p>*<em>long int atol(const char</em>s);**</p>
+<blockquote>
+<p>输入一个字符数组（注意，不是string类型的字符串）的头元素的地址，然后我们就可以转换成数值。</p>
+</blockquote>
+<p><strong>size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream)</strong> 从给定流 <strong>stream</strong> 读取数据到 <strong>ptr</strong> 所指向的数组中。</p>
+<h2 id="汇编跳转指令解析"><a href="#汇编跳转指令解析" class="headerlink" title="汇编跳转指令解析"></a>汇编跳转指令解析</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/wq57885/article/details/80700032">https://blog.csdn.net/wq57885/article/details/80700032</a></p>
+<p>JMP、JECXZ、JA、JB、JG、JL、JE、JZ、JS、JC、JO、JP</p>
+<h3 id="IDA宏定义"><a href="#IDA宏定义" class="headerlink" title="IDA宏定义"></a>IDA宏定义</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/bluestar628/article/details/78428868">https://blog.csdn.net/bluestar628/article/details/78428868</a></p>
+<h2 id="HASH？"><a href="#HASH？" class="headerlink" title="HASH？"></a>HASH？</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/ztx114/article/details/88789118">https://blog.csdn.net/ztx114/article/details/88789118</a></p>
+<p><strong>哈希函数、算法</strong></p>
+<p><strong>哈希算法将任意长度的二进制值映射为较短的固定长度的二进制值，这个小的二进制值称为哈希值。</strong>哈希值是一段数据唯一且极其紧凑的数值表示形式。如果散列一段明文而且哪怕只更改该段落的一个字母，随后的哈希都将产生不同的值。要找到散列为同一个值的两个不同的输入，在计算上是不可能的，所以数据的哈希值可以检验数据的完整性。一般用于快速查找和加密算法 —《数据结构与算法分析》</p>
+<h2 id="APT攻击及辅助工具"><a href="#APT攻击及辅助工具" class="headerlink" title="APT攻击及辅助工具"></a>APT攻击及辅助工具</h2><h3 id="APT攻击"><a href="#APT攻击" class="headerlink" title="APT攻击"></a>APT攻击</h3><p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/28881041">什么是 APT 攻击？ - 知乎 (zhihu.com)</a></p>
+<p>APT攻击是一个集合了多种常见攻击方式的综合攻击。综合多种攻击途径来尝试突破网络防御，通常是通过Web或电子邮件传递，利用应用程序或操作系统的漏洞，利用传统的网络保护机制无法提供统一的防御。除了使用多种途径，高级定向攻击还采用多个阶段穿透一个网络，然后提取有价值的信息，这使得它的攻击更不容易被发现。</p>
+<p><strong>第一阶段：扫描探测</strong>—踩点</p>
+<p><strong>第二阶段：工具投送</strong>—诱骗工作人员打开恶意附件或者恶意URL</p>
+<p><strong>第三阶段：漏洞利用</strong>—投送恶意代码、执行自身</p>
+<p><strong>第四阶段：木马植入</strong>—各种恶意软件的可执行文件批量下载</p>
+<p><strong>第五阶段：远程控制</strong>—建立共知点</p>
+<p><strong>第六阶段：横向渗透</strong>—以员工电脑为跳板对系统内部横向渗透</p>
+<p><strong>第七阶段：目标行动</strong>—将敏感数据传出内部网络</p>
+<h3 id="LOKI"><a href="#LOKI" class="headerlink" title="LOKI"></a>LOKI</h3><p>主要是把它当成一个日志来用。通过ioc（loki内置的危险特征库）（黑盒里面含有各种比如说恶意代码的哈希值等一些特征）去比对，他提到的yara也是基于文本或二进制模式创建恶意软件家族描述信息，通过我们提供扫描对象，比如移动介质、网络共享、文件夹等来进行比对分析，比如比对恶意样本哈希值，大量匹配可疑文件签名，600多个网页后门YARA规则（YARA可以基于文本或二进制模式创建恶意软件家族描述信息，当然也可以是其他匹配信息。YARA的每一条描述或规则都由一系列字符串和一个布尔型表达式构成，并阐述其逻辑。）最后给出我们警告，然后有我们自己去比对处理。</p>
+<p><strong>IOC（Indicator of Compromise）</strong></p>
+<p>　　MANDIANT在长期的数字取证实践中定义的可以反映主机或网络行为的技术指示器，IOC以XML文档类型描述捕获多种威胁的事件响应信息，包括病毒文件的属性、注册表改变的特征、虚拟内存等，是一种入侵后可以取证的指标，可以识别一台主机或整个网络。而OpenIOC是一个威胁情报共享的标准，通过遵循该标准，可以建立IOC的逻辑分组，在机器中以一种可读的格式进行通信，从而实现威胁情报的交流共享。比如事件响应团队可以使用OpenIOC的规范编写多个IOCs来描述一个威胁的技术共性。</p>
+<p>YARA是一款旨在帮助恶意软件研究人员识别和分类恶意软件样本的开源工具，使用YARA可以基于文本或二进制模式创建恶意软件家族描述信息，当然也可以是其他匹配信息。</p>
+<h2 id="最新malloc-c"><a href="#最新malloc-c" class="headerlink" title="最新malloc.c"></a>最新malloc.c</h2><p><a target="_blank" rel="noopener" href="https://sourceware.org/git/?p=glibc.git;a=blob;f=malloc/malloc.c;h=7c8bf8413c54c367031ca274c9bca497a45897f8;hb=d6db68e66dff25d12c3bc5641b60cbd7fb6ab44f">https://sourceware.org/git/?p=glibc.git;a=blob;f=malloc/malloc.c;h=7c8bf8413c54c367031ca274c9bca497a45897f8;hb=d6db68e66dff25d12c3bc5641b60cbd7fb6ab44f</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
