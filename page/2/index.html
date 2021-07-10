@@ -155,7 +155,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-count">21</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -185,6 +185,559 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://xiaosolll.github.io/2021/04/28/afl-fuzz-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="eetan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Antinomy">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/04/28/afl-fuzz-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="post-title-link" itemprop="url">afl-fuzz-源码分析</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-04-28 18:13:06 / Modified: 21:46:49" itemprop="dateCreated datePublished" datetime="2021-04-28T18:13:06+08:00">2021-04-28</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="AFL-fuzz"><a href="#AFL-fuzz" class="headerlink" title="AFL-fuzz"></a>AFL-fuzz</h1><p>模糊测试不需要人过多的参与，也不像动态分析那样要求分析人员有丰富的知识。简单解释，它就是用大量的输入数据自动去执行程序，从而发现哪些输入能够使程序发生异常，进而分析可能存在的漏洞。</p>
+<p>调试人员为程序提供一些输入，即最左侧的testcases，AFL加载后将其放入一个队列中。对于每一次迭代，AFL首先从队列中取出一个testcase，然后对它进行修剪，去除不必要的数据以提高运行效率；再然后对输入进行变异操作，变异的模式很多，可以产生很多新的testcase。对于这些新产生的输入，将它们送到目标程序运行，若能够产生新的执行路径或者导致程序崩溃，就把它再放到队列中。在整个过程中，程序崩溃会被记录下来，它可能代表一个潜藏的漏洞。</p>
+<p>病毒分析、破解、内核、</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://xiaosolll.github.io/2021/04/27/codeql-learn/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="eetan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Antinomy">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/04/27/codeql-learn/" class="post-title-link" itemprop="url">codeql_learn</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-04-27 14:44:41 / Modified: 21:48:57" itemprop="dateCreated datePublished" datetime="2021-04-27T14:44:41+08:00">2021-04-27</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="CodeQL"><a href="#CodeQL" class="headerlink" title="CodeQL"></a>CodeQL</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>CodeQL是一个语义代码分析引擎，它允许我们将代码视为数据进行查询。编写一个查询，找到一个漏洞的所有变种，永远消除它。</p>
+<p>它的整体思路是把源代码转化成一个可查询的数据库，通过Extractor模块对源代码工程进行关键信息分析提取，构成一个关系数据库。但是他的数据库并没有使用现有的数据库计数，而是一套基于文件的自己的实现。</p>
+<blockquote>
+<p>区别在哪？</p>
+</blockquote>
+<h2 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h2><p>对于编译型语言,Extractor会监控编译过程，编译器每处理一个源代码文件，它都会收集源代码的相关信息，比如(语法信息–AST抽象语法树)、（语义信息–名称绑定、类型信息、运算操作等）、（控制流）、（数据流），同时也会复制一份源代码文件。</p>
+<p>对于解释性语言，Extractor则直接分析源代码，得到类似的相关信息。</p>
+<blockquote>
+<p>解释性语言</p>
+<p>编译型语言</p>
+</blockquote>
+<p>关键信息提取完成后，所有分析所需数据都导入到一个文件夹—CodeQL database（其中包括了源代码文件、关系数据、语言相关的 database schema（schema 定义了数据之间的相互关系）。）</p>
+<h2 id="官方手册"><a href="#官方手册" class="headerlink" title="官方手册"></a>官方手册</h2><p><a target="_blank" rel="noopener" href="https://codeql.github.com/docs/codeql-cli/">https://codeql.github.com/docs/codeql-cli/</a></p>
+<h2 id="安装CodeQL"><a href="#安装CodeQL" class="headerlink" title="安装CodeQL"></a>安装CodeQL</h2><p>1.下载分析程序：<a target="_blank" rel="noopener" href="https://github.com/github/codeql-cli-binaries/releases/latest/download/codeql.zip">https://github.com/github/codeql-cli-binaries/releases/latest/download/codeql.zip</a></p>
+<p>2.下载相关库文件：<a target="_blank" rel="noopener" href="https://github.com/Semmle/ql">https://github.com/Semmle/ql</a></p>
+<p>3.下载最新版的VScode，安装CodeQL扩展程序：<a target="_blank" rel="noopener" href="https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-codeql">https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-codeql</a></p>
+<ul>
+<li>到扩展中心配置相关参数</li>
+</ul>
+<p><img src="https://i.imgur.com/eUpyeiY.png"></p>
+<p><img src="https://i.imgur.com/rPltxcs.png"></p>
+<p><img src="https://i.imgur.com/cRd4nPv.png"></p>
+<blockquote>
+<p>这里填写的路径是分析程序的路径</p>
+<p>首先将下载的分析程序解压</p>
+<p>将codeql.cmd这个文件所在的路径复制到框里</p>
+</blockquote>
+<h2 id="样例"><a href="#样例" class="headerlink" title="样例"></a>样例</h2><h3 id="利用codeql利用uaf："><a href="#利用codeql利用uaf：" class="headerlink" title="利用codeql利用uaf："></a>利用codeql利用uaf：</h3><p><a target="_blank" rel="noopener" href="https://vasco-jofra.github.io/articles/codeql-kernel">https://vasco-jofra.github.io/articles/codeql-kernel</a></p>
+<h4 id="kmalloc-源码分析"><a href="#kmalloc-源码分析" class="headerlink" title="kmalloc()源码分析"></a>kmalloc()源码分析</h4><h5 id="slab-h"><a href="#slab-h" class="headerlink" title="slab.h"></a>slab.h</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line">【file:/include/linux/slab.h】</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * kmalloc - allocate memory</span></span><br><span class="line"><span class="comment"> * @size: how many bytes of memory are required.//多少比特的内存被申请</span></span><br><span class="line"><span class="comment"> * @flags: the type of memory to allocate.//分配的内存的类型</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * kmalloc is the normal method of allocating memory//kmalloc是一种用来分配内存的普通办法</span></span><br><span class="line"><span class="comment"> * for objects smaller than page size in the kernel.//对那些对象比页大小还小的</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * The @flags argument may be one of://flag的值可能是下面的其中之一</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * %GFP_USER - Allocate memory on behalf of user.  May sleep.</span></span><br><span class="line"><span class="comment"> */</span>/为用户分配内存，可能会引起休眠</span><br><span class="line"> * %GFP_KERNEL - Allocate normal kernel ram.  May sleep.</span><br><span class="line"> *<span class="comment">//内核内存的常规分配，可能会引起休眠</span></span><br><span class="line"> * %GFP_ATOMIC - Allocation will <span class="keyword">not</span> sleep.  May use emergency pools.</span><br><span class="line"> *   For example, use <span class="keyword">this</span> inside interrupt handlers.</span><br><span class="line"> *<span class="comment">//该分配不会引起休眠,但可能会使用应急内存，通常用于中断处理中</span></span><br><span class="line"> * %GFP_HIGHUSER - Allocate pages from high memory.</span><br><span class="line"> *<span class="comment">//使用高端内存进行分配</span></span><br><span class="line"> * %GFP_NOIO - Do <span class="keyword">not</span> <span class="keyword">do</span> any I/O at all <span class="keyword">while</span> trying to get memory.</span><br><span class="line"> *<span class="comment">//分配内存时禁止任何IO操作</span></span><br><span class="line"> * %GFP_NOFS - Do <span class="keyword">not</span> make any fs calls <span class="keyword">while</span> trying to get memory.</span><br><span class="line"> *<span class="comment">//分配内存时，禁止任何文件系统操作</span></span><br><span class="line"> * %GFP_NOWAIT - Allocation will <span class="keyword">not</span> sleep.</span><br><span class="line"> *<span class="comment">//分配内存时禁止休眠</span></span><br><span class="line"> * %__GFP_THISNODE - Allocate node-local memory only.</span><br><span class="line"> *<span class="comment">//分配内存时，仅从本地节点内存中分配</span></span><br><span class="line"> * %GFP_DMA - Allocation suitable <span class="keyword">for</span> DMA.</span><br><span class="line"> *   Should only be used for kmalloc() caches. Otherwise, use a</span><br><span class="line"> *   slab created with SLAB_DMA.</span><br><span class="line"> *<span class="comment">//从DMA内存中分配合适的内存，应仅使用于kmalloc的cache分配；</span></span><br><span class="line"> * Also it is possible to <span class="built_in">set</span> different flags by OR<span class="number">&#x27;</span>ing</span><br><span class="line"> * in one <span class="keyword">or</span> more of the following additional @flags:</span><br><span class="line"> *</span><br><span class="line"> * %__GFP_COLD - Request cache-cold pages instead of</span><br><span class="line"> *   trying to <span class="keyword">return</span> cache-warm pages.</span><br><span class="line"> *<span class="comment">//用于请求分配冷热页中的冷页；</span></span><br><span class="line"> * %__GFP_HIGH - This allocation has high priority <span class="keyword">and</span> may use emergency pools.</span><br><span class="line"> *<span class="comment">//用于表示该分配优先级较高并可能会使用应急内存资源；</span></span><br><span class="line"> * %__GFP_NOFAIL - Indicate that <span class="keyword">this</span> allocation is in no way allowed to fail</span><br><span class="line"> *   (think twice before <span class="keyword">using</span>).</span><br><span class="line"> *<span class="comment">//用于指示该分配不允许分配失败，该标志需要慎用；</span></span><br><span class="line"> * %__GFP_NORETRY - If memory is <span class="keyword">not</span> immediately available,</span><br><span class="line"> *   then give up at once.</span><br><span class="line"> *<span class="comment">//如果分配内存未能够直接获取到，则不再尝试分配，直接放弃；</span></span><br><span class="line"> * %__GFP_NOWARN - If allocation fails, don<span class="number">&#x27;</span>t issue any warnings.</span><br><span class="line"> *<span class="comment">//如果分配过程中失败，不上报任何告警；</span></span><br><span class="line"> * %__GFP_REPEAT - If allocation fails initially, <span class="keyword">try</span> once more before failing.</span><br><span class="line"> *<span class="comment">//如果分配过程中失败，则尝试再次申请；</span></span><br><span class="line"> * There are other flags available as well, but these are <span class="keyword">not</span> intended</span><br><span class="line"> * <span class="keyword">for</span> general use, <span class="keyword">and</span> so are <span class="keyword">not</span> documented here. For a full <span class="built_in">list</span> of</span><br><span class="line"> * potential flags, always refer to linux/gfp.h.</span><br><span class="line"> */</span><br><span class="line"><span class="keyword">static</span> __always_inline <span class="keyword">void</span> *kmalloc(<span class="keyword">size_t</span> size, <span class="keyword">gfp_t</span> flags)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span> (__builtin_constant_p(size)) &#123;<span class="comment">//__builtin_constant_p 是编译器gcc内置函数，用于判断一个值是否为编译时常量，如果是常数，函数返回1 ，否则返回0。此内置函数的典型用法是在宏中用于手动编译时优化。</span></span><br><span class="line">		<span class="keyword">if</span> (size &gt; KMALLOC_MAX_CACHE_SIZE)<span class="comment">//（即申请空间超过kmalloc()所能分配最大cache的大小）</span></span><br><span class="line">			<span class="keyword">return</span> kmalloc_large(size, flags);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> CONFIG_SLOB</span></span><br><span class="line">		<span class="keyword">if</span> (!(flags &amp; GFP_DMA)) &#123;</span><br><span class="line">			<span class="keyword">int</span> index = kmalloc_index(size);</span><br><span class="line"></span><br><span class="line">			<span class="keyword">if</span> (!index)</span><br><span class="line">				<span class="keyword">return</span> ZERO_SIZE_PTR;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">return</span> kmem_cache_alloc_trace(kmalloc_caches[index],</span><br><span class="line">					flags, size);</span><br><span class="line">		&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> __kmalloc(size, flags);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果通过kmalloc_large()进行内存分配，将会经kmalloc_large()-&gt;kmalloc_order()-&gt;__get_free_pages()，最终通过Buddy伙伴算法申请所需内存。</p>
+</blockquote>
+<h5 id="slub-c"><a href="#slub-c" class="headerlink" title="slub.c"></a>slub.c</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">【file:/mm/slub.c】</span><br><span class="line"><span class="keyword">void</span> *__kmalloc(<span class="keyword">size_t</span> size, <span class="keyword">gfp_t</span> flags)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">kmem_cache</span> *<span class="title">s</span>;</span></span><br><span class="line">	<span class="keyword">void</span> *ret;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (unlikely(size &gt; KMALLOC_MAX_CACHE_SIZE))<span class="comment">//同样判断申请是否超过最大cache大小，如果是则通过kmalloc_large()进行分配</span></span><br><span class="line">		<span class="keyword">return</span> kmalloc_large(size, flags);</span><br><span class="line"></span><br><span class="line">	s = kmalloc_slab(size, flags);<span class="comment">//接着通过申请大小及申请标志调用kmalloc_slab()查找适用的kmem_cache；最后通过slab_alloc()进行slab分配。</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (unlikely(ZERO_OR_NULL_PTR(s)))</span><br><span class="line">		<span class="keyword">return</span> s;</span><br><span class="line"></span><br><span class="line">	ret = slab_alloc(s, flags, _RET_IP_);</span><br><span class="line"></span><br><span class="line">	trace_kmalloc(_RET_IP_, ret, size, s-&gt;size, flags);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>为啥这里又判断一次是否申请超过最大cache大小？</p>
+</blockquote>
+<h5 id="kmalloc-slab"><a href="#kmalloc-slab" class="headerlink" title="kmalloc_slab()"></a>kmalloc_slab()</h5><p>可以来看下kmalloc_slab()的实现：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">【file:/mm/slab_commmon.c】</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Find the kmem_cache structure that serves a given size of</span></span><br><span class="line"><span class="comment"> * allocation</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function">struct kmem_cache *<span class="title">kmalloc_slab</span><span class="params">(<span class="keyword">size_t</span> size, <span class="keyword">gfp_t</span> flags)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> index;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (unlikely(size &gt; KMALLOC_MAX_SIZE)) &#123;</span><br><span class="line">		WARN_ON_ONCE(!(flags &amp; __GFP_NOWARN));</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (size &lt;= <span class="number">192</span>) &#123;</span><br><span class="line">		<span class="keyword">if</span> (!size)</span><br><span class="line">			<span class="keyword">return</span> ZERO_SIZE_PTR;</span><br><span class="line"></span><br><span class="line">		index = size_index[size_index_elem(size)];</span><br><span class="line">	&#125; <span class="keyword">else</span></span><br><span class="line">		index = fls(size - <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> CONFIG_ZONE_DMA</span></span><br><span class="line">	<span class="keyword">if</span> (unlikely((flags &amp; GFP_DMA)))</span><br><span class="line">		<span class="keyword">return</span> kmalloc_dma_caches[index];</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">	<span class="keyword">return</span> kmalloc_caches[index];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<blockquote>
+<p>如果申请的大小超过KMALLOC_MAX_SIZE最大值，则返回NULL表示失败；如果申请大小小于192,且不为0，将通过size_index_elem宏转换为下标后，经size_index全局数组取得索引值，否则将直接通过fls()取得索引值；最后如果开启了DMA内存配置且设置了GFP_DMA标志，将结合索引值通过kmalloc_dma_caches返回kmem_cache管理结构信息，否则将通过kmalloc_caches返回该结构。</p>
+<p>由此可以看出kmalloc()实现较为简单，起分配所得的内存不仅是虚拟地址上的连续存储空间，同时也是物理地址上的连续存储空间。这是有别于后面将会分析到的vmalloc()申请所得的内存。</p>
+</blockquote>
+<h5 id="DMA内存分配"><a href="#DMA内存分配" class="headerlink" title="DMA内存分配"></a>DMA内存分配</h5><p>linux系统启动过程中，会初始化整个内核地址空间，将其划分为各个类型段，其中包括物理内存映射区(又称之为逻辑地址映射区)、虚拟内存分配区、高端页面映射区、系统保留映射区、DMA映射区(这个类似物理内存映射区，其映射的物理地址是连续的)这几个区域等等，linux内核在启动的时候通过arch/arm/include/asm/memory.h中的CONSISTENT_DMA_SIZE宏配置内核地址空间DMA大小。代码位置如下：</p>
+<p>#ifndef CONSISTENT_DMA_SIZE<br>#define CONSISTENT_DMA_SIZE SZ_2M<br>#endif<br>CONSISTENT_DMA_SIZE 大小根据自己系统需求的情况来分配，比如做大数据高速采集一般这个DMA的值就应该设置大一些，否则在内核申请会报下面错误：</p>
+<p>(NULL device <em>): dma_alloc_coherent size ****</em>  failed</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://xiaosolll.github.io/2021/04/17/cve-2010-2883-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="eetan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Antinomy">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/04/17/cve-2010-2883-2/" class="post-title-link" itemprop="url">cve-2010-2883-2</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2021-04-17 18:31:14 / Modified: 22:06:37" itemprop="dateCreated datePublished" datetime="2021-04-17T18:31:14+08:00">2021-04-17</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="1"><a href="#1" class="headerlink" title="1"></a>1</h2><h3 id="DEP"><a href="#DEP" class="headerlink" title="DEP"></a>DEP</h3><p>DEP,数据执行保护，其基本原理是将数据所在内存页标识为不可执行。</p>
+<p><img src="https://i.imgur.com/0qqIx33.png"></p>
+<p>主要作用是阻止数据页（如默认的堆页、各种堆栈页以及内存池执行代码）</p>
+<p>DEP的保护对象是进程级别的，当某个进程的加载模块只要有一个模块不支持DEP，这个进程就不能贸然开启DEP，否则会发生异常。</p>
+<p>Ret2libc：我们让程序跳转到一个已经存在的系统函数中，已经存在的系统函数必然存在于可执行页上，所以此时DEP是不会拦截的，Ret2libc的攻击原理也正是基于此。</p>
+<p>三种比较有效的绕过DEP的exploit方法：</p>
+<ol>
+<li>通过跳转到ZwSetInformationProcess函数将DEP关闭后再转入shellcode执行。</li>
+<li>通过跳转到VirualProtect函数来将shellcode所在内存页设置为可执行状态，然后再转入shellcode执行。</li>
+<li>通过跳转到VirualAlloc函数开辟一段具有执行权限的内存空间，然后将shellcode复制到这段内存中执行。</li>
+</ol>
+<h3 id="CreateFileA-功能-创建一个文件或设备"><a href="#CreateFileA-功能-创建一个文件或设备" class="headerlink" title="CreateFileA();功能:创建一个文件或设备"></a>CreateFileA();功能:创建一个文件或设备</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">0C0C0C24   4A801064  +-CALL 到 CreateFileA</span><br><span class="line">0C0C0C28   4A8522C8  | FileName &#x3D; &quot;iso88591&quot;    ; 创建一个名为iso88591的文件。</span><br><span class="line">0C0C0C2C   10000000  | Access &#x3D; GENERIC_ALL     ; 此文件访问权限为可读可写可执行。</span><br><span class="line">0C0C0C30   00000000  | ShareMode &#x3D; 0            ; 共享模式，0:阻止其他进程在请求删除，读取或写入访问权限时打开文件或设备。</span><br><span class="line">0C0C0C34   00000000  | pSecurity &#x3D; NULL         ; 此参数为NULL，则CreateFile返回的句柄，不能由应用程序可能创建的任何子进程继承，并且与返回的句柄关联的文件或设备将获取默认安全描述符。</span><br><span class="line">0C0C0C38   00000002  | Mode &#x3D; CREATE_ALWAYS     ; 始终创建一个新文件。</span><br><span class="line">0C0C0C3C   00000102  | Attributes &#x3D; HIDDEN|TEMPORARY    ; 文件属性：隐藏文件|临时文件</span><br><span class="line">0C0C0C40   00000000  +-hTemplateFile &#x3D; NULL     ; hTemplateFile为一个文件或设备句柄，表示按这个参数给出的句柄为模板创建文件。通常这个参数设置为NULL，为空表示不使用模板，一般为空。</span><br></pre></td></tr></table></figure>
+<p>0C0C0C2C   10000000  | Access = GENERIC_ALL     ; 此文件访问权限为可读可写可执行。</p>
+<p><img src="https://i.imgur.com/INBRrc4.png"></p>
+<blockquote>
+<p>注意是从0开始的，0x10000000转换为二进制就是1000000000000000000000000000，29是1。从0开始就是28.</p>
+</blockquote>
+<p>winhex中 00001f90机器码是58</p>
+<p>rasm2 -a x86 -d 58可以看到是pop eax</p>
+<p><img src="https://i.imgur.com/Qy96sES.png"></p>
+<p>由于DEP的实施,不能直接跳到nop进行执行，需要先进行ROP使得shellcode得到执行，所以我们需要预测rop链的准确位置，由于内存分配是对齐的，这意味着如果我们用正确的大小的块，和正确的大小的喷射块，我们将确保每个喷射块开始，将在可预见的地址定位。再通过简单的计算，可以实现准确喷射。</p>
+<p> 最后调用<code>memcopy</code>的时候，<code>目的地址</code>就是前面<code>MapViewOfFile()</code>返回的<code>文件映射基地址</code>，而<code>源地址</code>就是真正的<code>shellcode</code>代码，将它<code>复制</code>到一段<code>可执行可读写的内存段</code>，以此<code>绕过DEP</code>。由于构造的<code>ROP指令</code>均位于不受<code>ASLR</code>保护的<code>icucnv36.dll</code>模块，因此也可以<code>绕过ASLR保护</code>。正是由于<code>DEP</code>的存在，所以<code>堆栈空间</code>是不存在<code>可执行权限</code>的，所以，我们需要创建一个<code>文件映射对象</code>，将其<code>映射</code>到<code>可读可写可执行的内存块</code>，再把shellcode拷贝到那里，就可以执行了。</p>
+<p>解码完<code>shellcode</code>,然后通过<code>TEB</code>、<code>PEB</code>等结构计算出<code>WinExec()</code>函数的地址,调用<code>WinExec(&quot;calc.exe&quot;,0x1)</code>弹出计算器。计算<code>库函数API地址</code>的shellcode使用的是<code>metasploit-framework</code>中的<a target="_blank" rel="noopener" href="https://github.com/rapid7/metasploit-framework/blob/master/external/source/shellcode/windows/x86/src/block/block_api.asm">block_api.asm</a>,此版本为<code>最新版本</code>,近期<code>更新</code>过,与<code>样本</code>中的有些许差别。</p>
+<h3 id="exploit"><a href="#exploit" class="headerlink" title="exploit()"></a>exploit()</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">def exploit</span><br><span class="line">    ttf_data &#x3D; make_ttf() # 构造ttf字体数据,SING表内容就在其中</span><br><span class="line"></span><br><span class="line">    js_data &#x3D; make_js(payload.encoded) # 构建Heap Spary js代码,ROP Chain及Payload就包含在里面</span><br><span class="line"></span><br><span class="line">    # Create the pdf</span><br><span class="line">    pdf &#x3D; make_pdf(ttf_data, js_data) # 构造pdf文件数据,将前面构造好的ttf字体数据和js代码放入其中</span><br><span class="line"></span><br><span class="line">    print_status(&quot;Creating &#39;#&#123;datastore[&#39;FILENAME&#39;]&#125;&#39; file...&quot;)</span><br><span class="line"></span><br><span class="line">    file_create(pdf) # 创建pdf文件</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<h4 id="make-ttf"><a href="#make-ttf" class="headerlink" title="make_ttf()"></a>make_ttf()</h4><p>  此函数首先打开了一个<code>正常的ttf模板</code>文件,然后构造了<code>SING表</code>数据,将<code>ttf字体</code>文件中的<code>name表</code>数据替换为<code>构造的SING表</code>数据,<code>“name”</code>字符串替换为<code>“SING”</code>。<code>构造的SING表数据</code>包括用于将程序控制流劫持到<code>Heap Spary代码</code>处执行的<code>ROP Chain</code>,以及溢出后、获得程序控制流之前,用于绕过<code>造成程序执行出错</code>的数据。</p>
+<h4 id="make-js"><a href="#make-js" class="headerlink" title="make_js()"></a>make_js()</h4><p>  此函数的功能将j<code>avascript的代码</code>转换为<code>字符串</code>,并将javascript的<code>变量名</code>进行<code>混淆</code>。javascript的代码用于<code>堆喷</code>,所以我们应将用于将<code>真正的shellcode</code>复制到<code>可读可写可执行</code>内存段的<code>ROP Chain</code>以及<code>经过编码的Payload</code>编入其中。将<code>真正的shellcode</code>复制到<code>可读可写可执行</code>内存段的<code>ROP Chain</code>的细节前面讲过了,就不说了。</p>
+<h4 id="make-pdf"><a href="#make-pdf" class="headerlink" title="make_pdf()"></a>make_pdf()</h4><p>  此函数一步一步构造<code>pdf</code>中的每一个<code>obj</code>,将<code>ttf字体数据</code>和<code>javascript代码</code>分别放在了<code>obj10</code>和<code>obj12</code>,然后在<code>obj1</code>中设置<code>/OpenAction 11 0 R</code>,使pdf文件<code>打开</code>时,<code>javascript</code>能够被执行,从而实现<code>Heap Spary</code>。还构造了<code>obj13</code>,使<code>icucnv36.dll</code>能够被加载。因为,<code>exp</code>中使用的<code>ROPgadget</code>都是出自<code>icucnv36.dll</code>模块的,所以其必须要<code>被加载到内存</code>中。</p>
+<h3 id="TEB-PEB"><a href="#TEB-PEB" class="headerlink" title="TEB\PEB"></a>TEB\PEB</h3><p>一个可执行文件被OS加载到内存，并处理完成相关的模块加载，导入表处理……及其他必须处理后，形成一个进程。在OS内核中保存有一份关于这个进程的身份证信息，就是平常看到的HANDLE，叫进程句柄。</p>
+<p>TEB偏移0x30处是本进程的PEB结构体指针，通过这个指针即可取得PEB的地址，从而继续读取更多的关于本进程的一些信息。</p>
+<p>PEB(Process Environment Block，进程环境块)：存放进程信息，准确的PEB地址应该从系统的EXPROCESS结构的0x1b0偏移出获得，但这个结构位于系统地址空间，访问 需要 ring0权限，所以一般通过TEB结构的偏移0x30处获取PEB.</p>
+<pre><code>获取peb代码：mov eax, fs:[0x30]  
+
+     mov PEB, eax
+</code></pre>
+<p>TEB(Thread Environment Block，线程环境块)： 存放线程信息，位于用户地址空间，进程中的每个线程都有自己的一个TEB.通过fs寄存器来访问，一般储存在fs:[0].</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://xiaosolll.github.io/2021/04/12/pwn-environment-layout/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="eetan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Antinomy">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/04/12/pwn-environment-layout/" class="post-title-link" itemprop="url">pwn-environment-layout</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-04-12 17:20:31" itemprop="dateCreated datePublished" datetime="2021-04-12T17:20:31+08:00">2021-04-12</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-04-25 10:07:40" itemprop="dateModified" datetime="2021-04-25T10:07:40+08:00">2021-04-25</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="pwn环境布置"><a href="#pwn环境布置" class="headerlink" title="pwn环境布置"></a>pwn环境布置</h1><h2 id="ubuntu18-04安装："><a href="#ubuntu18-04安装：" class="headerlink" title="ubuntu18.04安装："></a>ubuntu18.04安装：</h2><p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/38797088">VMware安装Ubuntu18.04（必会） - 知乎 (zhihu.com)</a></p>
+<h2 id="给ubuntu18-04换源"><a href="#给ubuntu18-04换源" class="headerlink" title="给ubuntu18.04换源"></a>给ubuntu18.04换源</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/xiangxianghehe/article/details/80112149">Ubuntu 18.04换国内源 中科大源 阿里源 163源 清华源_xiangxianghehe的博客-CSDN博客</a></p>
+<p>(注意没有权限记得sudo)</p>
+<h2 id="安装编译Python源程序所需的包"><a href="#安装编译Python源程序所需的包" class="headerlink" title="安装编译Python源程序所需的包"></a>安装编译Python源程序所需的包</h2><p>sudo apt install build-essential -y<br>sudo apt install libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev -y<br>sudo apt-get install zlib1g-dev</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42261208/article/details/105227474">ubuntu18.04 pwn环境搭建_winterze的博客-CSDN博客</a></p>
+<h2 id="安装git"><a href="#安装git" class="headerlink" title="安装git"></a>安装git</h2><p>sudo apt install git</p>
+<h3 id="进行git配置"><a href="#进行git配置" class="headerlink" title="进行git配置"></a>进行git配置</h3><p>sudo git config –global user.name ‘自定义用户名’<br>sudo git config –global user.email ‘邮箱’</p>
+<h2 id="Pwn常用软件（python2）"><a href="#Pwn常用软件（python2）" class="headerlink" title="Pwn常用软件（python2）"></a>Pwn常用软件（python2）</h2><h3 id="pwntools"><a href="#pwntools" class="headerlink" title="pwntools"></a>pwntools</h3><p>sudo apt-get install python python-pip python-dev libssl-dev libffi-dev build-essential</p>
+<p>sudo pip install -U setuptools</p>
+<p>sudo pip install –upgrade pip</p>
+<p>sudo pip install –upgrade pwntools</p>
+<p>测试：</p>
+<p>import pwn<br>pwn.asm(“xor eax,eax”)<br>b’1\xc0’</p>
+<p>（配置过程中遇到问题 python-tox 不匹配，用了以下命令解决<br>sudo pip install six –user -U<br>sudo pip install ipython –user -U）</p>
+<h3 id="安装gdb"><a href="#安装gdb" class="headerlink" title="安装gdb"></a>安装gdb</h3><p>sudo apt-get install gdb</p>
+<h3 id="安装pwndbg"><a href="#安装pwndbg" class="headerlink" title="安装pwndbg"></a>安装pwndbg</h3><p>git clone <a target="_blank" rel="noopener" href="https://github.com/pwndbg/pwndbg">https://github.com/pwndbg/pwndbg</a></p>
+<p> cd pwndbg </p>
+<p>sudo ./setup.sh</p>
+<h3 id="安装peda："><a href="#安装peda：" class="headerlink" title="安装peda："></a>安装peda：</h3><p>git clone <a target="_blank" rel="noopener" href="https://github.com/longld/peda.git">https://github.com/longld/peda.git</a> ~/peda</p>
+<p>echo “source ~/peda/peda.py” &gt;&gt; ~/.gdbinit</p>
+<h3 id="32位程序支持"><a href="#32位程序支持" class="headerlink" title="32位程序支持"></a>32位程序支持</h3><p>sudo apt-get install libc6-dev-i386</p>
+<h3 id="32位依赖库"><a href="#32位依赖库" class="headerlink" title="32位依赖库"></a>32位依赖库</h3><p>sudo apt-get install lib32ncurses5</p>
+<p>sudo apt-get install lib32z1</p>
+<h3 id="LibcSearcher"><a href="#LibcSearcher" class="headerlink" title="LibcSearcher"></a>LibcSearcher</h3><p>git clone <a target="_blank" rel="noopener" href="https://github.com/lieanu/LibcSearcher.git">https://github.com/lieanu/LibcSearcher.git</a> </p>
+<p>cd LibcSearcher </p>
+<p>sudo python setup.py develop</p>
+<h3 id="ROPgadget和one-gadget"><a href="#ROPgadget和one-gadget" class="headerlink" title="ROPgadget和one_gadget"></a>ROPgadget和one_gadget</h3><h4 id="安装ROPgadget："><a href="#安装ROPgadget：" class="headerlink" title="安装ROPgadget："></a>安装ROPgadget：</h4><p>sudo apt-get install python-capstone</p>
+<p>git clone <a target="_blank" rel="noopener" href="https://github.com/JonathanSalwan/ROPgadget.git">https://github.com/JonathanSalwan/ROPgadget.git</a></p>
+<p>cd ROPgadget</p>
+<p>sudo python setup.py install</p>
+<h4 id="安装one-gadget："><a href="#安装one-gadget：" class="headerlink" title="安装one_gadget："></a>安装one_gadget：</h4><p>sudo apt install ruby</p>
+<p>sudo gem install one_gadget</p>
+<h2 id="pwndbg介绍及常见应用"><a href="#pwndbg介绍及常见应用" class="headerlink" title="pwndbg介绍及常见应用"></a>pwndbg介绍及常见应用</h2><p>他是linux下的一款程序调试器</p>
+<h4 id="启动gdb"><a href="#启动gdb" class="headerlink" title="启动gdb"></a>启动gdb</h4><blockquote>
+<p>$ gdb 可执行程序</p>
+</blockquote>
+<h4 id="反汇编"><a href="#反汇编" class="headerlink" title="反汇编"></a>反汇编</h4><p>将目标程序转为汇编代码</p>
+<blockquote>
+<p>$ disass 函数名字或者地址</p>
+<p>如果要反汇编一个地址到另外一个地址之间的内容</p>
+<p>$ disass 地址1，地址2</p>
+</blockquote>
+<h4 id="下断点和删除断点"><a href="#下断点和删除断点" class="headerlink" title="下断点和删除断点"></a>下断点和删除断点</h4><p>b *地址 or b 函数名字</p>
+<p>删除断点：delete 1就是删除第一个断点</p>
+<h4 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h4><p>r </p>
+<h4 id="继续执行"><a href="#继续执行" class="headerlink" title="继续执行"></a>继续执行</h4><p>s: 执行一行源程序代码，如果此行代码中有函数调用，则进入该函数；<br>n: 执行一行源程序代码，此行代码中的函数调用也一并执行。<br>s 相当于其它调试器中的“Step Into (单步跟踪进入)”；<br>n 相当于其它调试器中的“Step Over (单步跟踪)”。</p>
+<h4 id="查看栈空间"><a href="#查看栈空间" class="headerlink" title="查看栈空间"></a>查看栈空间</h4><p>x/20xw 地址   显示20个单元，16进制，4字节每单元</p>
+<blockquote>
+<p>h=2 bytes,w=4 bytes,g=8 bytes.</p>
+</blockquote>
+<h4 id="查看堆空间"><a href="#查看堆空间" class="headerlink" title="查看堆空间"></a>查看堆空间</h4><p>x/32gx  堆地址</p>
+<blockquote>
+<p><strong>h=2 bytes,w=4 bytes,g=8 bytes.</strong></p>
+</blockquote>
+<p>格式：x/&lt;n/f/u&gt; <addr></p>
+<p>整合这个命令的诠释：就是以addr为起始地址，返回n个单元的值，每个单元对应u个字节，输出格式是f。</p>
+<p>n:是正整数，表示需要显示的内存单元的个数，即从当前地址向后显示n个内存单元的内容，一个内存单元的大小由第三个参数u定义。</p>
+<p>f:表示addr指向的内存内容的输出格式，s对应输出字符串，此处需特别注意输出整型数据的格式：</p>
+<p>x 按十六进制格式显示变量。</p>
+<p>d 按十进制格式显示变量。</p>
+<p>u 按十六进制格式显示无符号整型。</p>
+<p>o 按八进制格式显示变量。</p>
+<p>t 按二进制格式显示变量。</p>
+<p>a 按十六进制格式显示变量。</p>
+<p>c 按字符格式显示变量。</p>
+<p>f 按浮点数格式显示变量。</p>
+<p>u:就是指以多少个字节作为一个内存单元-unit,默认为4。当然u还可以用被一些字符表示，如b=1 byte, h=2 bytes,w=4 bytes,g=8 bytes.<br><addr>:表示内存地址。</p>
+<p><img src="https://i.imgur.com/lVsP3IX.png"></p>
+<h4 id="查看程序内存结构"><a href="#查看程序内存结构" class="headerlink" title="查看程序内存结构"></a>查看程序内存结构</h4><p>vmmap</p>
+<p><img src="https://i.imgur.com/SlGTNMF.png"></p>
+<h3 id="pwntools-1"><a href="#pwntools-1" class="headerlink" title="pwntools"></a>pwntools</h3><h4 id="Pwntools主要模块及其使用"><a href="#Pwntools主要模块及其使用" class="headerlink" title="Pwntools主要模块及其使用"></a>Pwntools主要模块及其使用</h4><p>from pwn import *<br>io = remote(“127.0.0.1”, 32152)<br>#与互联网主机交互<br>io.sendline(“hello”)<br>io.send(“hello”)<br>#sendline发送数据会在最后多添加一个回车<br>io.recv(1024)<br>io.revuntil()<br>io.recvline()<br>#recv()读取1024个字节，recvline()会读取一直到回车，recvuntil()读取到指定数据<br>io.interactive()</p>
+<p>io = process(“./bin”, shell=True)<br>#启动本地程序进行交互，用于gdb调试</p>
+<p>io.interactive()<br>io.p32(0xdeadbeef)<br>io.p64(0xdeadbeefdeadbeef)</p>
+<blockquote>
+<p>p64 和 p32 则分别转换 8 bit 和 4 bit 数字</p>
+</blockquote>
+<p>io.u32(“1234”)<br>io.u64(“12345678”)</p>
+<p>将字节数组与数组进行以小端对齐的方式相互转化，32负责转化dword，64负责转化qword</p>
+<p>shellcraft&amp;asm<br>pwntools的shellcraft主要用来生成汇编代码形式的shellcode,而asm的作用是根据汇编代码编译出二进制shellcode。</p>
+<p>#生成执行sh的shellcode并编译<br>asm(pwnlib.shellcraft.thumb.linux.sh(), arch=”thumb”)<br>#可以将thumb换成对应cpu</p>
+<p>#读取flag并输出到标准输出<br>pwnlib.shellcraft.i386.linux.cat(“flag”, fd=1)</p>
+<p>#使用forkbomb破坏系统（慎用）<br>pwnlib.shellcraft.i386.linux.forkbomb()</p>
+<p>context<br>context.log_level = “debug”<br>context.arch = “amd64”</p>
+<blockquote>
+<p>设置成debug，pwntools会将所有io数据等输出，方便编写poc的时候进行调试，而arch可以设置攻击目标的指令构架。</p>
+</blockquote>
+<p>ELF<br>用于读取elf文件中的各种结构数据。例如plt，got，函数地址等等。</p>
+<p><a target="_blank" rel="noopener" href="https://docs.pwntools.com/en/stable/">pwntools — pwntools 4.3.1 documentation</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://xiaosolll.github.io/2021/03/25/Heap-Spray/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="eetan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Antinomy">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/03/25/Heap-Spray/" class="post-title-link" itemprop="url">Heap Spray</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-03-25 19:12:23" itemprop="dateCreated datePublished" datetime="2021-03-25T19:12:23+08:00">2021-03-25</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-04-24 23:40:54" itemprop="dateModified" datetime="2021-04-24T23:40:54+08:00">2021-04-24</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="Windows内存保护机制"><a href="#Windows内存保护机制" class="headerlink" title="Windows内存保护机制"></a>Windows内存保护机制</h2><ul>
+<li>GS编译</li>
+<li>SafeSEH机制</li>
+<li>SEH覆盖保护</li>
+<li>数据执行保护（DEP）</li>
+<li>地址随机化（ASLR）</li>
+</ul>
+<h3 id="GS编译–canary"><a href="#GS编译–canary" class="headerlink" title="GS编译–canary"></a>GS编译–canary</h3><p>​             —linux【canary】</p>
+<p>​    GS编译保护技术是通过编译时添加相关代码而实现的，开启GS 编译选项后会在函数的开头和结尾添加代码来阻止栈溢出漏洞的利用。当应用程序启动时，程序的cookie被计算出来（伪随机数）并保存在.data 节段中，在函数的开头这个 cookie 被拷贝到栈中，位于返回地址和局部变量的中间。函数调用完后系统检测cookie值是否被修改。</p>
+<blockquote>
+<p>使用IDA反汇编会看到这个随机数被标记为：Security Cookie</p>
+</blockquote>
+<p>系统还将在.data的内存区域存放一个Security Cookie的副本</p>
+<p><img src="https://i.imgur.com/b6xEJAG.png"></p>
+<p><img src="https://i.imgur.com/SsoJBNy.png"></p>
+<h3 id="堆在gdb中查看内存"><a href="#堆在gdb中查看内存" class="headerlink" title="堆在gdb中查看内存"></a>堆在gdb中查看内存</h3><p><img src="https://i.imgur.com/cKrR3u7.png"></p>
+<p>？：21和20d51是什么意思</p>
+<p>21是AMP中的MP，M若不是1则就是heap分配的，p为1表示前一个chunk正在使用。</p>
+<p><img src="https://i.imgur.com/D3SdtC6.png"></p>
+<p>在 gdb 调试中，使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x&#x2F;32gx &amp;main_arena</span><br></pre></td></tr></table></figure>
+<p>可以看到 main_arena 的内存分配情况。</p>
+<p><img src="https://i.imgur.com/EpjrAaB.png"></p>
+<h3 id="HEAP-SPRAY"><a href="#HEAP-SPRAY" class="headerlink" title="HEAP SPRAY"></a>HEAP SPRAY</h3><p>无论是栈溢出还是堆溢出，最终都会获得EIP。我们很难的浏览器中复杂的内存环境下布置完整的shellcode。页面中的javascript可以申请堆内存，因此，shellcode</p>
+<p>通过javascript布置在堆中成为可能。</p>
+<p>在使用堆喷的时候，一般会将eip指向堆区的0x0c0c0c0c的位置。</p>
+<blockquote>
+<p>修改虚函数表，将其指向0x0c0c0c0c,为什么选择这个地址呢，因为执行这个地址也不会对我们shellcode有什么影响。</p>
+<p>0x0C0C0C0C将被含有shellcode的内存片覆盖，只要内存片中的0x90能够命中0x0c0c0c0c的位置，shellcode就能最终执行。 </p>
+</blockquote>
+<p><img src="https://i.imgur.com/sb4QjrL.png"></p>
+<p>任意nop命中0x0c0c0c0c攻击就能成功。</p>
+<h4 id="实践堆喷MS06-055分析"><a href="#实践堆喷MS06-055分析" class="headerlink" title="实践堆喷MS06-055分析"></a>实践堆喷MS06-055分析</h4><p>存在栈溢出，控制了eip。返回地址被填上0x0c0c0c0c。</p>
+<p>我们将nop和shellcode组合成的内存片填充直到200mb。</p>
+<p>当跳转到0x0c0c0c0c的时候就会执行nop最后执行我们的shellcode的。</p>
+<p>javascript以unicode形式识别字符串。</p>
+<blockquote>
+<p>“\x44\x77” 转化成“\u7744”以\u为转义符，将双字节逆序。</p>
+</blockquote>
+<h3 id="PDF中的JS–cve-2009-0927"><a href="#PDF中的JS–cve-2009-0927" class="headerlink" title="PDF中的JS–cve-2009-0927"></a>PDF中的JS–cve-2009-0927</h3><h4 id="pdf文档格式"><a href="#pdf文档格式" class="headerlink" title="pdf文档格式"></a>pdf文档格式</h4><p>是一种文本和二进制混排的格式。由四部分构成：</p>
+<p><img src="https://i.imgur.com/WyBBxbg.png"></p>
+<p><img src="https://i.imgur.com/cEin8Em.png"></p>
+<p><img src="https://i.imgur.com/ECyv9JD.png"></p>
+<p><img src="https://i.imgur.com/BDtFkFN.png"></p>
+<p><img src="https://i.imgur.com/oTVR8vp.png"></p>
+<p>一个pdf文件被打开时就会执行openaction对象里面的脚本，只要在openaction对象里添加精心构造的JS脚本就可以实现对ADOBE READER的攻击。</p>
+<p>xref:f表示被删除或者没有用。</p>
+<p>pdf格式详解：<a target="_blank" rel="noopener" href="https://blog.csdn.net/bobob/article/details/751381?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_title-6&amp;spm=1001.2101.3001.4242">https://blog.csdn.net/bobob/article/details/751381?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_title-6&amp;spm=1001.2101.3001.4242</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -440,7 +993,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-05-08 21:44:08" itemprop="dateModified" datetime="2021-05-08T21:44:08+08:00">2021-05-08</time>
+        <time title="Modified: 2021-07-09 16:42:47" itemprop="dateModified" datetime="2021-07-09T16:42:47+08:00">2021-07-09</time>
       </span>
 
   
@@ -536,6 +1089,354 @@
 <p>　　MANDIANT在长期的数字取证实践中定义的可以反映主机或网络行为的技术指示器，IOC以XML文档类型描述捕获多种威胁的事件响应信息，包括病毒文件的属性、注册表改变的特征、虚拟内存等，是一种入侵后可以取证的指标，可以识别一台主机或整个网络。而OpenIOC是一个威胁情报共享的标准，通过遵循该标准，可以建立IOC的逻辑分组，在机器中以一种可读的格式进行通信，从而实现威胁情报的交流共享。比如事件响应团队可以使用OpenIOC的规范编写多个IOCs来描述一个威胁的技术共性。</p>
 <p>YARA是一款旨在帮助恶意软件研究人员识别和分类恶意软件样本的开源工具，使用YARA可以基于文本或二进制模式创建恶意软件家族描述信息，当然也可以是其他匹配信息。</p>
 <h2 id="最新malloc-c"><a href="#最新malloc-c" class="headerlink" title="最新malloc.c"></a>最新malloc.c</h2><p><a target="_blank" rel="noopener" href="https://sourceware.org/git/?p=glibc.git;a=blob;f=malloc/malloc.c;h=7c8bf8413c54c367031ca274c9bca497a45897f8;hb=d6db68e66dff25d12c3bc5641b60cbd7fb6ab44f">https://sourceware.org/git/?p=glibc.git;a=blob;f=malloc/malloc.c;h=7c8bf8413c54c367031ca274c9bca497a45897f8;hb=d6db68e66dff25d12c3bc5641b60cbd7fb6ab44f</a></p>
+<h2 id="更换pwn题libc"><a href="#更换pwn题libc" class="headerlink" title="更换pwn题libc"></a>更换pwn题libc</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/yongbaoii/article/details/111938821">PWN 更换目标程序libc_yongbaoii的博客-CSDN博客</a></p>
+<h2 id="python"><a href="#python" class="headerlink" title="python"></a>python</h2><p>Python的lambda函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sq</span>(<span class="params">x</span>):</span></span><br><span class="line">    <span class="keyword">return</span> x*x</span><br><span class="line"></span><br><span class="line"><span class="built_in">map</span>(sq,[y <span class="keyword">for</span> y <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>)])</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">map</span>(<span class="keyword">lambda</span> x: x*x,[y <span class="keyword">for</span> y <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>)])</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="win10"><a href="#win10" class="headerlink" title="win10"></a>win10</h2><p>激活：<a target="_blank" rel="noopener" href="https://moedog.org/1117.html">https://moedog.org/1117.html</a></p>
+<h5 id="单击查看-KMS-密钥"><a href="#单击查看-KMS-密钥" class="headerlink" title="单击查看 KMS 密钥"></a>单击查看 KMS 密钥</h5><table>
+<thead>
+<tr>
+<th><strong>版本</strong></th>
+<th><strong>KMS 密钥</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Windows 10 Pro</td>
+<td>W269N-WFGWX-YVC9B-4J6C9-T83GX</td>
+</tr>
+<tr>
+<td>Windows 10 Pro N</td>
+<td>MH37W-N47XK-V7XM9-C7227-GCQG9</td>
+</tr>
+<tr>
+<td>Windows 10 Pro Workstations</td>
+<td>NRG8B-VKK3Q-CXVCJ-9G2XF-6Q84J</td>
+</tr>
+<tr>
+<td>Windows 10 Pro Workstations N</td>
+<td>9FNHH-K3HBT-3W4TD-6383H-6XYWF</td>
+</tr>
+<tr>
+<td>Windows 10 Pro Education</td>
+<td>6TP4R-GNPTD-KYYHQ-7B7DP-J447Y</td>
+</tr>
+<tr>
+<td>Windows 10 Pro Education N</td>
+<td>YVWGF-BXNMC-HTQYQ-CPQ99-66QFC</td>
+</tr>
+<tr>
+<td>Windows 10 Education</td>
+<td>NW6C2-QMPVW-D7KKK-3GKT6-VCFB2</td>
+</tr>
+<tr>
+<td>Windows 10 Education N</td>
+<td>2WH4N-8QGBV-H22JP-CT43Q-MDWWJ</td>
+</tr>
+<tr>
+<td>Windows 10 Enterprise</td>
+<td>NPPR9-FWDCX-D2C8J-H872K-2YT43</td>
+</tr>
+<tr>
+<td>Windows 10 Enterprise N</td>
+<td>DPH2V-TTNVB-4X9Q3-TJR4H-KHJW4</td>
+</tr>
+<tr>
+<td>Windows 10 Enterprise G</td>
+<td>YYVX9-NTFWV-6MDM3-9PT4T-4M68B</td>
+</tr>
+<tr>
+<td>Windows 10 Enterprise G N</td>
+<td>44RPN-FTY23-9VTTB-MP9BX-T84FV</td>
+</tr>
+<tr>
+<td>Windows 10 Enterprise LTSC 2019</td>
+<td>M7XTQ-FN8P6-TTKYV-9D4CC-J462D</td>
+</tr>
+<tr>
+<td>Windows 10 Enterprise N LTSC 2019</td>
+<td>92NFX-8DJQP-P6BBQ-THF9C-7CG2H</td>
+</tr>
+<tr>
+<td>Windows 10 Enterprise LTSB 2016</td>
+<td>DCPHK-NFMTC-H88MJ-PFHPY-QJ4BJ</td>
+</tr>
+<tr>
+<td>Windows 10 Enterprise N LTSB 2016</td>
+<td>QFFDN-GRT3P-VKWWX-X7T3R-8B639</td>
+</tr>
+<tr>
+<td>Windows 10 Enterprise LTSB 2015</td>
+<td>WNMTR-4C88C-JK8YV-HQ7T2-76DF9</td>
+</tr>
+<tr>
+<td>Windows 10 Enterprise N LTSB 2015</td>
+<td>2F77B-TNFGY-69QQF-B8YKP-D69TJ</td>
+</tr>
+<tr>
+<td>Windows 8.1 Pro</td>
+<td>GCRJD-8NW9H-F2CDX-CCM8D-9D6T9</td>
+</tr>
+<tr>
+<td>Windows 8.1 Pro N</td>
+<td>HMCNV-VVBFX-7HMBH-CTY9B-B4FXY</td>
+</tr>
+<tr>
+<td>Windows 8.1 Enterprise</td>
+<td>MHF9N-XY6XB-WVXMC-BTDCT-MKKG7</td>
+</tr>
+<tr>
+<td>Windows 8.1 Enterprise N</td>
+<td>TT4HM-HN7YT-62K67-RGRQJ-JFFXW</td>
+</tr>
+<tr>
+<td>Windows 8 Pro</td>
+<td>NG4HW-VH26C-733KW-K6F98-J8CK4</td>
+</tr>
+<tr>
+<td>Windows 8 Pro N</td>
+<td>XCVCF-2NXM9-723PB-MHCB7-2RYQQ</td>
+</tr>
+<tr>
+<td>Windows 8 Enterprise</td>
+<td>32JNW-9KQ84-P47T8-D8GGY-CWCK7</td>
+</tr>
+<tr>
+<td>Windows 8 Enterprise N</td>
+<td>JMNMF-RHW7P-DMY6X-RF3DR-X2BQT</td>
+</tr>
+<tr>
+<td>Windows 7 Professional</td>
+<td>FJ82H-XT6CR-J8D7P-XQJJ2-GPDD4</td>
+</tr>
+<tr>
+<td>Windows 7 Professional N</td>
+<td>MRPKT-YTG23-K7D7T-X2JMM-QY7MG</td>
+</tr>
+<tr>
+<td>Windows 7 Professional E</td>
+<td>W82YF-2Q76Y-63HXB-FGJG9-GF7QX</td>
+</tr>
+<tr>
+<td>Windows 7 Enterprise</td>
+<td>33PXH-7Y6KF-2VJC9-XBBR8-HVTHH</td>
+</tr>
+<tr>
+<td>Windows 7 Enterprise N</td>
+<td>YDRBP-3D83W-TY26F-D46B2-XCKRJ</td>
+</tr>
+<tr>
+<td>Windows 7 Enterprise E</td>
+<td>C29WB-22CC8-VJ326-GHFJW-H9DH4</td>
+</tr>
+<tr>
+<td>Windows Server 2019 Datacenter</td>
+<td>WMDGN-G9PQG-XVVXX-R3X43-63DFG</td>
+</tr>
+<tr>
+<td>Windows Server 2019 Standard</td>
+<td>N69G4-B89J2-4G8F4-WWYCC-J464C</td>
+</tr>
+<tr>
+<td>Windows Server 2019 Essentials</td>
+<td>WVDHN-86M7X-466P6-VHXV7-YY726</td>
+</tr>
+<tr>
+<td>Windows Server 2016 Datacenter</td>
+<td>CB7KF-BWN84-R7R2Y-793K2-8XDDG</td>
+</tr>
+<tr>
+<td>Windows Server 2016 Standard</td>
+<td>WC2BQ-8NRM3-FDDYY-2BFGV-KHKQY</td>
+</tr>
+<tr>
+<td>Windows Server 2016 Essentials</td>
+<td>JCKRF-N37P4-C2D82-9YXRT-4M63B</td>
+</tr>
+<tr>
+<td>Windows Server 2012 R2 Datacenter</td>
+<td>W3GGN-FT8W3-Y4M27-J84CP-Q3VJ9</td>
+</tr>
+<tr>
+<td>Windows Server 2012 R2 Standard</td>
+<td>D2N9P-3P6X9-2R39C-7RTCD-MDVJX</td>
+</tr>
+<tr>
+<td>Windows Server 2012 R2 Essentials</td>
+<td>KNC87-3J2TX-XB4WP-VCPJV-M4FWM</td>
+</tr>
+<tr>
+<td>Windows Server 2012</td>
+<td>BN3D2-R7TKB-3YPBD-8DRP2-27GG4</td>
+</tr>
+<tr>
+<td>Windows Server 2012 N</td>
+<td>8N2M2-HWPGY-7PGT9-HGDD8-GVGGY</td>
+</tr>
+<tr>
+<td>Windows Server 2012 Single Language</td>
+<td>2WN2H-YGCQR-KFX6K-CD6TF-84YXQ</td>
+</tr>
+<tr>
+<td>Windows Server 2012 Country Specific</td>
+<td>4K36P-JN4VD-GDC6V-KDT89-DYFKP</td>
+</tr>
+<tr>
+<td>Windows Server 2012 Standard</td>
+<td>XC9B7-NBPP2-83J2H-RHMBY-92BT4</td>
+</tr>
+<tr>
+<td>Windows Server 2012 MultiPoint Standard</td>
+<td>HM7DN-YVMH3-46JC3-XYTG7-CYQJJ</td>
+</tr>
+<tr>
+<td>Windows Server 2012 MultiPoint Premium</td>
+<td>XNH6W-2V9GX-RGJ4K-Y8X6F-QGJ2G</td>
+</tr>
+<tr>
+<td>Windows Server 2012 Datacenter</td>
+<td>48HP8-DN98B-MYWDG-T2DCC-8W83P</td>
+</tr>
+<tr>
+<td>Windows Server 2008 R2 Web</td>
+<td>6TPJF-RBVHG-WBW2R-86QPH-6RTM4</td>
+</tr>
+<tr>
+<td>Windows Server 2008 R2 HPC edition</td>
+<td>TT8MH-CG224-D3D7Q-498W2-9QCTX</td>
+</tr>
+<tr>
+<td>Windows Server 2008 R2 Standard</td>
+<td>YC6KT-GKW9T-YTKYR-T4X34-R7VHC</td>
+</tr>
+<tr>
+<td>Windows Server 2008 R2 Enterprise</td>
+<td>489J6-VHDMP-X63PK-3K798-CPX3Y</td>
+</tr>
+<tr>
+<td>Windows Server 2008 R2 Datacenter</td>
+<td>74YFP-3QFB3-KQT8W-PMXWJ-7M648</td>
+</tr>
+<tr>
+<td>Windows Server 2008 R2 for Itanium-based Systems</td>
+<td>GT63C-RJFQ3-4GMB6-BRFB9-CB83V</td>
+</tr>
+<tr>
+<td>Windows Web Server 2008</td>
+<td>WYR28-R7TFJ-3X2YQ-YCY4H-M249D</td>
+</tr>
+<tr>
+<td>Windows Server 2008 Standard</td>
+<td>TM24T-X9RMF-VWXK6-X8JC9-BFGM2</td>
+</tr>
+<tr>
+<td>Windows Server 2008 Standard without Hyper-V</td>
+<td>W7VD6-7JFBR-RX26B-YKQ3Y-6FFFJ</td>
+</tr>
+<tr>
+<td>Windows Server 2008 Enterprise</td>
+<td>YQGMW-MPWTJ-34KDK-48M3W-X4Q6V</td>
+</tr>
+<tr>
+<td>Windows Server 2008 Enterprise without Hyper-V</td>
+<td>39BXF-X8Q23-P2WWT-38T2F-G3FPG</td>
+</tr>
+<tr>
+<td>Windows Server 2008 HPC</td>
+<td>RCTX3-KWVHP-BR6TB-RB6DM-6X7HP</td>
+</tr>
+<tr>
+<td>Windows Server 2008 Datacenter</td>
+<td>7M67G-PC374-GR742-YH8V4-TCBY3</td>
+</tr>
+<tr>
+<td>Windows Server 2008 Datacenter without Hyper-V</td>
+<td>22XQ2-VRXRG-P8D42-K34TD-G3QQC</td>
+</tr>
+<tr>
+<td>Windows Server 2008 for Itanium-Based Systems</td>
+<td>4DWFP-JF3DJ-B7DTH-78FJB-PDRHK</td>
+</tr>
+<tr>
+<td>Windows Server Datacenter, version 1809/1903</td>
+<td>6NMRW-2C8FM-D24W7-TQWMY-CWH2D</td>
+</tr>
+<tr>
+<td>Windows Server Standard, version 1809/1903</td>
+<td>N2KJX-J94YW-TQVFB-DG9YT-724CC</td>
+</tr>
+<tr>
+<td>Windows Server Datacenter, version 1803</td>
+<td>2HXDN-KRXHB-GPYC7-YCKFJ-7FVDG</td>
+</tr>
+<tr>
+<td>Windows Server Standard, version 1803</td>
+<td>PTXN8-JFHJM-4WC78-MPCBR-9W4KR</td>
+</tr>
+<tr>
+<td>Windows Server Datacenter, version 1709</td>
+<td>6Y6KB-N82V8-D8CQV-23MJW-BWTG6</td>
+</tr>
+<tr>
+<td>Windows Server Standard, version 1709</td>
+<td>DPCNP-XQFKJ-BJF7R-FRC8D-GF6G4</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>slmgr /ipk CB7KF-BWN84-R7R2Y-793K2-8XDDG //序列号请根据您系统来,请看后面<br> slmgr /skms kms.03k.org<br> slmgr /ato<br> slmgr /xpr //查看激活后的到期时间**</p>
+</blockquote>
+<h2 id="给了libc查看题目的glibc版本"><a href="#给了libc查看题目的glibc版本" class="headerlink" title="给了libc查看题目的glibc版本"></a>给了libc查看题目的glibc版本</h2><blockquote>
+<p>strings libc.so.6 |grep ‘GLIBC’</p>
+</blockquote>
+<p><img src="https://i.imgur.com/xNYnXWQ.png"></p>
+<p>看到该题目使用的glibc是2.23版本</p>
+<h2 id="glibc-下载"><a href="#glibc-下载" class="headerlink" title="glibc 下载"></a>glibc 下载</h2><p><a target="_blank" rel="noopener" href="https://gnu.askapache.com/libc/">https://gnu.askapache.com/libc/</a></p>
+<h2 id="CALL指令的原理"><a href="#CALL指令的原理" class="headerlink" title="CALL指令的原理"></a>CALL指令的原理</h2><p><img src="https://i.imgur.com/Sr2w7VH.png"></p>
+<p>这里相差0x10</p>
+<p><img src="https://i.imgur.com/o2ZxNcb.png"></p>
+<p>call都是call相对地址，当前指令和想要执行指令的偏移。</p>
+<p><img src="https://i.imgur.com/Sgk9KFI.png"></p>
+<p>比如说这个puts改成system，那就是改成4a</p>
+<h2 id="调试语句context"><a href="#调试语句context" class="headerlink" title="调试语句context"></a>调试语句context</h2><p><img src="https://i.imgur.com/ThdJ1Sy.png"></p>
+<h2 id="动态调试"><a href="#动态调试" class="headerlink" title="动态调试"></a>动态调试</h2><blockquote>
+<p>LD_PRELOAD=/lib/i386-linux-gnu/libc.so.6 ./hello_Pwner</p>
+<p>ps -el</p>
+<p>sudo gdb attach  pid</p>
+</blockquote>
+<h2 id="添加结构体"><a href="#添加结构体" class="headerlink" title="添加结构体"></a>添加结构体</h2><p><img src="https://i.imgur.com/dWNa1id.png"></p>
+<p>insert 就能添加一个结构体；</p>
+<p><img src="https://i.imgur.com/ccp85X3.png"></p>
+<p>d 能改变大小  expand能扩大结构体大小</p>
+<p>然后返回</p>
+<p><img src="https://i.imgur.com/lFPTjAy.png"></p>
+<p>把ptr的数据类型改成</p>
+<p><img src="https://i.imgur.com/A8fpUd4.png"></p>
+<p><img src="https://i.imgur.com/yrpiMFV.png"></p>
+<p><img src="https://i.imgur.com/osqHnju.png"></p>
+<h2 id="uaf"><a href="#uaf" class="headerlink" title="uaf"></a>uaf</h2><p><img src="https://i.imgur.com/A21QNBj.png"></p>
+<h2 id="堆的经典exp"><a href="#堆的经典exp" class="headerlink" title="堆的经典exp"></a>堆的经典exp</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span>*</span><br><span class="line"></span><br><span class="line">p=process(<span class="string">&quot;./hacknote&quot;</span>)</span><br><span class="line"></span><br><span class="line">context.log_level=<span class="string">&#x27;debug&#x27;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">launch_gdb</span>():</span></span><br><span class="line">    context.terminal =[<span class="string">&#x27;gnome-terminal&#x27;</span>,<span class="string">&#x27;-x&#x27;</span>,<span class="string">&#x27;sh&#x27;</span>,<span class="string">&#x27;-c&#x27;</span>]</span><br><span class="line">    gdb.attach(proc.pidof(p)[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">addnote</span>(<span class="params">size,content</span>):</span></span><br><span class="line">    p.recvuntil(<span class="string">&quot;:&quot;</span>)</span><br><span class="line">    p.sendline(<span class="string">&quot;1&quot;</span>)</span><br><span class="line">    p.recvuntil(<span class="string">&quot;:&quot;</span>)</span><br><span class="line">    p.sendline(<span class="built_in">str</span>(size))</span><br><span class="line">    p.recvuntil(<span class="string">&quot;:&quot;</span>)</span><br><span class="line">    p.sendline(content)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">freenote</span>(<span class="params">idx</span>):</span></span><br><span class="line"></span><br><span class="line">    p.recvuntil(<span class="string">&quot;:&quot;</span>)</span><br><span class="line">    p.sendline(<span class="string">&quot;2&quot;</span>)</span><br><span class="line">    p.recvuntil(<span class="string">&quot;:&quot;</span>)</span><br><span class="line">    p.sendline(<span class="built_in">str</span>(idx))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pusnote</span>(<span class="params">idx</span>):</span></span><br><span class="line">    p.recvuntil(<span class="string">&quot;:&quot;</span>)</span><br><span class="line">    p.sendline(<span class="string">&quot;3&quot;</span>)</span><br><span class="line">    p.recvuntil(<span class="string">&quot;:&quot;</span>)</span><br><span class="line">    p.sendline(<span class="built_in">str</span>(idx))</span><br><span class="line"></span><br><span class="line">launch_gdb()</span><br><span class="line">p.interactive()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="分号后面的-命令照常执行"><a href="#分号后面的-命令照常执行" class="headerlink" title="分号后面的 命令照常执行"></a>分号后面的 命令照常执行</h2><p><img src="https://i.imgur.com/hYAHknq.png"></p>
+<h2 id="kali下更换python版本"><a href="#kali下更换python版本" class="headerlink" title="kali下更换python版本"></a>kali下更换python版本</h2><p>update-alternatives –install /usr/bin/python python /usr/bin/python2 100</p>
+<p>update-alternatives –install /usr/bin/python python /usr/bin/python3 150</p>
+<p>update-alternatives –config python</p>
+<h2 id="kali安装volatility源代码"><a href="#kali安装volatility源代码" class="headerlink" title="kali安装volatility源代码"></a>kali安装volatility源代码</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/bylfsj/article/details/102393293">后渗透篇：利用Volatility进行入侵痕迹分析_bylfsj的博客-CSDN博客</a></p>
+<blockquote>
+<p>volatility用挺好的</p>
+</blockquote>
+<p>python setup.py install</p>
+<p>发现还得安装密码之类的东西就stackoverflow上面的解决方法安装下来</p>
+<p>还有python vol.py  这玩意也得执行</p>
+<h2 id="linux递归查找某个目录下包含某个字符串的所有文件"><a href="#linux递归查找某个目录下包含某个字符串的所有文件" class="headerlink" title="linux递归查找某个目录下包含某个字符串的所有文件"></a>linux递归查找某个目录下包含某个字符串的所有文件</h2><blockquote>
+<p>grep -rn “TrapFrame” /home/eetan/volatility</p>
+</blockquote>
+<h2 id="查看软件路径"><a href="#查看软件路径" class="headerlink" title="查看软件路径"></a>查看软件路径</h2><p>whereis 软件</p>
+<h2 id="python接收固定位置字符"><a href="#python接收固定位置字符" class="headerlink" title="python接收固定位置字符"></a>python接收固定位置字符</h2><p>u（这是个字符串）[0:8]  取第一个到第八</p>
+<p>puts_addr=u64(p.recv(6).ljust(8,’\x00’))  接收六个字符，然后格式化为8字节，用00补齐</p>
+<p>i=p.recvuntil(‘:’,drop=True)  这个是接收到：前面的内容，如果没有drop=true 就是包括：。</p>
+<h2 id="python类型转换"><a href="#python类型转换" class="headerlink" title="python类型转换"></a>python类型转换</h2><p>p64()这里面要的是int类型</p>
+<p>addr=int(i,16)  转换为int类型的16进制变10进制  输出10进制【i是十六进制】</p>
 
       
     </div>
@@ -997,80 +1898,8 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://xiaosolll.github.io/2021/02/14/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="eetan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Antinomy">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/02/14/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2021-02-14 15:45:55" itemprop="dateCreated datePublished" datetime="2021-02-14T15:45:55+08:00">2021-02-14</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
