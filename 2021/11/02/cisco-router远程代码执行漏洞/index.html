@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"xiaosolll.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.2.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
+  </script>
+<meta name="description" content="标题环境布置binwalk安装于ubuntu20.041234git clone https:&#x2F;&#x2F;github.com&#x2F;devttys0&#x2F;binwalk.gitcd binwalksudo python setup.py installsudo .&#x2F;deps.sh  把deps.sh的https全部改成git 注意master与git中间需要含有空">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cisco_router远程代码执行漏洞">
+<meta property="og:url" content="https://xiaosolll.github.io/2021/11/02/cisco-router%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/index.html">
+<meta property="og:site_name" content="Antinomy">
+<meta property="og:description" content="标题环境布置binwalk安装于ubuntu20.041234git clone https:&#x2F;&#x2F;github.com&#x2F;devttys0&#x2F;binwalk.gitcd binwalksudo python setup.py installsudo .&#x2F;deps.sh  把deps.sh的https全部改成git 注意master与git中间需要含有空">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/oMCLYPK.png">
+<meta property="og:image" content="https://i.imgur.com/M7XpFWQ.png">
+<meta property="og:image" content="https://i.imgur.com/133hP1d.png">
+<meta property="og:image" content="https://i.imgur.com/MH63bjt.png">
+<meta property="og:image" content="https://i.imgur.com/3dfSr7p.png">
+<meta property="og:image" content="https://i.imgur.com/7AYATtf.png">
+<meta property="og:image" content="https://i.imgur.com/joy2NYU.png">
+<meta property="article:published_time" content="2021-11-02T06:06:55.000Z">
+<meta property="article:modified_time" content="2021-11-06T09:11:25.802Z">
+<meta property="article:author" content="eetan">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/oMCLYPK.png">
+
+
+<link rel="canonical" href="https://xiaosolll.github.io/2021/11/02/cisco-router%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+<title>cisco_router远程代码执行漏洞 | Antinomy</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Antinomy</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A0%87%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">标题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E5%B8%83%E7%BD%AE"><span class="nav-number">1.1.</span> <span class="nav-text">环境布置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#binwalk%E5%AE%89%E8%A3%85%E4%BA%8Eubuntu20-04"><span class="nav-number">1.1.1.</span> <span class="nav-text">binwalk安装于ubuntu20.04</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#qemu-16-04"><span class="nav-number">1.1.2.</span> <span class="nav-text">qemu 16.04</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%BA%E4%BB%B6%E5%88%86%E6%9E%90"><span class="nav-number">1.2.</span> <span class="nav-text">固件分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%84%E5%A4%87"><span class="nav-number">1.3.</span> <span class="nav-text">预备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%90%AD%E5%BB%BA%E8%B7%AF%E7%94%B1%E5%99%A8%E5%9B%BA%E4%BB%B6%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83"><span class="nav-number">1.4.</span> <span class="nav-text">搭建路由器固件运行环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E7%BD%91%E7%BB%9C"><span class="nav-number">1.4.1.</span> <span class="nav-text">配置网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEqemu%E8%99%9A%E6%8B%9F%E6%9C%BA"><span class="nav-number">1.4.2.</span> <span class="nav-text">配置qemu虚拟机</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86"><span class="nav-number">1.5.</span> <span class="nav-text">漏洞原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E5%8E%9F%E6%95%B0%E6%8D%AE"><span class="nav-number">1.6.</span> <span class="nav-text">处理原数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-number">1.7.</span> <span class="nav-text">参考资料</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">eetan</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://xiaosolll.github.io/2021/11/02/cisco-router%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="eetan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Antinomy">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          cisco_router远程代码执行漏洞
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-11-02 14:06:55" itemprop="dateCreated datePublished" datetime="2021-11-02T14:06:55+08:00">2021-11-02</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-11-06 17:11:25" itemprop="dateModified" datetime="2021-11-06T17:11:25+08:00">2021-11-06</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="标题"><a href="#标题" class="headerlink" title="标题"></a>标题</h1><h2 id="环境布置"><a href="#环境布置" class="headerlink" title="环境布置"></a>环境布置</h2><h3 id="binwalk安装于ubuntu20-04"><a href="#binwalk安装于ubuntu20-04" class="headerlink" title="binwalk安装于ubuntu20.04"></a>binwalk安装于ubuntu20.04</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;devttys0&#x2F;binwalk.git</span><br><span class="line">cd binwalk</span><br><span class="line">sudo python setup.py install</span><br><span class="line">sudo .&#x2F;deps.sh</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>把deps.sh的https全部改成git</p>
+<p>注意master与git中间需要含有空格</p>
+</blockquote>
+<h3 id="qemu-16-04"><a href="#qemu-16-04" class="headerlink" title="qemu 16.04"></a>qemu 16.04</h3><blockquote>
+<p>略</p>
+</blockquote>
+<h2 id="固件分析"><a href="#固件分析" class="headerlink" title="固件分析"></a>固件分析</h2><blockquote>
+<p>binwalk -Me RV130X_FW_1.0.3.44.BIN</p>
+</blockquote>
+<p><img src="https://i.imgur.com/oMCLYPK.png"></p>
+<blockquote>
+<p>-M:递归扫描提取的文件</p>
+<p>-e：自动提取已知文件类型</p>
+</blockquote>
+<p><img src="https://i.imgur.com/M7XpFWQ.png"></p>
+<p>文件系统为Squashfs </p>
+<p>采用little endian存储</p>
+<p>其内核为：<img src="https://i.imgur.com/133hP1d.png"></p>
+<p><img src="https://i.imgur.com/MH63bjt.png"></p>
+<blockquote>
+<p>处理http请求的底层文件</p>
+</blockquote>
+<h2 id="预备"><a href="#预备" class="headerlink" title="预备"></a>预备</h2><p>路由器系统类型：嵌入式linux系统、vxworks系统</p>
+<p>文件系统类型：squashfs(最常见)、cpio、jffs2</p>
+<h2 id="搭建路由器固件运行环境"><a href="#搭建路由器固件运行环境" class="headerlink" title="搭建路由器固件运行环境"></a>搭建路由器固件运行环境</h2><blockquote>
+<p>qemu虚拟机</p>
+<p>配置网络环境</p>
+<p>加载路由器虚拟机的操作系统镜像</p>
+</blockquote>
+<h3 id="配置网络"><a href="#配置网络" class="headerlink" title="配置网络"></a>配置网络</h3><p>目的：使得qemu虚拟机和我们的ubuntu互通</p>
+<p>安装网络配置工具：apt-get install bridge-utils uml-utilities</p>
+<p>修改ubuntu网络配置文件： /etc/network/interfaces/</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># interfaces(5) file used by ifup(8) and ifdown(8)</span><br><span class="line">auto lo</span><br><span class="line">iface lo inet loopback</span><br><span class="line"> </span><br><span class="line">auto ens33</span><br><span class="line">iface ens33 inet manual</span><br><span class="line">up ifconfig ens33 0.0.0.0 up</span><br><span class="line"> </span><br><span class="line">auto br0</span><br><span class="line">iface br0 inet dhcp</span><br><span class="line"> </span><br><span class="line">bridge_ports ens33</span><br><span class="line">bridge_maxwait 0</span><br></pre></td></tr></table></figure>
+<p>创建或修改qemu网络接口启动文件脚本：(/etc/qemu-ifup)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;bin&#x2F;sh</span><br><span class="line"># Script to bring a network (tap) device for qemu up.</span><br><span class="line"># The idea is to add the tap device to the same bridge</span><br><span class="line"># as we have default routing to.</span><br><span class="line"> </span><br><span class="line"># in order to be able to find brctl</span><br><span class="line">echo &quot;Executing &#x2F;etc&#x2F;qemu-ifup&quot;</span><br><span class="line">echo &quot;Bringing $1 for bridge mode...&quot;</span><br><span class="line">sudo &#x2F;sbin&#x2F;ifconfig $1 0.0.0.0 promisc up</span><br><span class="line">echo &quot;Adding $1 to br0...&quot;</span><br><span class="line">sudo &#x2F;sbin&#x2F;brctl addif br0 $1</span><br><span class="line">sleep 3</span><br></pre></td></tr></table></figure>
+<p>使得配置生效：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">启动桥接网络赋予可执行权限</span></span><br><span class="line">sudo chmod a+x /etc/qemu-ifup</span><br><span class="line"><span class="meta">#</span><span class="bash">重启网络服务，使配置生效（注意这个地方配置正常之后，如果你是mac，可能会让你输入mac密码，windows我不知道）</span></span><br><span class="line">sudo /etc/init.d/networking restart</span><br><span class="line"><span class="meta">#</span><span class="bash">关闭ens33，启动桥接网络br0（这里如果显示eth0不存在没关系，直接启动br0）</span></span><br><span class="line">sudo ifdown eth0</span><br><span class="line">sudo ifup br0</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="配置qemu虚拟机"><a href="#配置qemu虚拟机" class="headerlink" title="配置qemu虚拟机"></a>配置qemu虚拟机</h3><p><a target="_blank" rel="noopener" href="https://people.debian.org/~aurel32/qemu/mips/">https://people.debian.org/~aurel32/qemu/mips/</a>   下载</p>
+<p><img src="https://i.imgur.com/3dfSr7p.png"></p>
+<p>第一个和第三个</p>
+<p>在下载下来的文件处开启qemu</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo qemu-system-mips -M malta -kernel vmlinux-2.6.32-5-4kc-malta -hda debian_squeeze_mips_standard.qcow2 -append &quot;root=/dev/sda1 console=tty0&quot; -net nic,macaddr=00:16:3e:00:00:01 -net tap</span><br></pre></td></tr></table></figure>
+<p>账号密码都是root</p>
+<p>ping  主机不通则修改网络配置：/etc/network/interfaces</p>
+<p>用nano修改：nano /etc/network/interfaces</p>
+<p>将默认的eth0改成eth1。</p>
+<blockquote>
+<p>ifconfig可以发现使用的网卡是eth1，所以需要更改</p>
+</blockquote>
+<p>重启eth1：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifup eth1</span><br></pre></td></tr></table></figure>
+
+
+
+
+<p>可以在ubuntu中用ssh远程连接qemu虚拟机</p>
+<blockquote>
+<p>ssh root@虚拟机ip</p>
+</blockquote>
+<p>在ubuntu中另起终端将binwalk解压出来的文件系统拷贝到qemu</p>
+<blockquote>
+<p>scp -r ./squashfs-root  root@虚拟机ip:/root/</p>
+</blockquote>
+<p>ssh连接上的qemu虚拟机下，切换根目录到拷贝文件：</p>
+<blockquote>
+<p>chroot /root/squashfs-root /bin/sh</p>
+</blockquote>
+<p>然后先后运行upnp和mic</p>
+<blockquote>
+<p>upnp</p>
+<p>mic</p>
+</blockquote>
+<p>mic 会久一点，直到</p>
+<p>unable to open device /dev/bhal  就能回车看到login</p>
+<p>再开一个终端查看是否能连接上upnp端口</p>
+<blockquote>
+<p>nc -vv qemu虚拟机ip 37215</p>
+</blockquote>
+<p>如果succeeded就可以跑exp了。</p>
+<h2 id="漏洞原理"><a href="#漏洞原理" class="headerlink" title="漏洞原理"></a>漏洞原理</h2><p>华为家庭网关采用 UPnP 协议。通过 tr-064技术报告标准，该协议被广泛应用于嵌入式设备中，以实现家庭和企业环境中网络的无缝连接和简化实现。</p>
+<p>TR-064是为本地网络配置而设计的。例如，它允许工程师从内部网络实现基本的设备配置、固件升级等。</p>
+<p>在这种情况下，在华为设备中的TR-064实现是通过端口37215(UPnP)暴露给广域网的。</p>
+<p>从设备的 UPnP 描述中可以看出，它支持一种名为 DeviceUpgrade 的服务类型。该服务通过发送请求到“/ctrl/DeviceUpgrade _ 1”(称为 controlURL)来执行固件升级操作，并使用两个元素 NewStatusURL 和 NewDownloadURL 来执行。</p>
+<p><img src="https://i.imgur.com/7AYATtf.png"></p>
+<p>看到这里就可以看清楚漏洞的原理了，具体来说是首先在<code>&lt;NewStatusURL&gt;</code>输入分号将前面的字符串闭合，然后再注入相应的执行命令即可，如需要执行<code>ls</code>命令，则需要做的就是构造<code>&lt;NewStatusURL&gt;&#39;;ls;&lt;/NewStatusURL&gt;</code>节点即可。该节点字符串与<code>upg -g -U %s -t &#39;1 Firmware Upgrade Image&#39; -c upnp -r %s -d -</code>拼接得到<code>upg -g -U %s -t &#39;1 Firmware Upgrade Image&#39; -c upnp -r &#39;;ls; -d -</code>，然后执行system调用，实现注入。</p>
+<p><img src="https://i.imgur.com/joy2NYU.png"></p>
+<h2 id="处理原数据"><a href="#处理原数据" class="headerlink" title="处理原数据"></a>处理原数据</h2><p>DeviceUpgrade服务</p>
+<p>引用了etc/upnp目录下的DevUpg.xml文件</p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/340161208">https://zhuanlan.zhihu.com/p/340161208</a>   </p>
+<p><a target="_blank" rel="noopener" href="http://ronpa.top/2018/11/29/CVE-2017-17215%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">http://ronpa.top/2018/11/29/CVE-2017-17215%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/</a></p>
+<p><a target="_blank" rel="noopener" href="https://paper.seebug.org/490/">https://paper.seebug.org/490/</a></p>
+<p><a target="_blank" rel="noopener" href="https://bbs.pediy.com/thread-269188.htm">https://bbs.pediy.com/thread-269188.htm</a>   system的参数来源</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>1.<a target="_blank" rel="noopener" href="https://prowes5.github.io/2019/07/21/%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">https://prowes5.github.io/2019/07/21/%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</a>    路由器漏洞环境布置</p>
+<p>2.<a target="_blank" rel="noopener" href="https://paper.seebug.org/1039/">https://paper.seebug.org/1039/</a>   CVE-2019-1663堆栈缓冲区溢出漏洞</p>
+<p>3.<a target="_blank" rel="noopener" href="https://software.cisco.com/download/home/285026142/type/282465789/release/1.0.3.44">https://software.cisco.com/download/home/285026142/type/282465789/release/1.0.3.44</a>   思科固件下载</p>
+<p>4.<a target="_blank" rel="noopener" href="https://bbs.pediy.com/thread-268758.htm">https://bbs.pediy.com/thread-268758.htm</a>   Cisco RV160W系列路由器漏洞/</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/10/09/xv61/" rel="prev" title="xv61">
+                  <i class="fa fa-chevron-left"></i> xv61
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">eetan</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

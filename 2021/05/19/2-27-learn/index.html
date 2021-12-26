@@ -42,7 +42,7 @@
 <meta property="og:image" content="https://i.imgur.com/W5LM66K.png">
 <meta property="og:image" content="https://i.imgur.com/vhngrYN.png">
 <meta property="article:published_time" content="2021-05-19T13:02:36.000Z">
-<meta property="article:modified_time" content="2021-05-30T12:47:44.785Z">
+<meta property="article:modified_time" content="2021-08-23T15:01:50.252Z">
 <meta property="article:author" content="eetan">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://i.imgur.com/r4yIHE4.png">
@@ -172,7 +172,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-count">24</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -243,7 +243,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-05-30 20:47:44" itemprop="dateModified" datetime="2021-05-30T20:47:44+08:00">2021-05-30</time>
+        <time title="Modified: 2021-08-23 23:01:50" itemprop="dateModified" datetime="2021-08-23T23:01:50+08:00">2021-08-23</time>
       </span>
 
   
@@ -304,6 +304,10 @@
 <p><img src="https://i.imgur.com/cJyHQd2.png"></p>
 <p>可以看到确实是从topchunk中切割</p>
 <p>free了calloc请求的chunk，再次calloc会将freechunk中的内容返回给我们，并不是之前第一次calloc那次从topchunk中切割</p>
+<blockquote>
+<p>为什么不是0x20？</p>
+<p>因为1是表示前一个chunk正在被使用。0表示前一个是空闲状态。</p>
+</blockquote>
 <h2 id="实验结果"><a href="#实验结果" class="headerlink" title="实验结果"></a>实验结果</h2><p>此文件演示了使用fastbins进行的简单的双重释放攻击。</p>
 <p>首先填充tcache。 分配3个缓冲区。</p>
 <p>第一个calloc（1，8）：0x55c0dafd5360</p>
@@ -379,8 +383,8 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2021/05/13/delphi-learn/" rel="prev" title="delphi_learn">
-                  <i class="fa fa-chevron-left"></i> delphi_learn
+                <a href="/2021/05/09/iscc-hello-Pwner-wp/" rel="prev" title="iscc_hello_Pwner_wp">
+                  <i class="fa fa-chevron-left"></i> iscc_hello_Pwner_wp
                 </a>
             </div>
             <div class="post-nav-item">

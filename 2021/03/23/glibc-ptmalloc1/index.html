@@ -42,7 +42,7 @@
 <meta property="og:image" content="https://i.imgur.com/awhRiCY.png">
 <meta property="og:image" content="https://i.imgur.com/wMotikN.png">
 <meta property="article:published_time" content="2021-03-23T05:41:19.244Z">
-<meta property="article:modified_time" content="2021-03-28T13:03:25.953Z">
+<meta property="article:modified_time" content="2021-09-11T13:02:41.567Z">
 <meta property="article:author" content="eetan">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://i.imgur.com/2bvQPBh.png">
@@ -172,7 +172,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-count">24</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -243,7 +243,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">Edited on</span>
-        <time title="Modified: 2021-03-28 21:03:25" itemprop="dateModified" datetime="2021-03-28T21:03:25+08:00">2021-03-28</time>
+        <time title="Modified: 2021-09-11 21:02:41" itemprop="dateModified" datetime="2021-09-11T21:02:41+08:00">2021-09-11</time>
       </span>
 
   
@@ -292,7 +292,8 @@
 <p>实现文件磁盘地址和进程虚拟地址空间中一段虚拟地址的一一对映关系</p>
 <p><img src="https://i.imgur.com/P9qrTPp.png"></p>
 <blockquote>
-<p>操作系统以**<em>内存页**</em>为<em>单位</em>管理内存</p>
+<p>操作系统以**<em>内存页**</em>为<em>单位</em>管理内存,绝大多数处理器上的内存页的默认大小都是 <strong>4KB</strong></p>
+<p>操作系统与磁盘打交道的最小单位是磁盘块。 目前是4k大小。</p>
 </blockquote>
 <p>munmap 执行相反的操作，删除特定地址区域的对象映射。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;sys&#x2F;mman.h&gt;</span><br><span class="line"></span><br><span class="line">void *mmap(void *addr, size_t length, int prot(期望的内存保护标志), int flags（指定映射对象类型，映射选项和映射页是否可以共享）, int fd, off_t offset);</span><br><span class="line"></span><br><span class="line">int munmap(void *addr, size_t length);</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
